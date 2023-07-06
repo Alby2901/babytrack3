@@ -26,43 +26,62 @@ function InputScreen({ navigation }) {
   }
 
   function VerificaGenitore() {
-    console.log('Neonato: '+ {neonato})
-    console.log('Genitore: '+ {genitore})
-    if (neonato === genitore) {
-      Alert.alert(
-        "RICONOSCIMENTO CORRETTO",
-        "Il riconoscimento Neonato <=> Genitore è stato eseguito correttamente"
-      );
+    const n = JSON.stringify(neonato);
+    const g = JSON.stringify(genitore);
+
+    console.log("Neonato: ", { neonato });
+    console.log("Genitore: ", { genitore });
+
+    if (neonato === "") {
+      Alert.alert("ASSENZA DATO", "Non è stato scansionato il neonato!");
+    } else if (genitore === "") {
+      Alert.alert("ASSENZA DATO", "Non è stato scansionato il genitore!");
     } else {
-      Alert.alert(
-        "RICONOSCIMENTO ERRATO",
-        "ATENZIONE riconoscimento Neonato <=> Genitore ERRATO!"
-      );
+      if (neonato === genitore) {
+        Alert.alert(
+          "RICONOSCIMENTO CORRETTO",
+          "Il riconoscimento Neonato <=> Genitore è stato eseguito correttamente"
+        );
+      } else {
+        Alert.alert(
+          "RICONOSCIMENTO ERRATO",
+          "ATENZIONE riconoscimento Neonato <=> Genitore ERRATO!"
+        );
+      }
     }
   }
 
   function VerificaLatteCulla() {
-    console.log('Neonato: '+ {neonato}.toString())
-    console.log('LatteCulla: '+ {latteculla}.toString())
-    if (neonato === latteculla) {
-      Alert.alert(
-        "RICONOSCIMENTO CORRETTO",
-        "Il riconoscimento Neonato <=> Culla/Latte è stato eseguito correttamente"
-      );
+    const n = JSON.stringify(neonato);
+    const l = JSON.stringify(latteculla);
+
+    console.log("Neonato: ", n);
+    console.log("LatteCulla: ", l);
+
+    if (neonato === "") {
+      Alert.alert("ASSENZA DATO", "Non è stato scansionato il neonato!");
+    } else if (latteculla === "") {
+      Alert.alert("ASSENZA DATO", "Non è stato scansionato il latte/culla!");
     } else {
-      Alert.alert(
-        "RICONOSCIMENTO ERRATO",
-        "ATENZIONE riconoscimento Neonato <=> Culla/Latte ERRATO!"
-      );
+      if (neonato === latteculla) {
+        Alert.alert(
+          "RICONOSCIMENTO CORRETTO",
+          "Il riconoscimento Neonato <=> Culla/Latte è stato eseguito correttamente"
+        );
+      } else {
+        Alert.alert(
+          "RICONOSCIMENTO ERRATO",
+          "ATENZIONE riconoscimento Neonato <=> Culla/Latte ERRATO!"
+        );
+      }
     }
   }
 
-  function Reset(){
-    setUtente('');
-    setNeonato('');
-    setGenitore('');
-    setLatteCulla('');
-
+  function Reset() {
+    setUtente("");
+    setNeonato("");
+    setGenitore("");
+    setLatteCulla("");
   }
 
   return (
