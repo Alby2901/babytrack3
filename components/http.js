@@ -3,10 +3,13 @@ import { View, Text } from "react-native";
 import axios from "axios";
 
 // const BASE_URL = "http://pinocomo.ddns.net:9999/babysafe/login?user=pino&pwd=pino";
-const BASE_URL = "http://pinocomo.ddns.net:9999/babysafe/login";
+// const BASE_URL = "http://pinocomo.ddns.net:9999/babysafe/login";
+const BASE_URL = "http://172.31.234.97:8084/babysafe/login";
 
-export async function getSession(utente, password) {
+export async function getSession(utente, password, url) {
   try {
+    console.log('Url:', url);
+    console.log('BASE_URL:', BASE_URL);
     const response = await axios.get(BASE_URL, {
       params: {
         user: utente,

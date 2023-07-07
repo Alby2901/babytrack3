@@ -5,6 +5,7 @@ import {
   Button,
   TextInput,
   ScrollView,
+  SafeAreaView,
 } from "react-native";
 import { getSession } from "../components/http";
 import { useState } from "react";
@@ -14,6 +15,7 @@ function LoginScreen({ navigation }) {
   const [sessionID, setSessionID] = useState("");
   const [message, setmessage] = useState("");
   const [isLogged, setIsLogged] = useState(false);
+  const [url, setUrl] = useState("");
   const [usr, setUsr] = useState("");
   const [pwd, setPwd] = useState("");
 
@@ -22,7 +24,7 @@ function LoginScreen({ navigation }) {
     console.log("GetSession1: ");
 
     try {
-      const [sessionIDData, messageData] = await getSession(usr, pwd);
+      const [sessionIDData, messageData] = await getSession(usr, pwd, url);
       console.log("GetSession2: ");
       setSessionID(sessionIDData);
       console.log("GetSession3: ");
@@ -39,6 +41,10 @@ function LoginScreen({ navigation }) {
     setIsLogged(false);
   }
 
+  function urlInputHandler(enteredUrl) {
+    setUrl(enteredUrl);
+  }
+
   function usrInputHandler(enteredUsr) {
     setUsr(enteredUsr);
   }
@@ -48,59 +54,71 @@ function LoginScreen({ navigation }) {
   }
 
   return (
-    <View style={styles.containerOuter}>
-      <View style={styles.containerUp}>
-        <Text>This is the Login Screen</Text>
-        <Button
-          title="Input Screen"
-          onPress={() => navigation.navigate("Input")}
-        />
-        <Button
-          title="Scan Screen"
-          onPress={() => navigation.navigate("Scan")}
-        />
-      </View>
-      <View style={styles.containerDown}>
-        <TextInput
-          style={styles.inputText}
-          onChangeText={usrInputHandler}
-          value={usr}
-          placeholder="Utente"
-        />
-        <TextInput
-          style={styles.inputText}
-          onChangeText={pwdInputHandler}
-          value={pwd}
-          placeholder="Password"
-        />
-        <Text style={styles.text}>Test chiamate HTTP...</Text>
-        <Button
-          style={styles.button}
-          title="Chek utente"
-          onPress={getSessionHandler}
-        ></Button>
-        {/* <Text>The Session ID is: {sessionID}</Text> */}
-        {isLogged && <Text>The Message is: {message}</Text>}
-        {isLogged && sessionID && <Text>The Session ID is: {sessionID}</Text>}
-        {isLogged && !sessionID && (
-          <Text style={styles.textAlert} cd>
-            The Session ID is not avaiable!
-          </Text>
-        )}
-        {isLogged && (
-          <Button
-            style={styles.button}
-            title="Annulla... "
-            onPress={resetIsLogged}
-          ></Button>
-        )}
-        {errorHTTP && (
-          <Text style={styles.textAlert} cd>
-            Server is not responding!
-          </Text>
-        )}
-      </View>
-    </View>
+    <SafeAreaView>
+      <ScrollView>
+        <View style={styles.containerOuter}>
+          <View style={styles.containerUp}>
+            <Text>This is the Login Screen</Text>
+            <Button
+              title="Input Screen"
+              onPress={() => navigation.navigate("Input")}
+            />
+            <Button
+              title="Scan Screen"
+              onPress={() => navigation.navigate("Scan")}
+            />
+          </View>
+          <View style={styles.containerDown}>
+            <TextInput
+              style={styles.inputText}
+              onChangeText={urlInputHandler}
+              value={url}
+              placeholder="URL"
+            />
+            <TextInput
+              style={styles.inputText}
+              onChangeText={usrInputHandler}
+              value={usr}
+              placeholder="Utente"
+            />
+            <TextInput
+              style={styles.inputText}
+              onChangeText={pwdInputHandler}
+              value={pwd}
+              placeholder="Password"
+            />
+            <Text style={styles.text}>Test chiamate HTTP...</Text>
+            <Button
+              style={styles.button}
+              title="Chek utente"
+              onPress={getSessionHandler}
+            ></Button>
+            {/* <Text>The Session ID is: {sessionID}</Text> */}
+            {isLogged && <Text>The Message is: {message}</Text>}
+            {isLogged && sessionID && (
+              <Text>The Session ID is: {sessionID}</Text>
+            )}
+            {isLogged && !sessionID && (
+              <Text style={styles.textAlert} cd>
+                The Session ID is not avaiable!
+              </Text>
+            )}
+            {isLogged && (
+              <Button
+                style={styles.button}
+                title="Annulla... "
+                onPress={resetIsLogged}
+              ></Button>
+            )}
+            {errorHTTP && (
+              <Text style={styles.textAlert} cd>
+                Server is not responding!
+              </Text>
+            )}
+          </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -146,9 +164,9 @@ const styles = StyleSheet.create({
   inputText: {
     borderWidth: 2,
     borderColor: "#ff0000",
-    backgroundColor: 'white',
-    color: 'white',
-    textDecorationColor: 'white',
+    backgroundColor: "white",
+    color: "black",
+    textDecorationColor: "white",
     margin: 5,
     padding: 4,
     width: 100,
