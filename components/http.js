@@ -10,13 +10,29 @@ export async function getSession(utente, password, url) {
   try {
     console.log('Url:', url);
     console.log('BASE_URL:', BASE_URL);
-    const response = await axios.get(BASE_URL, {
+    const response = await axios.get(url, {
       params: {
         user: utente,
         pwd: password,
       },
     });
-    console.log(response);
+    // console.log('RESP: ', response);
+    console.log('RESP_DATA: ', response.data);
+
+    console.log("-------------------------------------------------");
+
+    console.log("Risposta: " + JSON.stringify(response.data));
+  
+    console.log("-------------------------------------------------");
+  
+    for (const param in response.data) {
+      console.log("param: " + param);
+    }
+  
+    console.log("param_ret: " + response.data.ret);
+    console.log("param_msg: " + response.data.message);
+    console.log("param_par: " + response.data.params);
+
   } catch (error) {
     if (error.response) {
       // The request was made and the server responded with a status code
