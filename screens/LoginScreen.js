@@ -24,51 +24,14 @@ function LoginScreen({ navigation }) {
     console.log("+++++++++++++++++++++++++++++");
     console.log("GetSession1: ");
 
-    // try {
-      // const [sessionIDData, messageData] = await getSession(usr, pwd, url);
-    
-    // ---------------------------------------------------
+    const [sessionIDData, messageData] = await getSession(usr, pwd, url);
 
-
-    const response = await axios.get(url, {
-      params: {
-        user: utente,
-        pwd: password,
-      },
-    });
-    // console.log('RESP: ', response);
-    console.log('RESP_DATA: ', response.data);
-
-    console.log("-------------------------------------------------");
-
-    console.log("Risposta: " + JSON.stringify(response.data));
-  
-    console.log("-------------------------------------------------");
-  
-    for (const param in response.data) {
-      console.log("param: " + param);
-    }
-  
-    console.log("param_ret: " + response.data.ret);
-    console.log("param_msg: " + response.data.message);
-    console.log("param_par: " + response.data.params);
-
-    // ---------------------------------------------------
-        
-      console.log("GetSession2: ");
-      setSessionID(sessionIDData);
-      console.log("GetSession3: ");
-      setmessage(messageData);
-      console.log("GetSession4: ");
-      setIsLogged(true);
-    // } catch (error) {
-    //   console.log("Errore HTTP: ", error.message);
-    //   setErrorHTTP(error.message);
-    // }
-
-
-
-
+    console.log("GetSession2: ");
+    setSessionID(sessionIDData);
+    console.log("GetSession3: ");
+    setmessage(messageData);
+    console.log("GetSession4: ");
+    setIsLogged(true);
   }
 
   function resetIsLogged() {
