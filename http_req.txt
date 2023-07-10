@@ -1,0 +1,49 @@
+Server http://pinocomo.ddns.net:9999 
+bisogna prevedere una pagina in cui configuri sul telefono il nome del server e la port
+
+------------------------------------------------------------------------------------------
+login con user e password
+
+http://pinocomo.ddns.net:9999/babysafe/login?user=pino&pwd=pino
+
+http://130.0.151.40:8090/babysafe/login?user=pino&pwd=pino
+
+http://10.6.10.135:8080/babysafe/login?user=pino&pwd=pino
+
+Login solo con matricola utente da leggere come barcode 
+http://pinocomo.ddns.net:9999/babysafe/login1?usercode=U2
+
+se la login va bene 
+il server restituisce:
+
+{"ret":0,"message":"ok","params":{"sessionId":"58f9550b-770e-4674-8e14-46ba06eabe08","username":"Como pino"}}
+dove
+ret=0 è il codice di ritorno di ok
+in params hai la sessioid che devi memorizzare perchè ti serve per le chiamate successive
+la user name la puoi usare poi vediamno come.
+
+
+------------------------------------------------------------------------------------------------------------------------
+riconoscimento codici barcode bambini mamma o papà
+
+http://pinocomo.ddns.net:9999/babysafe/checkband?sessionid=58f9550b-770e-4674-8e14-46ba06eabe08&child=N1&parent=G1
+
+http://pinocomo.ddns.net:9999/babysafe/checkband?sessionid=58f9550b-770e-4674-8e14-46ba06eabe08&child=N1&parent=G1
+
+http://10.6.10.135:8080/babysafe/checkband?sessionid=656ceef5-f87d-4cc0-87fc-3edaf414ffcd&child=2021025214&parent=322857
+
+
+il server restituisce
+ret=0 se ok
+ret=-1 per un errore generico
+ret=-3 se la sessione e scaduta (in questo case devi ritornare sulla pagina di login)
+ret=-4 se il riconoscimento non è corretto
+
+esempio di riconoscimento ok
+{"ret":0,"message":"Braccialetto madre riconosciuto ","params":{"childName":"Rossi Luigi","motherName":"Rossi Maria"}}
+{"ret":0,"message":"Braccialetto padre riconosciuto ","params":{"fatherName":"Rossi Mario","childName":"Rossi Luigi"}}
+
+esempio di riconoscimento non ok
+{"ret":-4,"message":"Braccialetto genitore non Esistente","params":null}
+
+se nelle chiamate hai errore -2 è perchè il serrvizio va in eccezione vedi poi il messaggio
