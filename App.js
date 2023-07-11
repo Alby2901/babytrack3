@@ -4,8 +4,11 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StyleSheet, Text, View } from "react-native";
 import LoginScreen from "./screens/LoginScreen";
-import ScanScreen from "./screens/ScanScreen";
 import InputScreen from "./screens/InputScreen";
+import ScanScreen from "./screens/ScanScreen";
+import ScanScreenNeonato from "./screens/ScanScreenNeonato";
+import ScanScreenGenitore from "./screens/ScanScreenGenitore";
+import ScanScreenLatte from "./screens/ScanScreenLatte";
 import AuthContentProvider, { AuthContext } from "./store/auth-context";
 
 // export default function App() {
@@ -26,6 +29,9 @@ function AuthenticatedStack() {
     <Stack.Navigator>
       <Stack.Screen name="Input" component={InputScreen} />
       <Stack.Screen name="Scan" component={ScanScreen} />
+      <Stack.Screen name="ScanNeo" component={ScanScreenNeonato} />
+      <Stack.Screen name="ScanGen" component={ScanScreenGenitore} />
+      <Stack.Screen name="ScanLat" component={ScanScreenLatte} />
     </Stack.Navigator>
   );
 }

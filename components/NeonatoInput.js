@@ -3,8 +3,10 @@ import { Alert } from "react-native";
 import { View, TextInput, Button, StyleSheet } from "react-native";
 import styles from "./InputCSS";
 
-function NeonatoInput(proprieta) {
+function NeonatoInput({valore, funzione}) {
   const [enteredNeonatoText, setEnteredNeonatoText] = useState("");
+
+  console.log('INPUT-NEONATO: ', valore);
 
   function goalInputHandler(enteredText) {
     // console.log(enteredText);
@@ -14,7 +16,7 @@ function NeonatoInput(proprieta) {
   function addNeonatoHandler() {
     // console.log(enteredNeonatoText);
     // Alert.alert('NNN');
-    proprieta.onSetNeonato(enteredNeonatoText);
+    funzione.onSetNeonato(enteredNeonatoText);
     // setEnteredNeonatoText("");
   }
 

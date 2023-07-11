@@ -14,8 +14,8 @@ import { AuthContext } from "../store/auth-context";
   const authCtx = useContext(AuthContext);
 
   function sendDataBack(data) {
-    
-    navigation.navigate('Login')
+    authCtx.readNeonato(data);
+    navigation.navigate('Input')
   }
 
   useEffect(() => {

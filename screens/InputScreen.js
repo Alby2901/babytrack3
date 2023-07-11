@@ -13,7 +13,7 @@ import UtenteInput from "../components/UtenteInput";
 import NeonatoInput from "../components/NeonatoInput";
 import GenitoreInput from "../components/GenitoreInput";
 import LatteCullaInput from "../components/LatteCullaInput";
-import AuthContentProvider, { AuthContext } from "../store/auth-context";
+import { AuthContext } from "../store/auth-context";
 
 function InputScreen({ navigation }) {
   const [utente, setUtente] = useState("");
@@ -28,14 +28,20 @@ function InputScreen({ navigation }) {
   console.log("Input Screen 3 =>>", authCtx.cognome);
   console.log("Input Screen 4 =>>", authCtx.nome);
 
+  console.log("Input Screen 5 =>>", authCtx.neonato);
+  console.log("Input Screen 6 =>>", authCtx.genitore);
+  console.log("Input Screen 7 =>>", authCtx.latte);
+
   const cognomeNome = authCtx.cognome + " " + authCtx.nome;
 
   function setUtenteHandler(utenteBack) {
     setUtente(utenteBack);
   }
+
   function setNeonatoHandler(neonatoBack) {
     setNeonato(neonatoBack);
   }
+
   function setGenitoreHandler(genitoreBack) {
     setGenitore(genitoreBack);
   }
@@ -118,11 +124,12 @@ function InputScreen({ navigation }) {
               {/* <UtenteInput onSetUtente={setUtenteHandler} /> */}
             </View>
             <View style={styles.inputsContainer}>
-              <Text style={styles.text}>Neonato: {neonato}</Text>
-              <NeonatoInput onSetNeonato={setNeonatoHandler} />
-              <Text style={styles.text}>Genitore: {genitore}</Text>
+              {/* <Text style={styles.text}>Neonato: {neonato}</Text> */}
+              <Text style={styles.text}>Neonato: {authCtx.neonato}</Text>
+              <NeonatoInput val={authCtx.neonato} onSetNeonato={setNeonatoHandler} />
+              <Text style={styles.text}>Genitore: {authCtx.genitore}</Text>
               <GenitoreInput onSetGenitore={setGenitoreHandler} />
-              <Text style={styles.text}>Latte/Culla: {latteculla}</Text>
+              <Text style={styles.text}>Latte/Culla: {authCtx.latte}</Text>
               <LatteCullaInput onSetLatteCulla={setLatteCullaHandler} />
             </View>
             <View style={styles.buttonsContainer}>
@@ -139,25 +146,36 @@ function InputScreen({ navigation }) {
                 <Button title="Reset" onPress={Reset}></Button>
               </View>
             </View>
-
             <View style={styles.buttonsContainer3}>
+              <Button title="Logout" onPress={authCtx.logout} color="#ff0000" />
+            </View>
+            <View style={styles.buttonsContainer4}>
               <Button
-                title="Logout"
-                onPress={authCtx.logout}
-                color='#ff0000'
+                title="Scan Neo"
+                onPress={() => navigation.navigate("ScanNeo")}
+                color="#94941f"
+              />
+              <Button
+                title="Scan Gen"
+                onPress={() => navigation.navigate("ScanGen")}
+                color="#94941f"
+              />
+              <Button
+                title="Scan Lat"
+                onPress={() => navigation.navigate("ScanLat")}
+                color="#94941f"
               />
             </View>
-
             <View style={styles.buttonsContainer2}>
               <Button
                 title="Login Screen"
                 onPress={() => navigation.navigate("Login")}
-                color='#94941f'
+                color="#94941f"
               />
               <Button
                 title="Scan Screen"
                 onPress={() => navigation.navigate("Scan")}
-                color='#94941f'
+                color="#94941f"
               />
             </View>
           </View>
@@ -231,7 +249,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#0000ff",
     paddingTop: 8,
     paddingBottom: 4,
-    paddingHorizontal: 4,
+    paddingHorizontal: 2,
     // height: 100,
   },
   buttonsContainer2: {
@@ -254,6 +272,18 @@ const styles = StyleSheet.create({
     paddingTop: 4,
     paddingBottom: 8,
     paddingHorizontal: 4,
+    // height: 100,
+  },
+  buttonsContainer4: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    backgroundColor: "#0000ff",
+    paddingTop: 4,
+    paddingBottom: 8,
+    paddingHorizontal: 8,
+    // marginHorizontal: 2, 
     // height: 100,
   },
   buttonContainer: {
