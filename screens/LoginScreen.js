@@ -1,4 +1,3 @@
-import axios from "axios";
 import {
   Text,
   View,
@@ -9,7 +8,8 @@ import {
   SafeAreaView,
 } from "react-native";
 import { getSession } from "../components/http";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AuthContext } from "../store/auth-context";
 
 function LoginScreen({ navigation }) {
   const [errorHTTP, setErrorHTTP] = useState("");
@@ -20,11 +20,19 @@ function LoginScreen({ navigation }) {
   const [usr, setUsr] = useState("");
   const [pwd, setPwd] = useState("");
 
+  const authCtx = useContext(AuthContext);
+
   async function getSessionHandler() {
     console.log("+++++++++++++++++++++++++++++");
     console.log("GetSession1: ");
 
-    const [sessionIDData, messageData] = await getSession(usr, pwd, url);
+    
+    const [sessionIDData, messageData, cognome, nome] = await getSession(usr, pwd, url);
+    // const sessId = await getSession(usr, pwd, url);
+    console.log('SessId: ', sessionIDData);
+    authCtx.authenticate(sessionIDData, cognome, nome);
+    console.log('Ctx.sessionID: ', authCtx.sessionID);
+    console.log('Ctx.isAuthenticated: ', authCtx.isAuthenticated);
 
     console.log("GetSession2: ");
     setSessionID(sessionIDData);

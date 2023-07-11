@@ -27,6 +27,8 @@ export async function getSession(utente, password,url) {
 
   const message = response.data.message;
   let sessionID = '';
+  let cognome = '';
+  let nome = '';
 
   if (response.data.ret !== 0) {
     console.log("Ret: ", response.data.ret);
@@ -34,9 +36,14 @@ export async function getSession(utente, password,url) {
   } else {
     console.log("Ret: ", response.data.ret);
     sessionID = response.data.params.sessionId;
+    cognome = response.data.params.user.cognome
+    nome = response.data.params.user.nome
   }
 
   console.log("SessionID: " + sessionID);
+  console.log("COGNOME: " + cognome);
+  console.log("NOME: " + nome);
 
-  return [sessionID, message];
+
+  return [sessionID, message, cognome, nome];
 }

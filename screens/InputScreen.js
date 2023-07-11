@@ -1,16 +1,34 @@
 import React from "react";
-import { useState } from "react";
-import { Text, View, StyleSheet, Button, Alert } from "react-native";
+import { useContext, useState } from "react";
+import {
+  Text,
+  View,
+  StyleSheet,
+  Button,
+  Alert,
+  ScrollView,
+  SafeAreaView,
+} from "react-native";
 import UtenteInput from "../components/UtenteInput";
 import NeonatoInput from "../components/NeonatoInput";
 import GenitoreInput from "../components/GenitoreInput";
 import LatteCullaInput from "../components/LatteCullaInput";
+import AuthContentProvider, { AuthContext } from "../store/auth-context";
 
 function InputScreen({ navigation }) {
   const [utente, setUtente] = useState("");
   const [neonato, setNeonato] = useState("");
   const [genitore, setGenitore] = useState("");
   const [latteculla, setLatteCulla] = useState("");
+
+  const authCtx = useContext(AuthContext);
+
+  console.log("Input Screen 1 =>>", authCtx.isAuthenticated);
+  console.log("Input Screen 2 =>>", authCtx.sessionID);
+  console.log("Input Screen 3 =>>", authCtx.cognome);
+  console.log("Input Screen 4 =>>", authCtx.nome);
+
+  const cognomeNome = authCtx.cognome + " " + authCtx.nome;
 
   function setUtenteHandler(utenteBack) {
     setUtente(utenteBack);
@@ -85,45 +103,63 @@ function InputScreen({ navigation }) {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.container}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.textTitle}>Input Screen</Text>
-        </View>
-        <View style={styles.inputsContainer}>
-          <UtenteInput onSetUtente={setUtenteHandler} />
-          <Text style={styles.text}>Utente: {utente}</Text>
-          <NeonatoInput onSetNeonato={setNeonatoHandler} />
-          <Text style={styles.text}>Neonato: {neonato}</Text>
-          <GenitoreInput onSetGenitore={setGenitoreHandler} />
-          <Text style={styles.text}>Genitore: {genitore}</Text>
-          <LatteCullaInput onSetLatteCulla={setLatteCullaHandler} />
-          <Text style={styles.text}>Latte/Culla: {latteculla}</Text>
-        </View>
-        <View style={styles.buttonsContainer}>
-          <View style={styles.buttonContainer}>
-            <Button title="Genitore" onPress={VerificaGenitore}></Button>
+    <SafeAreaView>
+      <ScrollView>
+        <View style={styles.containerOuter}>
+          <View style={styles.container}>
+            <View style={styles.titleContainer}>
+              <Text style={styles.textTitle}>Input Screen</Text>
+            </View>
+            <View style={styles.inputsContainer}>
+              <Text style={styles.textUtente}>{cognomeNome}</Text>
+              <Text style={styles.textSessione}>Sessione: {authCtx.sessionID}</Text>
+              {/* <UtenteInput onSetUtente={setUtenteHandler} /> */}
+              <Text style={styles.text}>Neonato: {neonato}</Text>
+              <NeonatoInput onSetNeonato={setNeonatoHandler} />
+              <Text style={styles.text}>Genitore: {genitore}</Text>
+              <GenitoreInput onSetGenitore={setGenitoreHandler} />
+              <Text style={styles.text}>Latte/Culla: {latteculla}</Text>
+              <LatteCullaInput onSetLatteCulla={setLatteCullaHandler} />
+            </View>
+            <View style={styles.buttonsContainer}>
+              <View style={styles.buttonContainer}>
+                <Button title="Genitore" onPress={VerificaGenitore}></Button>
+              </View>
+              <View style={styles.buttonContainer}>
+                <Button
+                  title="Latte/Culla"
+                  onPress={VerificaLatteCulla}
+                ></Button>
+              </View>
+              <View style={styles.buttonContainer}>
+                <Button title="Reset" onPress={Reset}></Button>
+              </View>
+            </View>
           </View>
-          <View style={styles.buttonContainer}>
-            <Button title="Latte/Culla" onPress={VerificaLatteCulla}></Button>
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button title="Reset" onPress={Reset}></Button>
-          </View>
+          <Button
+            title="Login Screen"
+            onPress={() => navigation.navigate("Login")}
+          />
+          <Button
+            title="Scan Screen"
+            onPress={() => navigation.navigate("Scan")}
+          />
         </View>
-      </View>
-      <Button
-        title="Login Screen"
-        onPress={() => navigation.navigate("Login")}
-      />
-      <Button title="Scan Screen" onPress={() => navigation.navigate("Scan")} />
-    </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 export default InputScreen;
 
 const styles = StyleSheet.create({
+  containerOuter: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    // paddin: 40,
+    backgroundColor: "#0099ff",
+  },
   container: {
     flex: 1,
     // alignItems: "center",
@@ -175,6 +211,16 @@ const styles = StyleSheet.create({
   text: {
     // fontSize: 10,
   },
+  textUtente: {
+    fontSize: 30,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  textSessione: {
+    fontSize: 11,
+    fontWeight: "bold",
+  },
+
   textTitle: {
     fontSize: 40,
     fontWeight: "bold",
