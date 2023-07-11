@@ -13,9 +13,10 @@ export default StyleSheet.create({
         // borderBottomColor: "#cccccc",
       },
       textInput: {
-        borderWidth: 1,
+        borderWidth: 2,
         borderColor: "#ff0000",
-        width: "70%",
+        borderRadius: 10,
+        width: "90%",
         marginRight: 8,
         padding: 8,
       },

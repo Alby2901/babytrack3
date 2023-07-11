@@ -110,10 +110,14 @@ function InputScreen({ navigation }) {
             <View style={styles.titleContainer}>
               <Text style={styles.textTitle}>Input Screen</Text>
             </View>
-            <View style={styles.inputsContainer}>
+            <View style={styles.userContainer}>
               <Text style={styles.textUtente}>{cognomeNome}</Text>
-              <Text style={styles.textSessione}>Sessione: {authCtx.sessionID}</Text>
+              <Text style={styles.textSessione}>
+                Sessione: {authCtx.sessionID}
+              </Text>
               {/* <UtenteInput onSetUtente={setUtenteHandler} /> */}
+            </View>
+            <View style={styles.inputsContainer}>
               <Text style={styles.text}>Neonato: {neonato}</Text>
               <NeonatoInput onSetNeonato={setNeonatoHandler} />
               <Text style={styles.text}>Genitore: {genitore}</Text>
@@ -135,15 +139,28 @@ function InputScreen({ navigation }) {
                 <Button title="Reset" onPress={Reset}></Button>
               </View>
             </View>
+
+            <View style={styles.buttonsContainer3}>
+              <Button
+                title="Logout"
+                onPress={authCtx.logout}
+                color='#ff0000'
+              />
+            </View>
+
+            <View style={styles.buttonsContainer2}>
+              <Button
+                title="Login Screen"
+                onPress={() => navigation.navigate("Login")}
+                color='#94941f'
+              />
+              <Button
+                title="Scan Screen"
+                onPress={() => navigation.navigate("Scan")}
+                color='#94941f'
+              />
+            </View>
           </View>
-          <Button
-            title="Login Screen"
-            onPress={() => navigation.navigate("Login")}
-          />
-          <Button
-            title="Scan Screen"
-            onPress={() => navigation.navigate("Scan")}
-          />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -157,11 +174,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    // paddin: 40,
+    paddingTop: 20,
+    paddingBottom: 100,
     backgroundColor: "#0099ff",
   },
   container: {
     flex: 1,
+    // flexDirection: 'row',
     // alignItems: "center",
     // justifyContent: 'center',
     paddingTop: 10,
@@ -184,14 +203,25 @@ const styles = StyleSheet.create({
     padding: 10,
     // height: 400,
   },
+  userContainer: {
+    flex: 1,
+    // alignItems: "center",
+    // justifyContent: "center",
+    backgroundColor: "#00ff00",
+    // marginTop: 40,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    // height: 400,
+  },
   inputsContainer: {
     flex: 4,
     // alignItems: "center",
     // justifyContent: "center",
     backgroundColor: "#00ff00",
     // marginTop: 40,
-    padding: 10,
-    // height: 400,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    height: 300,
   },
   buttonsContainer: {
     flex: 1,
@@ -199,6 +229,31 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#0000ff",
+    paddingTop: 8,
+    paddingBottom: 4,
+    paddingHorizontal: 4,
+    // height: 100,
+  },
+  buttonsContainer2: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    backgroundColor: "#0000ff",
+    paddingTop: 4,
+    paddingBottom: 8,
+    paddingHorizontal: 4,
+    // height: 100,
+  },
+  buttonsContainer3: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#0000ff",
+    paddingTop: 4,
+    paddingBottom: 8,
+    paddingHorizontal: 4,
     // height: 100,
   },
   buttonContainer: {
@@ -209,7 +264,8 @@ const styles = StyleSheet.create({
     // backgroundColor: "#ff00ff",
   },
   text: {
-    // fontSize: 10,
+    fontSize: 15,
+    fontWeight: "bold",
   },
   textUtente: {
     fontSize: 30,
@@ -220,7 +276,6 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontWeight: "bold",
   },
-
   textTitle: {
     fontSize: 40,
     fontWeight: "bold",
