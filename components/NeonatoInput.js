@@ -1,12 +1,15 @@
-import { useState } from "react";
-import { Alert } from "react-native";
+import { useEffect, useState } from "react";
 import { View, TextInput, Button, StyleSheet } from "react-native";
 import styles from "./InputCSS";
 
-function NeonatoInput({valore, funzione}) {
+function NeonatoInput(proprieta) {
   const [enteredNeonatoText, setEnteredNeonatoText] = useState("");
 
-  console.log('INPUT-NEONATO: ', valore);
+  console.log('Comp.NeonatInput: ', proprieta.val);
+
+  // useEffect(() => {
+  //   setEnteredNeonatoText(proprieta.val)
+  // })
 
   function goalInputHandler(enteredText) {
     // console.log(enteredText);
@@ -16,7 +19,7 @@ function NeonatoInput({valore, funzione}) {
   function addNeonatoHandler() {
     // console.log(enteredNeonatoText);
     // Alert.alert('NNN');
-    funzione.onSetNeonato(enteredNeonatoText);
+    proprieta.onSetNeonato(enteredNeonatoText);
     // setEnteredNeonatoText("");
   }
 
@@ -35,22 +38,3 @@ function NeonatoInput({valore, funzione}) {
 }
 
 export default NeonatoInput;
-
-// const styles = StyleSheet.create({
-//   inputContainer: {
-//     flex: 1,
-//     flexDirection: "row",
-//     justifyContent: "space-between",
-//     alignItems: "center",
-//     paddingBottom: 24,
-//     borderBottomWidth: 1,
-//     borderBottomColor: "#cccccc",
-//   },
-//   textInput: {
-//     borderWidth: 1,
-//     borderColor: "#ff0000",
-//     width: "80%",
-//     marginRight: 8,
-//     padding: 8,
-//   },
-// });

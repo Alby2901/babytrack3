@@ -1,11 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 import { View, TextInput, Button, StyleSheet } from "react-native";
 import styles from "./InputCSS";
 
 function LatteCullaInput(proprieta) {
   const [enteredLatteCullaText, setEnteredLatteCullaText] = useState("");
+  
+  console.log('Comp.LatteInput: ', proprieta.val);
 
+  // useEffect(() => {
+  //   setEnteredLatteCullaText(proprieta.val)
+  // })
+  
   function goalInputHandler(enteredText) {
     // console.log(enteredText);
     setEnteredLatteCullaText(enteredText);
@@ -14,8 +20,12 @@ function LatteCullaInput(proprieta) {
   function addLatteCullaHandler() {
     // console.log(enteredLatteCullaText);
     // Alert.alert('LLL');
-    proprieta.onSetLatteCulla(enteredLatteCullaText);
-    // setEnteredLatteCullaText("");
+    if (proprieta.val != null){
+      proprieta.onSetLatteCulla(proprieta.val);
+    } else {
+      proprieta.onSetLatteCulla(enteredLatteCullaText);
+      // setEnteredLatteCullaText("");
+    }
   }
 
   return (

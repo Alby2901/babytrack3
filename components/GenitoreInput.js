@@ -1,10 +1,15 @@
-import { useState } from "react";
-import { Alert } from "react-native";
+import { useEffect, useState } from "react";
 import { View, TextInput, Button, StyleSheet } from "react-native";
 import styles from "./InputCSS";
 
 function GenitoreInput(proprieta) {
   const [enteredGenitoreText, setEnteredGenitoreText] = useState("");
+
+  console.log('Comp.GenitInput: ', proprieta.val);
+
+  // useEffect(() => {
+  //   setEnteredGenitoreText(proprieta.val)
+  // })
 
   function goalInputHandler(enteredText) {
     // console.log(enteredText);

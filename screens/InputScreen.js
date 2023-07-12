@@ -14,6 +14,7 @@ import NeonatoInput from "../components/NeonatoInput";
 import GenitoreInput from "../components/GenitoreInput";
 import LatteCullaInput from "../components/LatteCullaInput";
 import { AuthContext } from "../store/auth-context";
+import { getChkParent } from "../components/http";
 
 function InputScreen({ navigation }) {
   const [utente, setUtente] = useState("");
@@ -21,16 +22,21 @@ function InputScreen({ navigation }) {
   const [genitore, setGenitore] = useState("");
   const [latteculla, setLatteCulla] = useState("");
 
+  const [ret, setRet] = useState("");
+  const [message, setMessage] = useState("");
+  const [childN, setChildN] = useState("");
+  const [motherN, setMotherN] = useState("");
+
   const authCtx = useContext(AuthContext);
 
-  console.log("Input Screen 1 =>>", authCtx.isAuthenticated);
-  console.log("Input Screen 2 =>>", authCtx.sessionID);
-  console.log("Input Screen 3 =>>", authCtx.cognome);
-  console.log("Input Screen 4 =>>", authCtx.nome);
+  console.log("Input Screen isAuth =>>", authCtx.isAuthenticated);
+  console.log("Input Screen SessID =>>", authCtx.sessionID);
+  console.log("Input Screen Ut.Cognome =>>", authCtx.cognome);
+  console.log("Input Screen Ut.Nome =>>", authCtx.nome);
 
-  console.log("Input Screen 5 =>>", authCtx.neonato);
-  console.log("Input Screen 6 =>>", authCtx.genitore);
-  console.log("Input Screen 7 =>>", authCtx.latte);
+  console.log("Input Screen BC Neo =>>", authCtx.neonato);
+  console.log("Input Screen BC Gen =>>", authCtx.genitore);
+  console.log("Input Screen BC Lat =>>", authCtx.latte);
 
   const cognomeNome = authCtx.cognome + " " + authCtx.nome;
 
@@ -49,19 +55,30 @@ function InputScreen({ navigation }) {
     setLatteCulla(lattecullaBack);
   }
 
-  function VerificaGenitore() {
-    const n = JSON.stringify(neonato);
-    const g = JSON.stringify(genitore);
+  async function VerificaGenitore() {
+    const n = JSON.stringify(authCtx.neonato);
+    const g = JSON.stringify(authCtx.genitore);
 
-    console.log("Neonato: ", { neonato });
-    console.log("Genitore: ", { genitore });
+    console.log("N: ", n);
+    console.log("G: ", g);
 
-    if (neonato === "") {
+    console.log("Neonato: ", authCtx.neonato);
+    console.log("Genitore: ", authCtx.genitore);
+
+    if (authCtx.neonato === "" || authCtx.neonato == null ) {
       Alert.alert("ASSENZA DATO", "Non è stato scansionato il neonato!");
-    } else if (genitore === "") {
+    } else if (authCtx.genitore === "" || authCtx.genitore == null) {
       Alert.alert("ASSENZA DATO", "Non è stato scansionato il genitore!");
     } else {
-      if (neonato === genitore) {
+
+      const [ret,messageData, childName, motherName] = await getChkParent(authCtx.sessionID, '2021025214', '322857');
+
+      setRet(ret);
+      setMessage(messageData);
+      setChildN(childName);
+      setMotherN(motherName);
+
+      if (authCtx.neonato = authCtx.genitore) {
         Alert.alert(
           "RICONOSCIMENTO CORRETTO",
           "Il riconoscimento Neonato <=> Genitore è stato eseguito correttamente"
@@ -69,7 +86,7 @@ function InputScreen({ navigation }) {
       } else {
         Alert.alert(
           "RICONOSCIMENTO ERRATO",
-          "ATENZIONE riconoscimento Neonato <=> Genitore ERRATO!"
+          "ATENZIONE riconoscimento Neonato <=> Genitore ERRATO! "
         );
       }
     }
@@ -82,12 +99,12 @@ function InputScreen({ navigation }) {
     console.log("Neonato: ", n);
     console.log("LatteCulla: ", l);
 
-    if (neonato === "") {
+    if (authCtx.neonato === "" || authCtx.neonato == null ) {
       Alert.alert("ASSENZA DATO", "Non è stato scansionato il neonato!");
-    } else if (latteculla === "") {
+    } else if (authCtx.latte === "" || authCtx.latte == null) {
       Alert.alert("ASSENZA DATO", "Non è stato scansionato il latte/culla!");
     } else {
-      if (neonato === latteculla) {
+      if (authCtx.neonato = authCtx.latte) {
         Alert.alert(
           "RICONOSCIMENTO CORRETTO",
           "Il riconoscimento Neonato <=> Culla/Latte è stato eseguito correttamente"
@@ -102,6 +119,11 @@ function InputScreen({ navigation }) {
   }
 
   function Reset() {
+    
+    authCtx.readNeonato(null);
+    authCtx.readGenitore(null);
+    authCtx.readLatte(null);
+    
     setUtente("");
     setNeonato("");
     setGenitore("");
@@ -128,27 +150,15 @@ function InputScreen({ navigation }) {
               <Text style={styles.text}>Neonato: {authCtx.neonato}</Text>
               <NeonatoInput val={authCtx.neonato} onSetNeonato={setNeonatoHandler} />
               <Text style={styles.text}>Genitore: {authCtx.genitore}</Text>
-              <GenitoreInput onSetGenitore={setGenitoreHandler} />
+              <GenitoreInput val={authCtx.genitore} onSetGenitore={setGenitoreHandler} />
               <Text style={styles.text}>Latte/Culla: {authCtx.latte}</Text>
-              <LatteCullaInput onSetLatteCulla={setLatteCullaHandler} />
+              <LatteCullaInput val={authCtx.latte} onSetLatteCulla={setLatteCullaHandler} />
+              {ret && <Text style={styles.text}>Ret: {ret}</Text>}
+              {message && <Text style={styles.text}>Msg: {message}</Text>}
+              {childN && <Text style={styles.text}>ChildN: {childN}</Text>}
+              {motherN && <Text style={styles.text}>MotherN: {motherN}</Text>}
             </View>
-            <View style={styles.buttonsContainer}>
-              <View style={styles.buttonContainer}>
-                <Button title="Genitore" onPress={VerificaGenitore}></Button>
-              </View>
-              <View style={styles.buttonContainer}>
-                <Button
-                  title="Latte/Culla"
-                  onPress={VerificaLatteCulla}
-                ></Button>
-              </View>
-              <View style={styles.buttonContainer}>
-                <Button title="Reset" onPress={Reset}></Button>
-              </View>
-            </View>
-            <View style={styles.buttonsContainer3}>
-              <Button title="Logout" onPress={authCtx.logout} color="#ff0000" />
-            </View>
+
             <View style={styles.buttonsContainer4}>
               <Button
                 title="Scan Neo"
@@ -166,6 +176,25 @@ function InputScreen({ navigation }) {
                 color="#94941f"
               />
             </View>
+
+            <View style={styles.buttonsContainer}>
+              <View style={styles.buttonContainer}>
+                <Button title="Chk Genitore" onPress={VerificaGenitore}></Button>
+              </View>
+              <View style={styles.buttonContainer}>
+                <Button
+                  title="Chk Latte"
+                  onPress={VerificaLatteCulla}
+                ></Button>
+              </View>
+              <View style={styles.buttonContainer}>
+                <Button title="Reset" onPress={Reset}></Button>
+              </View>
+            </View>
+            <View style={styles.buttonsContainer3}>
+              <Button title="Logout" onPress={authCtx.logout} color="#ff0000" />
+            </View>
+
             <View style={styles.buttonsContainer2}>
               <Button
                 title="Login Screen"
@@ -245,11 +274,11 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-between",
     backgroundColor: "#0000ff",
     paddingTop: 8,
     paddingBottom: 4,
-    paddingHorizontal: 2,
+    paddingHorizontal: 4,
     // height: 100,
   },
   buttonsContainer2: {

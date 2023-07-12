@@ -25,10 +25,10 @@ function LoginScreen({ navigation }) {
   async function getSessionHandler() {
     console.log("+++++++++++++++++++++++++++++");
     console.log("GetSession1: ");
-
     
     const [sessionIDData, messageData, cognome, nome] = await getSession(usr, pwd, url);
     // const sessId = await getSession(usr, pwd, url);
+    
     console.log('SessId: ', sessionIDData);
     authCtx.authenticate(sessionIDData, cognome, nome);
     console.log('Ctx.sessionID: ', authCtx.sessionID);
