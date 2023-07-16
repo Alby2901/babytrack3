@@ -16,22 +16,32 @@ function LoginScreen({ navigation }) {
   const [sessionID, setSessionID] = useState("");
   const [message, setmessage] = useState("");
   const [isLogged, setIsLogged] = useState(false);
+  const { isInputOk, setIsInputOk } = useState(true);
   const [url, setUrl] = useState("");
   const [usr, setUsr] = useState("");
   const [pwd, setPwd] = useState("");
 
   const authCtx = useContext(AuthContext);
 
+  // function checkInput(usrp, pwdp, urlp) {
+  //   if (usrp && pwdp && urlp) {
+  //     setIsInputOk(true);
+  //     getSessionHandler();
+  //   } else {
+  //     setIsInputOk(false);
+  //   }
+  // }
+
   async function getSessionHandler() {
     console.log("+++++++++++++++++++++++++++++");
     console.log("GetSession1: ");
 
-    const [sessionIDData, messageData, cognome, nome] = await getSession(
-      usr,
-      pwd,
-      url
-    );
-    // const sessId = await getSession(usr, pwd, url);
+      const [sessionIDData, messageData, cognome, nome] = await getSession(
+        usr,
+        pwd,
+        url
+      );
+    
 
     console.log("SessId: ", sessionIDData);
     authCtx.authenticate(sessionIDData, cognome, nome);
@@ -65,73 +75,80 @@ function LoginScreen({ navigation }) {
   return (
     // <SafeAreaView>
     <ScrollView>
-    <View style={styles.containerOuter}>
-      <View style={styles.cardTitle}>
-        <Text style={styles.cardText}>LOGIN</Text>
-        <Text style={[styles.cardText, styles.cardSmalltext]}>
-          Inserire le credenziali di Neocare
-        </Text>
-      </View>
-      <View style={styles.containerInput}>
-        <TextInput
-          style={styles.inputText}
-          onChangeText={urlInputHandler}
-          value={url}
-          placeholder="URL"
-        />
-        <TextInput
-          style={styles.inputText}
-          onChangeText={usrInputHandler}
-          value={usr}
-          placeholder="Utente"
-        />
-        <TextInput
-          style={styles.inputText}
-          onChangeText={pwdInputHandler}
-          value={pwd}
-          placeholder="Password"
-        />
-      </View>
-      {!isLogged && 
-      <View style={styles.containerButton}>
-        {/* <Text style={styles.text}>Test chiamate HTTP...</Text> */}
-        <Button
-          style={styles.button}
-          title="Login"
-          color="#0A0AFC"
-          onPress={getSessionHandler}
-        ></Button>
-      </View>}
-      {isLogged && 
-      <View style={styles.containerMessage}>
-        {/* <Text>The Session ID is: {sessionID}</Text> */}
-        {isLogged && <Text style={styles.textAlert}>ATTENZIONE!</Text>}
-        {isLogged && <Text style={styles.textAlert}>{message}</Text>}
-        {/* {isLogged && sessionID && <Text style={styles.textAlert}>The Session ID is: {sessionID}</Text>} */}
-        {/* {isLogged && !sessionID && (
+      <View style={styles.containerOuter}>
+        <View style={styles.cardTitle}>
+          <Text style={styles.cardText}>LOGIN</Text>
+          <Text style={[styles.cardText, styles.cardSmalltext]}>
+            Inserire le credenziali di Neocare
+          </Text>
+        </View>
+        <View style={styles.containerInput}>
+          <TextInput
+            style={styles.inputText}
+            onChangeText={urlInputHandler}
+            value={url}
+            placeholder="URL"
+          />
+          <TextInput
+            style={styles.inputText}
+            onChangeText={usrInputHandler}
+            value={usr}
+            placeholder="Utente"
+          />
+          <TextInput
+            style={styles.inputText}
+            onChangeText={pwdInputHandler}
+            value={pwd}
+            placeholder="Password"
+          />
+        </View>
+        {!isLogged && (
+          <View style={styles.containerButton}>
+            {/* <Text style={styles.text}>Test chiamate HTTP...</Text> */}
+            <Button
+              style={styles.button}
+              title="Login"
+              color="#0A0AFC"
+              onPress={getSessionHandler}
+            ></Button>
+          </View>
+        )}
+        {isLogged && (
+          <View style={styles.containerMessage}>
+            {/* <Text>The Session ID is: {sessionID}</Text> */}
+            
+            {/* {!isInputOk && <Text style={styles.textAlert}>I CAMPI SONO VUOTI!</Text>} */}
+            
+            {isLogged && <Text style={styles.textAlert}>ATTENZIONE!</Text>}
+            {isLogged && <Text style={styles.textAlert}>{message}</Text>}
+
+            {/* {isLogged && sessionID && <Text style={styles.textAlert}>The Session ID is: {sessionID}</Text>} */}
+            {/* {isLogged && !sessionID && (
           <Text style={styles.textAlert}>
             The Session ID is not avaiable!
           </Text>
         )} */}
-      </View>}
+          </View>
+        )}
 
-      {isLogged && 
-      <View style={styles.containerButton}>
-        {(isLogged || errorHTTP) && (
-          <Button
-            style={styles.button}
-            title="Riprova..."
-            onPress={resetIsLogged}
-            color="#0A0AFC"
-          ></Button>
+        {isLogged && (
+          <View style={styles.containerButton}>
+            {(isLogged || errorHTTP) && (
+              <Button
+                style={styles.button}
+                title="Riprova..."
+                onPress={resetIsLogged}
+                color="#0A0AFC"
+              ></Button>
+            )}
+            {errorHTTP && (
+              <Text style={styles.textAlert} cd>
+                Server is not responding!
+              </Text>
+            )}
+          </View>
         )}
-        {errorHTTP && (
-          <Text style={styles.textAlert} cd>
-            Server is not responding!
-          </Text>
-        )}
-      </View>}
-    </View>
+      </View>
     </ScrollView>
     // </SafeAreaView>
   );
