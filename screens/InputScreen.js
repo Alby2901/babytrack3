@@ -136,66 +136,70 @@ function InputScreen({ navigation }) {
     <SafeAreaView>
       <ScrollView>
         <View style={styles.containerOuter}>
-          {/* <View style={styles.container}> */}
-            <View style={styles.titleContainer}>
-              <Text style={styles.textTitle}>Input Screen</Text>
-            </View>
-            <View style={styles.userContainer}>
-              <Text style={styles.textUtente}>{cognomeNome}</Text>
-              <Text style={styles.textSessione}>
-                Sessione: {authCtx.sessionID}
-              </Text>
-              {/* <UtenteInput onSetUtente={setUtenteHandler} /> */}
-            </View>
-            <View style={styles.inputsContainer}>
-              <View style={styles.buttonsContainer4}>
+          <View style={styles.userContainer}>
+            <Text style={styles.textUtenteSmall}>Buongiorno</Text>
+            <Text style={styles.textUtente}>{cognomeNome}</Text>
+            <Text style={styles.textSessione}>
+              (Sessione: {authCtx.sessionID})
+            </Text>
+            {/* <UtenteInput onSetUtente={setUtenteHandler} /> */}
+          </View>
+          <View style={styles.inputsContainer}>
+            <View style={styles.buttonsScanContainer}>
+              <View style={styles.buttonScanContainer}>
                 <Button
-                  title="Scan Neo"
+                  title="Scan Neonato"
                   onPress={() => navigation.navigate("ScanNeo")}
                   color="#94941f"
                 />
-                <Text style={styles.text}>Neonato: {authCtx.neonato}</Text>
               </View>
-              <View style={styles.buttonsContainer4}>
+              <Text style={styles.text}>Neonato: {authCtx.neonato}</Text>
+            </View>
+            <View style={styles.buttonsScanContainer}>
+              <View style={styles.buttonScanContainer}>
                 <Button
-                  title="Scan Gen"
+                  title="Scan Genitore"
                   onPress={() => navigation.navigate("ScanGen")}
                   color="#94941f"
                 />
-                <Text style={styles.text}>Genitore: {authCtx.genitore}</Text>
               </View>
-              <View style={styles.buttonsContainer4}>
+              <Text style={styles.text}>Genitore: {authCtx.genitore}</Text>
+            </View>
+            <View style={styles.buttonsScanContainer}>
+              <View style={styles.buttonScanContainer}>
                 <Button
-                  title="Scan Lat"
+                  title="Scan Latte"
                   onPress={() => navigation.navigate("ScanLat")}
                   color="#94941f"
                 />
-                <Text style={styles.text}>Latte/Culla: {authCtx.latte}</Text>
               </View>
-
-              {ret && <Text style={styles.text}>Ret: {ret}</Text>}
-              {message && <Text style={styles.text}>Msg: {message}</Text>}
-              {childN && <Text style={styles.text}>ChildN: {childN}</Text>}
-              {motherN && <Text style={styles.text}>MotherN: {motherN}</Text>}
+              <Text style={styles.text}>Latte/Culla: {authCtx.latte}</Text>
             </View>
 
-            <View style={styles.buttonsContainer}>
-              <View style={styles.buttonContainer}>
-                <Button
-                  title="Chk Genitore"
-                  onPress={VerificaGenitore}
-                ></Button>
-              </View>
-              <View style={styles.buttonContainer}>
-                <Button title="Chk Latte" onPress={VerificaLatteCulla}></Button>
-              </View>
-              <View style={styles.buttonContainer}>
-                <Button title="Reset" onPress={Reset}></Button>
-              </View>
+            {ret && <Text style={styles.text}>Ret: {ret}</Text>}
+            {message && <Text style={styles.text}>Msg: {message}</Text>}
+            {childN && <Text style={styles.text}>ChildN: {childN}</Text>}
+            {motherN && <Text style={styles.text}>MotherN: {motherN}</Text>}
+          </View>
+
+          <View style={styles.buttonsContainer1}>
+            <View style={styles.buttonContainer}>
+              <Button title="Chk Genitore" onPress={VerificaGenitore} color="#0A0AFC"></Button>
             </View>
-            <View style={styles.buttonsContainer3}>
+            <View style={styles.buttonContainer}>
+              <Button title="Chk Latte" onPress={VerificaLatteCulla} color="#0A0AFC"></Button>
+            </View>
+          </View>
+
+          <View style={styles.buttonsContainer2}>
+            <View style={styles.buttonResetContainer}>
+              <Button title="Reset" onPress={Reset} color="#047a0a"></Button>
+            </View>
+            <View style={styles.buttonLoginContainer}>
               <Button title="Logout" onPress={authCtx.logout} color="#ff0000" />
             </View>
+          </View>
+
           {/* </View> */}
         </View>
       </ScrollView>
@@ -209,119 +213,94 @@ const styles = StyleSheet.create({
   containerOuter: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
-    paddingTop: 20,
+    // justifyContent: "center",
     paddingBottom: 100,
     backgroundColor: "#0099ff",
-  },
-  container: {
-    flex: 1,
-    // flexDirection: 'row',
-    // alignItems: "center",
-    // justifyContent: 'center',
-    paddingTop: 10,
-    paddingBottom: 10,
-    paddingLeft: 10,
-    paddingRight: 10,
-    // height: 900,
-    // marginTop: 40,
-    // marginBottom: 80,
-    // marginLeft: 10,
-    // marginRight: 10,
-    backgroundColor: "#ff0000",
-  },
-  titleContainer: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#00ffff",
-    // marginTop: 40,
-    padding: 10,
-    // height: 400,
   },
   userContainer: {
     flex: 1,
     // alignItems: "center",
     // justifyContent: "center",
-    backgroundColor: "#00ff00",
-    // marginTop: 40,
+    backgroundColor: "#0A0AFC",
+    marginTop: 20,
     paddingHorizontal: 10,
     paddingVertical: 10,
-    // height: 400,
+    minHeight: 50,
+    minWidth: 280,
   },
   inputsContainer: {
     flex: 4,
-    // alignItems: "center",
-    // justifyContent: "center",
-    backgroundColor: "#00ff00",
-    // marginTop: 40,
+
     paddingHorizontal: 10,
     paddingVertical: 10,
     height: 300,
+    minWidth: 280,
   },
-  buttonsContainer: {
+  buttonsScanContainer: {
+    flex: 1,
+    paddingTop: 4,
+    paddingBottom: 8,
+    paddingHorizontal: 8,
+    minWidth: 250,
+  },
+  buttonScanContainer: {
+    marginBottom: 10,
+  },
+  buttonsContainer1: {
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: "#FF0505",
-    paddingTop: 8,
-    paddingBottom: 4,
+    // backgroundColor: "#FFFF00",
+    paddingTop: 10,
+    paddingBottom: 10,
     paddingHorizontal: 4,
-    // height: 100,
+    marginVertical: 2,
+    width: 280,
   },
   buttonsContainer2: {
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: "#F3DF28",
-    paddingTop: 4,
-    paddingBottom: 8,
+    // backgroundColor: "#888888",
+    paddingTop: 10,
+    paddingBottom: 10,
     paddingHorizontal: 4,
-    // height: 100,
-  },
-  buttonsContainer3: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#0000ff",
-    paddingTop: 4,
-    paddingBottom: 8,
-    paddingHorizontal: 4,
-    // height: 100,
-  },
-  buttonsContainer4: {
-    flex: 1,
-    // alignItems: "center",
-    // justifyContent: "space-between",
-    backgroundColor: "#07D974",
-    paddingTop: 4,
-    paddingBottom: 8,
-    paddingHorizontal: 8,
-    // marginHorizontal: 2,
-    // height: 100,
+    width: 280,
   },
   buttonContainer: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    // backgroundColor: "#ff00ff",
+    minWidth: 120,
+  },
+  buttonResetContainer: {
+    backgroundColor: "#047a0a",
+    minWidth: 120,
+  },
+  buttonLoginContainer: {
+    backgroundColor: "#047a0a",
+    minWidth: 120,
   },
   text: {
     fontSize: 15,
     fontWeight: "bold",
+    color: "white",
   },
   textUtente: {
     fontSize: 30,
     fontWeight: "bold",
     textAlign: "center",
+    color: "white",
+  },
+  textUtenteSmall: {
+    fontSize: 18,
+    // fontWeight: "bold",
+    textAlign: "center",
+    color: "white",
   },
   textSessione: {
-    fontSize: 11,
+    fontSize: 10,
     fontWeight: "bold",
+    color: "gray",
   },
   textTitle: {
     fontSize: 40,
