@@ -25,14 +25,18 @@ function LoginScreen({ navigation }) {
   async function getSessionHandler() {
     console.log("+++++++++++++++++++++++++++++");
     console.log("GetSession1: ");
-    
-    const [sessionIDData, messageData, cognome, nome] = await getSession(usr, pwd, url);
+
+    const [sessionIDData, messageData, cognome, nome] = await getSession(
+      usr,
+      pwd,
+      url
+    );
     // const sessId = await getSession(usr, pwd, url);
-    
-    console.log('SessId: ', sessionIDData);
+
+    console.log("SessId: ", sessionIDData);
     authCtx.authenticate(sessionIDData, cognome, nome);
-    console.log('Ctx.sessionID: ', authCtx.sessionID);
-    console.log('Ctx.isAuthenticated: ', authCtx.isAuthenticated);
+    console.log("Ctx.sessionID: ", authCtx.sessionID);
+    console.log("Ctx.isAuthenticated: ", authCtx.isAuthenticated);
 
     console.log("GetSession2: ");
     setSessionID(sessionIDData);
@@ -59,71 +63,77 @@ function LoginScreen({ navigation }) {
   }
 
   return (
-    <SafeAreaView>
-      <ScrollView>
-        <View style={styles.containerOuter}>
-          <View style={styles.containerUp}>
-            <Text>This is the Login Screen</Text>
-            <Button
-              title="Input Screen"
-              onPress={() => navigation.navigate("Input")}
-            />
-            <Button
-              title="Scan Screen"
-              onPress={() => navigation.navigate("Scan")}
-            />
-          </View>
-          <View style={styles.containerDown}>
-            <TextInput
-              style={styles.inputText}
-              onChangeText={urlInputHandler}
-              value={url}
-              placeholder="URL"
-            />
-            <TextInput
-              style={styles.inputText}
-              onChangeText={usrInputHandler}
-              value={usr}
-              placeholder="Utente"
-            />
-            <TextInput
-              style={styles.inputText}
-              onChangeText={pwdInputHandler}
-              value={pwd}
-              placeholder="Password"
-            />
-            <Text style={styles.text}>Test chiamate HTTP...</Text>
-            <Button
-              style={styles.button}
-              title="Chek utente"
-              onPress={getSessionHandler}
-            ></Button>
-            {/* <Text>The Session ID is: {sessionID}</Text> */}
-            {isLogged && <Text>The Message is: {message}</Text>}
-            {isLogged && sessionID && (
-              <Text>The Session ID is: {sessionID}</Text>
-            )}
-            {isLogged && !sessionID && (
-              <Text style={styles.textAlert} cd>
-                The Session ID is not avaiable!
-              </Text>
-            )}
-            {(isLogged || errorHTTP) && (
-              <Button
-                style={styles.button}
-                title="Annulla... "
-                onPress={resetIsLogged}
-              ></Button>
-            )}
-            {errorHTTP && (
-              <Text style={styles.textAlert} cd>
-                Server is not responding!
-              </Text>
-            )}
-          </View>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    // <SafeAreaView>
+    <ScrollView>
+    <View style={styles.containerOuter}>
+      <View style={styles.cardTitle}>
+        <Text style={styles.cardText}>LOGIN</Text>
+        <Text style={[styles.cardText, styles.cardSmalltext]}>
+          Inserire le credenziali di Neocare
+        </Text>
+      </View>
+      <View style={styles.containerInput}>
+        <TextInput
+          style={styles.inputText}
+          onChangeText={urlInputHandler}
+          value={url}
+          placeholder="URL"
+        />
+        <TextInput
+          style={styles.inputText}
+          onChangeText={usrInputHandler}
+          value={usr}
+          placeholder="Utente"
+        />
+        <TextInput
+          style={styles.inputText}
+          onChangeText={pwdInputHandler}
+          value={pwd}
+          placeholder="Password"
+        />
+      </View>
+      {!isLogged && 
+      <View style={styles.containerButton}>
+        {/* <Text style={styles.text}>Test chiamate HTTP...</Text> */}
+        <Button
+          style={styles.button}
+          title="Login"
+          color="#0A0AFC"
+          onPress={getSessionHandler}
+        ></Button>
+      </View>}
+      {isLogged && 
+      <View style={styles.containerMessage}>
+        {/* <Text>The Session ID is: {sessionID}</Text> */}
+        {isLogged && <Text style={styles.textAlert}>ATTENZIONE!</Text>}
+        {isLogged && <Text style={styles.textAlert}>{message}</Text>}
+        {/* {isLogged && sessionID && <Text style={styles.textAlert}>The Session ID is: {sessionID}</Text>} */}
+        {/* {isLogged && !sessionID && (
+          <Text style={styles.textAlert}>
+            The Session ID is not avaiable!
+          </Text>
+        )} */}
+      </View>}
+
+      {isLogged && 
+      <View style={styles.containerButton}>
+        {(isLogged || errorHTTP) && (
+          <Button
+            style={styles.button}
+            title="Riprova..."
+            onPress={resetIsLogged}
+            color="#0A0AFC"
+          ></Button>
+        )}
+        {errorHTTP && (
+          <Text style={styles.textAlert} cd>
+            Server is not responding!
+          </Text>
+        )}
+      </View>}
+    </View>
+    </ScrollView>
+    // </SafeAreaView>
   );
 }
 
@@ -132,28 +142,57 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   containerOuter: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    paddin: 40,
-    backgroundColor: "#0099ff",
+    // alignItems: '',
+    // justifyContent: 'flex-start',
+    backgroundColor: "#24F3EF",
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    paddingBottom: 20,
   },
-  containerUp: {
-    flex: 1,
-    // alignItems: "center",
+  cardTitle: {
+    // flex: 1,
+    alignItems: "center",
     // justifyContent: "center",
     // paddin: 80,
-    marginTop: 150,
-    marginBottom: 20,
-    // backgroundColor: "#00ff00",
+    paddingVertical: 20,
+    borderWidth: 2,
+    borderColor: "#ff0000",
+    backgroundColor: "#0A0AFC",
   },
-  containerDown: {
-    flex: 1,
-    // alignItems: "center",
+  cardText: {
+    fontSize: 30,
+    color: "white",
+    fontWeight: "bold",
+  },
+  cardSmalltext: {
+    fontSize: 18,
+    color: "white",
+    // fontWeight: "bold",
+  },
+  containerInput: {
+    // flex: 1,
+    alignItems: "center",
     // justifyContent: "center",
-    // paddin: 20,
+    paddingVertical: 20,
     marginTop: 20,
-    marginBottom: 200,
-    // backgroundColor: "#ff0000",
+    marginBottom: 10,
+    backgroundColor: "#056B38",
+  },
+  containerButton: {
+    // flex: 1,
+    alignItems: "center",
+    // justifyContent: "center",
+    paddingVertical: 4,
+    marginBottom: 20,
+    backgroundColor: "#9BCE0D",
+  },
+  containerMessage: {
+    // flex: 1,
+    alignItems: "center",
+    // justifyContent: "center",
+    paddingVertical: 4,
+    marginBottom: 20,
+    backgroundColor: "#9BCE0D",
   },
   text: {
     margin: 5,
@@ -161,19 +200,22 @@ const styles = StyleSheet.create({
   textAlert: {
     margin: 5,
     color: "#ff0000",
+    fontSize: 20,
+    fontWeight: "bold",
   },
+
   button: {
     margin: 5,
   },
 
   inputText: {
     borderWidth: 2,
-    borderColor: "#ff0000",
+    borderColor: "#0A0AFC",
     backgroundColor: "white",
     color: "black",
     textDecorationColor: "white",
     margin: 5,
     padding: 4,
-    width: 100,
+    minWidth: 200,
   },
 });

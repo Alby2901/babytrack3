@@ -65,20 +65,23 @@ function InputScreen({ navigation }) {
     console.log("Neonato: ", authCtx.neonato);
     console.log("Genitore: ", authCtx.genitore);
 
-    if (authCtx.neonato === "" || authCtx.neonato == null ) {
+    if (authCtx.neonato === "" || authCtx.neonato == null) {
       Alert.alert("ASSENZA DATO", "Non è stato scansionato il neonato!");
     } else if (authCtx.genitore === "" || authCtx.genitore == null) {
       Alert.alert("ASSENZA DATO", "Non è stato scansionato il genitore!");
     } else {
-
-      const [ret,messageData, childName, motherName] = await getChkParent(authCtx.sessionID, '2021025214', '322857');
+      const [ret, messageData, childName, motherName] = await getChkParent(
+        authCtx.sessionID,
+        "2021025214",
+        "322857"
+      );
 
       setRet(ret);
       setMessage(messageData);
       setChildN(childName);
       setMotherN(motherName);
 
-      if (authCtx.neonato = authCtx.genitore) {
+      if ((authCtx.neonato = authCtx.genitore)) {
         Alert.alert(
           "RICONOSCIMENTO CORRETTO",
           "Il riconoscimento Neonato <=> Genitore è stato eseguito correttamente"
@@ -99,12 +102,12 @@ function InputScreen({ navigation }) {
     console.log("Neonato: ", n);
     console.log("LatteCulla: ", l);
 
-    if (authCtx.neonato === "" || authCtx.neonato == null ) {
+    if (authCtx.neonato === "" || authCtx.neonato == null) {
       Alert.alert("ASSENZA DATO", "Non è stato scansionato il neonato!");
     } else if (authCtx.latte === "" || authCtx.latte == null) {
       Alert.alert("ASSENZA DATO", "Non è stato scansionato il latte/culla!");
     } else {
-      if (authCtx.neonato = authCtx.latte) {
+      if ((authCtx.neonato = authCtx.latte)) {
         Alert.alert(
           "RICONOSCIMENTO CORRETTO",
           "Il riconoscimento Neonato <=> Culla/Latte è stato eseguito correttamente"
@@ -119,11 +122,10 @@ function InputScreen({ navigation }) {
   }
 
   function Reset() {
-    
     authCtx.readNeonato(null);
     authCtx.readGenitore(null);
     authCtx.readLatte(null);
-    
+
     setUtente("");
     setNeonato("");
     setGenitore("");
@@ -134,7 +136,7 @@ function InputScreen({ navigation }) {
     <SafeAreaView>
       <ScrollView>
         <View style={styles.containerOuter}>
-          <View style={styles.container}>
+          {/* <View style={styles.container}> */}
             <View style={styles.titleContainer}>
               <Text style={styles.textTitle}>Input Screen</Text>
             </View>
@@ -146,46 +148,46 @@ function InputScreen({ navigation }) {
               {/* <UtenteInput onSetUtente={setUtenteHandler} /> */}
             </View>
             <View style={styles.inputsContainer}>
-              {/* <Text style={styles.text}>Neonato: {neonato}</Text> */}
-              <Text style={styles.text}>Neonato: {authCtx.neonato}</Text>
-              <NeonatoInput val={authCtx.neonato} onSetNeonato={setNeonatoHandler} />
-              <Text style={styles.text}>Genitore: {authCtx.genitore}</Text>
-              <GenitoreInput val={authCtx.genitore} onSetGenitore={setGenitoreHandler} />
-              <Text style={styles.text}>Latte/Culla: {authCtx.latte}</Text>
-              <LatteCullaInput val={authCtx.latte} onSetLatteCulla={setLatteCullaHandler} />
+              <View style={styles.buttonsContainer4}>
+                <Button
+                  title="Scan Neo"
+                  onPress={() => navigation.navigate("ScanNeo")}
+                  color="#94941f"
+                />
+                <Text style={styles.text}>Neonato: {authCtx.neonato}</Text>
+              </View>
+              <View style={styles.buttonsContainer4}>
+                <Button
+                  title="Scan Gen"
+                  onPress={() => navigation.navigate("ScanGen")}
+                  color="#94941f"
+                />
+                <Text style={styles.text}>Genitore: {authCtx.genitore}</Text>
+              </View>
+              <View style={styles.buttonsContainer4}>
+                <Button
+                  title="Scan Lat"
+                  onPress={() => navigation.navigate("ScanLat")}
+                  color="#94941f"
+                />
+                <Text style={styles.text}>Latte/Culla: {authCtx.latte}</Text>
+              </View>
+
               {ret && <Text style={styles.text}>Ret: {ret}</Text>}
               {message && <Text style={styles.text}>Msg: {message}</Text>}
               {childN && <Text style={styles.text}>ChildN: {childN}</Text>}
               {motherN && <Text style={styles.text}>MotherN: {motherN}</Text>}
             </View>
 
-            <View style={styles.buttonsContainer4}>
-              <Button
-                title="Scan Neo"
-                onPress={() => navigation.navigate("ScanNeo")}
-                color="#94941f"
-              />
-              <Button
-                title="Scan Gen"
-                onPress={() => navigation.navigate("ScanGen")}
-                color="#94941f"
-              />
-              <Button
-                title="Scan Lat"
-                onPress={() => navigation.navigate("ScanLat")}
-                color="#94941f"
-              />
-            </View>
-
             <View style={styles.buttonsContainer}>
               <View style={styles.buttonContainer}>
-                <Button title="Chk Genitore" onPress={VerificaGenitore}></Button>
+                <Button
+                  title="Chk Genitore"
+                  onPress={VerificaGenitore}
+                ></Button>
               </View>
               <View style={styles.buttonContainer}>
-                <Button
-                  title="Chk Latte"
-                  onPress={VerificaLatteCulla}
-                ></Button>
+                <Button title="Chk Latte" onPress={VerificaLatteCulla}></Button>
               </View>
               <View style={styles.buttonContainer}>
                 <Button title="Reset" onPress={Reset}></Button>
@@ -194,20 +196,7 @@ function InputScreen({ navigation }) {
             <View style={styles.buttonsContainer3}>
               <Button title="Logout" onPress={authCtx.logout} color="#ff0000" />
             </View>
-
-            <View style={styles.buttonsContainer2}>
-              <Button
-                title="Login Screen"
-                onPress={() => navigation.navigate("Login")}
-                color="#94941f"
-              />
-              <Button
-                title="Scan Screen"
-                onPress={() => navigation.navigate("Scan")}
-                color="#94941f"
-              />
-            </View>
-          </View>
+          {/* </View> */}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -275,7 +264,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: "#0000ff",
+    backgroundColor: "#FF0505",
     paddingTop: 8,
     paddingBottom: 4,
     paddingHorizontal: 4,
@@ -286,7 +275,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: "#0000ff",
+    backgroundColor: "#F3DF28",
     paddingTop: 4,
     paddingBottom: 8,
     paddingHorizontal: 4,
@@ -305,14 +294,13 @@ const styles = StyleSheet.create({
   },
   buttonsContainer4: {
     flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    backgroundColor: "#0000ff",
+    // alignItems: "center",
+    // justifyContent: "space-between",
+    backgroundColor: "#07D974",
     paddingTop: 4,
     paddingBottom: 8,
     paddingHorizontal: 8,
-    // marginHorizontal: 2, 
+    // marginHorizontal: 2,
     // height: 100,
   },
   buttonContainer: {
