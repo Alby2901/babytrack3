@@ -10,12 +10,14 @@ import {
 import { getSession } from "../components/http";
 import { useContext, useState } from "react";
 import { AuthContext } from "../store/auth-context";
+import LoadingOverlay from "../UI/LoadingOverlay";
 
 function LoginScreen({ navigation }) {
   const [errorHTTP, setErrorHTTP] = useState("");
   const [sessionID, setSessionID] = useState("");
   const [message, setmessage] = useState("");
   const [isLogged, setIsLogged] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const { isInputOk, setIsInputOk } = useState(true);
   const [url, setUrl] = useState("");
   const [usr, setUsr] = useState("");
@@ -32,16 +34,22 @@ function LoginScreen({ navigation }) {
   //   }
   // }
 
+  if (isAuthenticated) {
+    return <LoadingOverlay></LoadingOverlay>
+  }
+
   async function getSessionHandler() {
     console.log("+++++++++++++++++++++++++++++");
     console.log("GetSession1: ");
 
-      const [sessionIDData, messageData, cognome, nome] = await getSession(
-        usr,
-        pwd,
-        url
-      );
-    
+    setIsAuthenticated(true);
+    wait(2000);
+    const [sessionIDData, messageData, cognome, nome] = await getSession(
+      usr,
+      pwd,
+      url
+    );
+    setIsAuthenticated(false);
 
     console.log("SessId: ", sessionIDData);
     authCtx.authenticate(sessionIDData, cognome, nome);
@@ -99,6 +107,7 @@ function LoginScreen({ navigation }) {
             style={styles.inputText}
             onChangeText={pwdInputHandler}
             value={pwd}
+            secureTextEntry={true}
             placeholder="Password"
           />
         </View>
@@ -116,9 +125,9 @@ function LoginScreen({ navigation }) {
         {isLogged && (
           <View style={styles.containerMessage}>
             {/* <Text>The Session ID is: {sessionID}</Text> */}
-            
+
             {/* {!isInputOk && <Text style={styles.textAlert}>I CAMPI SONO VUOTI!</Text>} */}
-            
+
             {isLogged && <Text style={styles.textAlert}>ATTENZIONE!</Text>}
             {isLogged && <Text style={styles.textAlert}>{message}</Text>}
 
