@@ -45,14 +45,14 @@ function LoginScreen({ navigation }) {
     console.log("+++++++++++++++++++++++++++++");
     console.log("GetSession1: ");
 
-    // setIsAuthenticated(true);
+    setIsAuthenticated(true);
     // wait(2000);
     const [sessionIDData, messageData, cognome, nome] = await getSession(
       usr,
       pwd,
       url
     );
-    // setIsAuthenticated(false);
+    setIsAuthenticated(false);
 
     console.log("SessId: ", sessionIDData);
     authCtx.authenticate(sessionIDData, cognome, nome);
@@ -91,14 +91,18 @@ function LoginScreen({ navigation }) {
     // <SafeAreaView>
     <ScrollView>
       <View style={styles.containerOuter}>
-        <Pressable onPress={showConfigInputHandler}>
+
+      <Pressable onPress={showConfigInputHandler}>
+          <View style={styles.hideButton}>
+          </View>
+        </Pressable>
+
           <View style={styles.cardTitle}>
             <Text style={styles.cardText}>LOGIN</Text>
             <Text style={[styles.cardText, styles.cardSmalltext]}>
               Inserire le credenziali di Neocare
             </Text>
           </View>
-        </Pressable>
         <View style={styles.containerInput}>
           {showConfigInput && (
             <TextInput
@@ -185,6 +189,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 20,
     paddingBottom: 420,
+  },
+  hideButton: {
+    alignItems: "center",
+
+    height: 10,
+    width: 10, 
+    paddingVertical: 0,
+    backgroundColor: GlobalStyles.colors.BG_App_Blue,
   },
   cardTitle: {
     alignItems: "center",
