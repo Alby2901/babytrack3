@@ -6,11 +6,13 @@ import {
   TextInput,
   ScrollView,
   SafeAreaView,
+  Pressable,
 } from "react-native";
 import { getSession } from "../components/http";
 import { useContext, useState } from "react";
 import { AuthContext } from "../store/auth-context";
 import LoadingOverlay from "../UI/LoadingOverlay";
+import { GlobalStyles } from "../UI/GlobalConstant";
 
 function LoginScreen({ navigation }) {
   const [errorHTTP, setErrorHTTP] = useState("");
@@ -18,8 +20,9 @@ function LoginScreen({ navigation }) {
   const [message, setmessage] = useState("");
   const [isLogged, setIsLogged] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [showConfigInput, setshowConfigInput] = useState(true);
   const { isInputOk, setIsInputOk } = useState(true);
-  const [url, setUrl] = useState("");
+  const [url, setUrl] = useState("http://130.0.151.40:8090/babysafe/login");
   const [usr, setUsr] = useState("");
   const [pwd, setPwd] = useState("");
 
@@ -35,21 +38,21 @@ function LoginScreen({ navigation }) {
   // }
 
   if (isAuthenticated) {
-    return <LoadingOverlay></LoadingOverlay>
+    return <LoadingOverlay></LoadingOverlay>;
   }
 
   async function getSessionHandler() {
     console.log("+++++++++++++++++++++++++++++");
     console.log("GetSession1: ");
 
-    setIsAuthenticated(true);
-    wait(2000);
+    // setIsAuthenticated(true);
+    // wait(2000);
     const [sessionIDData, messageData, cognome, nome] = await getSession(
       usr,
       pwd,
       url
     );
-    setIsAuthenticated(false);
+    // setIsAuthenticated(false);
 
     console.log("SessId: ", sessionIDData);
     authCtx.authenticate(sessionIDData, cognome, nome);
@@ -80,23 +83,31 @@ function LoginScreen({ navigation }) {
     setPwd(enteredPwd);
   }
 
+  function showConfigInputHandler(){
+    setshowConfigInput(!showConfigInput)
+  }
+
   return (
     // <SafeAreaView>
     <ScrollView>
       <View style={styles.containerOuter}>
-        <View style={styles.cardTitle}>
-          <Text style={styles.cardText}>LOGIN</Text>
-          <Text style={[styles.cardText, styles.cardSmalltext]}>
-            Inserire le credenziali di Neocare
-          </Text>
-        </View>
+        <Pressable onPress={showConfigInputHandler}>
+          <View style={styles.cardTitle}>
+            <Text style={styles.cardText}>LOGIN</Text>
+            <Text style={[styles.cardText, styles.cardSmalltext]}>
+              Inserire le credenziali di Neocare
+            </Text>
+          </View>
+        </Pressable>
         <View style={styles.containerInput}>
-          <TextInput
-            style={styles.inputText}
-            onChangeText={urlInputHandler}
-            value={url}
-            placeholder="URL"
-          />
+          {showConfigInput && (
+            <TextInput
+              style={styles.inputText}
+              onChangeText={urlInputHandler}
+              value={url}
+              placeholder="URL"
+            />
+          )}
           <TextInput
             style={styles.inputText}
             onChangeText={usrInputHandler}
@@ -117,7 +128,7 @@ function LoginScreen({ navigation }) {
             <Button
               style={styles.button}
               title="Login"
-              color="#0A0AFC"
+              color={GlobalStyles.colors.BG_DarkBlue}
               onPress={getSessionHandler}
             ></Button>
           </View>
@@ -147,7 +158,7 @@ function LoginScreen({ navigation }) {
                 style={styles.button}
                 title="Riprova..."
                 onPress={resetIsLogged}
-                color="#0A0AFC"
+                color={GlobalStyles.colors.BG_DarkBlue}
               ></Button>
             )}
             {errorHTTP && (
@@ -170,62 +181,47 @@ const styles = StyleSheet.create({
     flex: 1,
     // alignItems: '',
     // justifyContent: 'flex-start',
-    backgroundColor: "#24F3EF",
+    backgroundColor: GlobalStyles.colors.BG_App_Blue,
     paddingHorizontal: 20,
     paddingTop: 20,
-    paddingBottom: 20,
+    paddingBottom: 420,
   },
   cardTitle: {
-    // flex: 1,
     alignItems: "center",
-    // justifyContent: "center",
-    // paddin: 80,
     paddingVertical: 20,
-    borderWidth: 2,
-    borderColor: "#ff0000",
-    backgroundColor: "#0A0AFC",
+    backgroundColor: GlobalStyles.colors.BG_DarkBlue,
   },
   cardText: {
     fontSize: 30,
-    color: "white",
+    color: GlobalStyles.colors.Text_Main,
     fontWeight: "bold",
   },
   cardSmalltext: {
     fontSize: 18,
-    color: "white",
-    // fontWeight: "bold",
+    color: GlobalStyles.colors.Text_Main,
   },
   containerInput: {
-    // flex: 1,
     alignItems: "center",
-    // justifyContent: "center",
     paddingVertical: 20,
-    marginTop: 20,
-    marginBottom: 10,
-    backgroundColor: "#056B38",
+    marginTop: 0,
+    marginBottom: 0,
   },
   containerButton: {
-    // flex: 1,
     alignItems: "center",
-    // justifyContent: "center",
     paddingVertical: 4,
     marginBottom: 20,
-    backgroundColor: "#9BCE0D",
   },
   containerMessage: {
-    // flex: 1,
     alignItems: "center",
-    // justifyContent: "center",
     paddingVertical: 4,
-    marginBottom: 20,
-    backgroundColor: "#9BCE0D",
+    marginBottom: 10,
   },
   text: {
     margin: 5,
   },
   textAlert: {
     margin: 5,
-    color: "#ff0000",
+    color: GlobalStyles.colors.TextAlert,
     fontSize: 20,
     fontWeight: "bold",
   },
@@ -236,10 +232,10 @@ const styles = StyleSheet.create({
 
   inputText: {
     borderWidth: 2,
-    borderColor: "#0A0AFC",
-    backgroundColor: "white",
-    color: "black",
-    textDecorationColor: "white",
+    borderColor: GlobalStyles.colors.BG_DarkBlue,
+    backgroundColor: GlobalStyles.colors.BG_InputField,
+    color: GlobalStyles.colors.Text_Input,
+    textDecorationColor: GlobalStyles.colors.Text_Main,
     margin: 5,
     padding: 4,
     minWidth: 200,
