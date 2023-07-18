@@ -15,6 +15,7 @@ import GenitoreInput from "../components/GenitoreInput";
 import LatteCullaInput from "../components/LatteCullaInput";
 import { AuthContext } from "../store/auth-context";
 import { getChkParent } from "../components/http";
+import { GlobalStyles } from "../UI/GlobalConstant";
 
 function InputScreen({ navigation }) {
   const [utente, setUtente] = useState("");
@@ -184,19 +185,19 @@ function InputScreen({ navigation }) {
 
           <View style={styles.buttonsContainer1}>
             <View style={styles.buttonContainer}>
-              <Button title="Chk Genitore" onPress={VerificaGenitore} color="#0A0AFC"></Button>
+              <Button title="Chk Genitore" onPress={VerificaGenitore} color={GlobalStyles.colors.BG_DarkBlue}></Button>
             </View>
             <View style={styles.buttonContainer}>
-              <Button title="Chk Latte" onPress={VerificaLatteCulla} color="#0A0AFC"></Button>
+              <Button title="Chk Latte" onPress={VerificaLatteCulla} color={GlobalStyles.colors.BG_DarkBlue}></Button>
             </View>
           </View>
 
           <View style={styles.buttonsContainer2}>
             <View style={styles.buttonResetContainer}>
-              <Button title="Reset" onPress={Reset} color="#047a0a"></Button>
+              <Button title="Reset" onPress={Reset} color={GlobalStyles.colors.Buton_Reset}></Button>
             </View>
-            <View style={styles.buttonLoginContainer}>
-              <Button title="Logout" onPress={authCtx.logout} color="#ff0000" />
+            <View style={styles.buttonLogoutContainer}>
+              <Button title="Logout" onPress={authCtx.logout} color={GlobalStyles.colors.Buton_Logout} />
             </View>
           </View>
 
@@ -214,14 +215,14 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     // justifyContent: "center",
-    paddingBottom: 100,
-    backgroundColor: "#0099ff",
+    paddingBottom: 200,
+    backgroundColor: GlobalStyles.colors.BG_App_Blue,
   },
   userContainer: {
     flex: 1,
     // alignItems: "center",
     // justifyContent: "center",
-    backgroundColor: "#0A0AFC",
+    backgroundColor: GlobalStyles.colors.BG_DarkBlue,
     marginTop: 20,
     paddingHorizontal: 10,
     paddingVertical: 10,
@@ -251,7 +252,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    // backgroundColor: "#FFFF00",
     paddingTop: 10,
     paddingBottom: 10,
     paddingHorizontal: 4,
@@ -263,7 +263,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    // backgroundColor: "#888888",
     paddingTop: 10,
     paddingBottom: 10,
     paddingHorizontal: 4,
@@ -273,11 +272,11 @@ const styles = StyleSheet.create({
     minWidth: 120,
   },
   buttonResetContainer: {
-    backgroundColor: "#047a0a",
+    backgroundColor: GlobalStyles.colors.Buton_Reset,
     minWidth: 120,
   },
-  buttonLoginContainer: {
-    backgroundColor: "#047a0a",
+  buttonLogoutContainer: {
+    backgroundColor: GlobalStyles.colors.Buton_Logout,
     minWidth: 120,
   },
   text: {
