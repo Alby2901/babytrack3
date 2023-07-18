@@ -20,7 +20,7 @@ function LoginScreen({ navigation }) {
   const [message, setmessage] = useState("");
   const [isLogged, setIsLogged] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [showConfigInput, setshowConfigInput] = useState(true);
+  const [showConfigInput, setshowConfigInput] = useState(false);
   const { isInputOk, setIsInputOk } = useState(true);
   const [url, setUrl] = useState("http://130.0.151.40:8090/babysafe/login");
   const [usr, setUsr] = useState("");

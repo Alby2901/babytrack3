@@ -10,6 +10,8 @@ import ScanScreenNeonato from "./screens/ScanScreenNeonato";
 import ScanScreenGenitore from "./screens/ScanScreenGenitore";
 import ScanScreenLatte from "./screens/ScanScreenLatte";
 import AuthContentProvider, { AuthContext } from "./store/auth-context";
+import { GlobalStyles } from "./UI/GlobalConstant";
+import ResultScreen from "./screens/ResultScreen";
 
 // export default function App() {
 
@@ -17,7 +19,20 @@ const Stack = createNativeStackNavigator();
 
 function AuthStack() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        title: "Baby Track",
+        headerStyle: {
+          backgroundColor: GlobalStyles.colors.BG_Blue,
+        },
+        headerTintColor: GlobalStyles.colors.Text_Main,
+        headerTitleAlign: "center",
+        headerTitleStyle: {
+          fontWeight: "bold",
+          fontSize: 30,
+        },
+      }}
+    >
       <Stack.Screen name="Login" component={LoginScreen} />
       {/* <Stack.Screen name="Signup" component={SignupScreen} /> */}
     </Stack.Navigator>
@@ -26,8 +41,28 @@ function AuthStack() {
 
 function AuthenticatedStack() {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Input" component={InputScreen} />
+    <Stack.Navigator
+      screenOptions={{
+        title: "Baby Track",
+        headerStyle: {
+          backgroundColor: GlobalStyles.colors.BG_Blue,
+        },
+        headerTintColor: GlobalStyles.colors.Text_Main,
+        headerTitleAlign: "center",
+        headerTitleStyle: {
+          fontWeight: "bold",
+          fontSize: 30,
+        },
+      }}
+    >
+      <Stack.Screen
+        name="Input"
+        component={InputScreen}
+        options={{
+          title: "Baby Track 2023",
+        }}
+      />
+      <Stack.Screen name="ResultOk" component={ResultScreen} />
       <Stack.Screen name="Scan" component={ScanScreen} />
       <Stack.Screen name="ScanNeo" component={ScanScreenNeonato} />
       <Stack.Screen name="ScanGen" component={ScanScreenGenitore} />

@@ -7,7 +7,7 @@ import {
   Button,
   Alert,
   ScrollView,
-  SafeAreaView,
+  SafeAreaView, Modal
 } from "react-native";
 import UtenteInput from "../components/UtenteInput";
 import NeonatoInput from "../components/NeonatoInput";
@@ -16,12 +16,15 @@ import LatteCullaInput from "../components/LatteCullaInput";
 import { AuthContext } from "../store/auth-context";
 import { getChkParent } from "../components/http";
 import { GlobalStyles } from "../UI/GlobalConstant";
+// import ResultScreen from "./ResultScreen";
 
 function InputScreen({ navigation }) {
   const [utente, setUtente] = useState("");
   const [neonato, setNeonato] = useState("");
   const [genitore, setGenitore] = useState("");
   const [latteculla, setLatteCulla] = useState("");
+  // const [ViewResultOk, setViewResultOk] = useState(false);
+  // const [modalVisible, setModalVisible] = useState[false]
 
   const [ret, setRet] = useState("");
   const [message, setMessage] = useState("");
@@ -83,10 +86,31 @@ function InputScreen({ navigation }) {
       setMotherN(motherName);
 
       if ((authCtx.neonato = authCtx.genitore)) {
-        Alert.alert(
-          "RICONOSCIMENTO CORRETTO",
-          "Il riconoscimento Neonato <=> Genitore è stato eseguito correttamente"
-        );
+        // return (<Modal
+        //   animationType="slide"
+        //   transparent={true}
+        //   visible={modalVisible}
+        //   // onRequestClose={() => {
+        //   //   Alert.alert("Modal has been closed.");
+        //   //   setModalVisible(!modalVisible);
+        //   // }}
+        // >
+        //   <View style={styles.centeredView}>
+        //     <View style={styles.modalView}>
+        //       <Text style={styles.modalText}>Hello World!</Text>
+        //       <Pressable
+        //         style={[styles.button, styles.buttonClose]}
+        //         onPress={() => setModalVisible(!modalVisible)}
+        //       >
+        //         <Text style={styles.textStyle}>Hide Modal</Text>
+        //       </Pressable>
+        //     </View>
+        //   </View>
+        // </Modal>)
+         Alert.alert(
+            "RICONOSCIMENTO CORRETTO",
+            "Il riconoscimento Neonato <=> Genitore è stato eseguito correttamente"
+          );
       } else {
         Alert.alert(
           "RICONOSCIMENTO ERRATO",
@@ -185,23 +209,37 @@ function InputScreen({ navigation }) {
 
           <View style={styles.buttonsContainer1}>
             <View style={styles.buttonContainer}>
-              <Button title="Chk Genitore" onPress={VerificaGenitore} color={GlobalStyles.colors.BG_DarkBlue}></Button>
+              <Button
+                title="Chk Genitore"
+                onPress={VerificaGenitore}
+                color={GlobalStyles.colors.BG_DarkBlue}
+              ></Button>
             </View>
             <View style={styles.buttonContainer}>
-              <Button title="Chk Latte" onPress={VerificaLatteCulla} color={GlobalStyles.colors.BG_DarkBlue}></Button>
+              <Button
+                title="Chk Latte"
+                onPress={VerificaLatteCulla}
+                color={GlobalStyles.colors.BG_DarkBlue}
+              ></Button>
             </View>
           </View>
 
           <View style={styles.buttonsContainer2}>
             <View style={styles.buttonResetContainer}>
-              <Button title="Reset" onPress={Reset} color={GlobalStyles.colors.Buton_Reset}></Button>
+              <Button
+                title="Reset"
+                onPress={Reset}
+                color={GlobalStyles.colors.Buton_Reset}
+              ></Button>
             </View>
             <View style={styles.buttonLogoutContainer}>
-              <Button title="Logout" onPress={authCtx.logout} color={GlobalStyles.colors.Buton_Logout} />
+              <Button
+                title="Logout"
+                onPress={authCtx.logout}
+                color={GlobalStyles.colors.Buton_Logout}
+              />
             </View>
           </View>
-
-          {/* </View> */}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -304,5 +342,46 @@ const styles = StyleSheet.create({
   textTitle: {
     fontSize: 40,
     fontWeight: "bold",
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: '#F194FF',
+  },
+  buttonClose: {
+    backgroundColor: '#2196F3',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
   },
 });
