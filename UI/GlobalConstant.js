@@ -7,7 +7,8 @@ export const GlobalStyles = {
       Text_Main: '#ffffff',
       Text_Input: '#000000',
       TextAlert: '#FF0000',
-      Buton_Reset: "#008707",
-      Buton_Logout: '#BE0000',
+      Button_Reset: "#008707",
+      Button_Logout: '#BE0000',
+      Button_Scan: "#94941f",
     },
   };

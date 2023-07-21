@@ -26,16 +26,16 @@ import { AuthContext } from "../store/auth-context";
     try {
       const { status, granted } =
         await BarCodeScanner.requestPermissionsAsync();
-      console.log(`Status: ${status}, granted: ${granted}`);
+      // console.log(`Status: ${status}, granted: ${granted}`);
 
       if (status === "granted") {
-        console.log("access granted");
+        // console.log("access granted");
         setPermission(true);
       } else {
         setPermission(false);
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       setPermission(false);
     } finally {
       setLoading(false);
@@ -72,12 +72,12 @@ import { AuthContext } from "../store/auth-context";
   //             sendDataBack(data);
 
   if (permission) {
-    Alert.alert("Permission ok");
+    // Alert.alert("Permission ok");
     return (
       <BarCodeScanner
         style={[styles.container1]}
         onBarCodeScanned={({ type, data }) => {
-          Alert.alert("ScanData ok" + data);
+          // Alert.alert("ScanData ok" + data);
           sendDataBack(data);
 
           // try {

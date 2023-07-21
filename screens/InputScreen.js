@@ -76,8 +76,10 @@ function InputScreen({ navigation }) {
     } else {
       const [ret, messageData, childName, motherName] = await getChkParent(
         authCtx.sessionID,
-        "2021025214",
-        "322857"
+        authCtx.neonato,
+        authCtx.genitore
+        // "2021025214",
+        // "322857"
       );
 
       setRet(ret);
@@ -85,7 +87,7 @@ function InputScreen({ navigation }) {
       setChildN(childName);
       setMotherN(motherName);
 
-      if ((authCtx.neonato = authCtx.genitore)) {
+      if ((authCtx.neonato === authCtx.genitore)) {
         // return (<Modal
         //   animationType="slide"
         //   transparent={true}
@@ -109,12 +111,14 @@ function InputScreen({ navigation }) {
         // </Modal>)
          Alert.alert(
             "RICONOSCIMENTO CORRETTO",
-            "Il riconoscimento Neonato <=> Genitore è stato eseguito correttamente"
+            // "Il riconoscimento Neonato <=> Genitore è stato eseguito correttamente"
+            messageData + "\n\nBambino: " + childName + "\n\nGenitore: " + motherName
           );
       } else {
         Alert.alert(
           "RICONOSCIMENTO ERRATO",
-          "ATENZIONE riconoscimento Neonato <=> Genitore ERRATO! "
+          // "ATENZIONE riconoscimento Neonato <=> Genitore ERRATO! "
+          messageData + "\n\nBambino: " + childName + "\n\nGenitore: " + motherName
         );
       }
     }
@@ -132,7 +136,7 @@ function InputScreen({ navigation }) {
     } else if (authCtx.latte === "" || authCtx.latte == null) {
       Alert.alert("ASSENZA DATO", "Non è stato scansionato il latte/culla!");
     } else {
-      if ((authCtx.neonato = authCtx.latte)) {
+      if ((authCtx.neonato === authCtx.latte)) {
         Alert.alert(
           "RICONOSCIMENTO CORRETTO",
           "Il riconoscimento Neonato <=> Culla/Latte è stato eseguito correttamente"
@@ -175,7 +179,7 @@ function InputScreen({ navigation }) {
                 <Button
                   title="Scan Neonato"
                   onPress={() => navigation.navigate("ScanNeo")}
-                  color="#94941f"
+                  color={GlobalStyles.colors.Button_Scan}
                 />
               </View>
               <Text style={styles.text}>Neonato: {authCtx.neonato}</Text>
@@ -185,7 +189,7 @@ function InputScreen({ navigation }) {
                 <Button
                   title="Scan Genitore"
                   onPress={() => navigation.navigate("ScanGen")}
-                  color="#94941f"
+                  color={GlobalStyles.colors.Button_Scan}
                 />
               </View>
               <Text style={styles.text}>Genitore: {authCtx.genitore}</Text>
@@ -195,16 +199,16 @@ function InputScreen({ navigation }) {
                 <Button
                   title="Scan Latte"
                   onPress={() => navigation.navigate("ScanLat")}
-                  color="#94941f"
+                  color={GlobalStyles.colors.Button_Scan}
                 />
               </View>
               <Text style={styles.text}>Latte/Culla: {authCtx.latte}</Text>
             </View>
 
-            {ret && <Text style={styles.text}>Ret: {ret}</Text>}
+            {/* {ret && <Text style={styles.text}>Ret: {ret}</Text>}
             {message && <Text style={styles.text}>Msg: {message}</Text>}
             {childN && <Text style={styles.text}>ChildN: {childN}</Text>}
-            {motherN && <Text style={styles.text}>MotherN: {motherN}</Text>}
+            {motherN && <Text style={styles.text}>MotherN: {motherN}</Text>} */}
           </View>
 
           <View style={styles.buttonsContainer1}>
@@ -229,14 +233,14 @@ function InputScreen({ navigation }) {
               <Button
                 title="Reset"
                 onPress={Reset}
-                color={GlobalStyles.colors.Buton_Reset}
+                color={GlobalStyles.colors.Button_Reset}
               ></Button>
             </View>
             <View style={styles.buttonLogoutContainer}>
               <Button
                 title="Logout"
                 onPress={authCtx.logout}
-                color={GlobalStyles.colors.Buton_Logout}
+                color={GlobalStyles.colors.Button_Logout}
               />
             </View>
           </View>
@@ -272,8 +276,11 @@ const styles = StyleSheet.create({
 
     paddingHorizontal: 10,
     paddingVertical: 10,
-    height: 300,
+    height: 360,
     minWidth: 280,
+
+    // borderColor: 'blue',
+    // borderWidth: 1,
   },
   buttonsScanContainer: {
     flex: 1,
@@ -281,9 +288,13 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
     paddingHorizontal: 8,
     minWidth: 250,
+    // borderColor: 'red',
+    // borderWidth: 1,
   },
   buttonScanContainer: {
-    marginBottom: 10,
+    marginBottom: 2,
+    // borderColor: 'Green',
+    // borderWidth: 1,
   },
   buttonsContainer1: {
     flex: 1,
