@@ -7,7 +7,8 @@ import {
   Button,
   Alert,
   ScrollView,
-  SafeAreaView, Modal
+  SafeAreaView,
+  Modal,
 } from "react-native";
 import UtenteInput from "../components/UtenteInput";
 import NeonatoInput from "../components/NeonatoInput";
@@ -16,6 +17,7 @@ import LatteCullaInput from "../components/LatteCullaInput";
 import { AuthContext } from "../store/auth-context";
 import { getChkParent } from "../components/http";
 import { GlobalStyles } from "../UI/GlobalConstant";
+import CountdownTimerAuto from "../components/CountdownTimerAuto";
 // import ResultScreen from "./ResultScreen";
 
 function InputScreen({ navigation }) {
@@ -35,6 +37,7 @@ function InputScreen({ navigation }) {
 
   console.log("Input Screen isAuth =>>", authCtx.isAuthenticated);
   console.log("Input Screen SessID =>>", authCtx.sessionID);
+  console.log("Input Screen Timer =>>", authCtx.sessionTimer);
   console.log("Input Screen Ut.Cognome =>>", authCtx.cognome);
   console.log("Input Screen Ut.Nome =>>", authCtx.nome);
 
@@ -44,22 +47,23 @@ function InputScreen({ navigation }) {
 
   const cognomeNome = authCtx.cognome + " " + authCtx.nome;
 
-  function setUtenteHandler(utenteBack) {
-    setUtente(utenteBack);
-  }
+  // function setUtenteHandler(utenteBack) {
+  //   setUtente(utenteBack);
+  // }
 
-  function setNeonatoHandler(neonatoBack) {
-    setNeonato(neonatoBack);
-  }
+  // function setNeonatoHandler(neonatoBack) {
+  //   setNeonato(neonatoBack);
+  // }
 
-  function setGenitoreHandler(genitoreBack) {
-    setGenitore(genitoreBack);
-  }
-  function setLatteCullaHandler(lattecullaBack) {
-    setLatteCulla(lattecullaBack);
-  }
+  // function setGenitoreHandler(genitoreBack) {
+  //   setGenitore(genitoreBack);
+  // }
+  // function setLatteCullaHandler(lattecullaBack) {
+  //   setLatteCulla(lattecullaBack);
+  // }
 
   async function VerificaGenitore() {
+
     const n = JSON.stringify(authCtx.neonato);
     const g = JSON.stringify(authCtx.genitore);
 
@@ -87,7 +91,7 @@ function InputScreen({ navigation }) {
       setChildN(childName);
       setMotherN(motherName);
 
-      if ((authCtx.neonato === authCtx.genitore)) {
+      if (authCtx.neonato === authCtx.genitore) {
         // return (<Modal
         //   animationType="slide"
         //   transparent={true}
@@ -109,16 +113,24 @@ function InputScreen({ navigation }) {
         //     </View>
         //   </View>
         // </Modal>)
-         Alert.alert(
-            "RICONOSCIMENTO CORRETTO",
-            // "Il riconoscimento Neonato <=> Genitore è stato eseguito correttamente"
-            messageData + "\n\nBambino: " + childName + "\n\nGenitore: " + motherName
-          );
+        Alert.alert(
+          "RICONOSCIMENTO CORRETTO",
+          // "Il riconoscimento Neonato <=> Genitore è stato eseguito correttamente"
+          messageData +
+            "\n\nBambino: " +
+            childName +
+            "\n\nGenitore: " +
+            motherName
+        );
       } else {
         Alert.alert(
           "RICONOSCIMENTO ERRATO",
           // "ATENZIONE riconoscimento Neonato <=> Genitore ERRATO! "
-          messageData + "\n\nBambino: " + childName + "\n\nGenitore: " + motherName
+          messageData +
+            "\n\nBambino: " +
+            childName +
+            "\n\nGenitore: " +
+            motherName
         );
       }
     }
@@ -136,7 +148,7 @@ function InputScreen({ navigation }) {
     } else if (authCtx.latte === "" || authCtx.latte == null) {
       Alert.alert("ASSENZA DATO", "Non è stato scansionato il latte/culla!");
     } else {
-      if ((authCtx.neonato === authCtx.latte)) {
+      if (authCtx.neonato === authCtx.latte) {
         Alert.alert(
           "RICONOSCIMENTO CORRETTO",
           "Il riconoscimento Neonato <=> Culla/Latte è stato eseguito correttamente"
@@ -154,6 +166,7 @@ function InputScreen({ navigation }) {
     authCtx.readNeonato(null);
     authCtx.readGenitore(null);
     authCtx.readLatte(null);
+    // authCtx.readSessionTimer(4);
 
     setUtente("");
     setNeonato("");
@@ -168,9 +181,13 @@ function InputScreen({ navigation }) {
           <View style={styles.userContainer}>
             <Text style={styles.textUtenteSmall}>Buongiorno</Text>
             <Text style={styles.textUtente}>{cognomeNome}</Text>
-            <Text style={styles.textSessione}>
-              (Sessione: {authCtx.sessionID})
-            </Text>
+            <View style={styles.containerSessione}>
+              <Text style={styles.textSessione}>
+                (Sessione: {authCtx.sessionID}) - 
+              </Text>
+              <CountdownTimerAuto style={styles.textSessione} />
+            </View>
+
             {/* <UtenteInput onSetUtente={setUtenteHandler} /> */}
           </View>
           <View style={styles.inputsContainer}>
@@ -345,6 +362,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "white",
   },
+  containerSessione: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: "center",
+    alignItems: "center",
+  },
   textSessione: {
     fontSize: 10,
     fontWeight: "bold",
@@ -356,17 +379,17 @@ const styles = StyleSheet.create({
   },
   centeredView: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginTop: 22,
   },
   modalView: {
     margin: 20,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
+    alignItems: "center",
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -381,18 +404,18 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   buttonOpen: {
-    backgroundColor: '#F194FF',
+    backgroundColor: "#F194FF",
   },
   buttonClose: {
-    backgroundColor: '#2196F3',
+    backgroundColor: "#2196F3",
   },
   textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
   },
   modalText: {
     marginBottom: 15,
-    textAlign: 'center',
+    textAlign: "center",
   },
 });

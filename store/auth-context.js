@@ -2,6 +2,7 @@ const { createContext, useState } = require("react");
 
 export const AuthContext = createContext({
   sessionID: "",
+  sessionTimer: 10,
   isAuthenticated: false,
   cognome: "",
   nome: "",
@@ -11,22 +12,25 @@ export const AuthContext = createContext({
   readNeonato: () => {},
   readGenitore: () => {},
   readLatte: () => {},
+  readSessionTimer: (timer) => {},
   authenticate: (sessionID) => {},
   logout: () => {},
 });
 
 function AuthContentProvider({ children }) {
   const [authSessionIDs, setAuthSessionIDs] = useState();
+  const [sessTimer, setSessTimer] = useState();
   const [cognome, setCognome] = useState();
   const [nome, setNome] = useState();
   const [neonato, setNeonato] = useState();
   const [genitore, setGenitore] = useState();
   const [latte, setLatte] = useState();
 
-  function authenticate(sessionID, cognome, nome) {
+  function authenticate(sessionID, timer, cognome, nome) {
     setAuthSessionIDs(sessionID);
     setCognome(cognome);
     setNome(nome);
+    setSessTimer(timer);
   }
 
   function logout() {
@@ -45,8 +49,15 @@ function AuthContentProvider({ children }) {
     setLatte(latte);
   }
 
+  function readSessTimer(timer) {
+    console.log('timer', timer)
+    setSessTimer(timer);
+    console.log('CUCU!')
+  }
+
   const value = {
     sessionID: authSessionIDs,
+    sessionTimer: 5,
     isAuthenticated: !!authSessionIDs,
     cognome: cognome,
     nome: nome,
@@ -56,6 +67,7 @@ function AuthContentProvider({ children }) {
     readNeonato: readNeo,
     readGenitore: readGen,
     readLatte: readLat,
+    readSessionTimer: readSessTimer,
     authenticate: authenticate,
     logout: logout,
   };
