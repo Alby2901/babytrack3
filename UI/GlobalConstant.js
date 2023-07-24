@@ -12,3 +12,11 @@ export const GlobalStyles = {
       Button_Scan: "#94941f",
     },
   };
+
+  export const GlobalConstants = {
+    paths: {
+      PATH_APP: 'babysafe',
+      PATH_LOGIN: 'login',
+      PATH_CHECHBAND: 'checkband',
+    },
+  };

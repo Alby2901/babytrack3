@@ -74,8 +74,10 @@ function AuthenticatedStack() {
 function Navigation() {
   const authCtx = useContext(AuthContext);
 
-  console.log("App 1 =>>", authCtx.isAuthenticated);
-  console.log("APP 2 =>>", authCtx.sessionID);
+  console.log("App authCtx.isAuthenticated =>>", authCtx.isAuthenticated);
+  console.log("APP authCtx.sessionID =>>", authCtx.sessionID);
+  console.log("APP authCtx.urlsetted =>>", authCtx.urlsetted);
+  console.log("APP authCtx.sessionTimer =>>", authCtx.sessionTimer);
 
   return (
     <NavigationContainer>

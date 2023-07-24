@@ -7,6 +7,7 @@ import {
   ScrollView,
   SafeAreaView,
   Pressable,
+  Alert,
 } from "react-native";
 import { getSession } from "../components/http";
 import { useContext, useState } from "react";
@@ -22,9 +23,13 @@ function LoginScreen({ navigation }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showConfigInput, setshowConfigInput] = useState(false);
   const { isInputOk, setIsInputOk } = useState(true);
-  const [url, setUrl] = useState("http://130.0.151.40:8090/babysafe/login");
-  const [usr, setUsr] = useState("");
-  const [pwd, setPwd] = useState("");
+  const [url, setUrl] = useState("http://130.0.151.40:8090");
+  
+  // ----------------------------
+  // ELIMINARE IL DEFAULT!
+  const [usr, setUsr] = useState("pino");
+  const [pwd, setPwd] = useState("pino");
+  // ----------------------------
 
   const authCtx = useContext(AuthContext);
 
@@ -42,8 +47,14 @@ function LoginScreen({ navigation }) {
   }
 
   async function getSessionHandler() {
-    console.log("+++++++++++++++++++++++++++++");
-    console.log("GetSession1: ");
+    console.log("Login Screen +++++++++++++++++++++++++++++");
+    console.log("Login Screen GetSession1: ");
+
+    console.log("Login Screen url: ", url);
+
+    authCtx.readUrlSetted(url);
+
+    console.log("Login Screen authCtx.urlsetted: ", authCtx.urlsetted);
 
     setIsAuthenticated(true);
     // wait(2000);
@@ -54,16 +65,21 @@ function LoginScreen({ navigation }) {
     );
     setIsAuthenticated(false);
 
-    console.log("SessId: ", sessionIDData);
-    authCtx.authenticate(sessionIDData, cognome, nome);
-    console.log("Ctx.sessionID: ", authCtx.sessionID);
-    console.log("Ctx.isAuthenticated: ", authCtx.isAuthenticated);
+    console.log("Login Screen SessId: ", sessionIDData);
+    authCtx.authenticate(sessionIDData, 8, cognome, nome);
+    const p1 = authCtx.sessionID;
+    const p2 = authCtx.isAuthenticated;
+    console.log("Login Screen Ctx.sessionID (p1): ", p1);
+    console.log("Login Screen Ctx.isAuthenticated (p2): ", p2);
 
-    console.log("GetSession2: ");
+    console.log("Login Screen Ctx.sessionID: ", authCtx.sessionID);
+    console.log("Login Screen Ctx.isAuthenticated: ", authCtx.isAuthenticated);
+
+    console.log("Login Screen GetSession2: ");
     setSessionID(sessionIDData);
-    console.log("GetSession3: ");
+    console.log("Login Screen GetSession3: ");
     setmessage(messageData);
-    console.log("GetSession4: ");
+    console.log("Login Screen GetSession4: ");
     setIsLogged(true);
   }
 
@@ -83,26 +99,24 @@ function LoginScreen({ navigation }) {
     setPwd(enteredPwd);
   }
 
-  function showConfigInputHandler(){
-    setshowConfigInput(!showConfigInput)
+  function showConfigInputHandler() {
+    setshowConfigInput(!showConfigInput);
   }
 
   return (
     // <SafeAreaView>
     <ScrollView>
       <View style={styles.containerOuter}>
-
-      <Pressable onPress={showConfigInputHandler}>
-          <View style={styles.hideButton}>
-          </View>
+        <Pressable onPress={showConfigInputHandler}>
+          <View style={styles.hideButton}></View>
         </Pressable>
 
-          <View style={styles.cardTitle}>
-            <Text style={styles.cardText}>LOGIN</Text>
-            <Text style={[styles.cardText, styles.cardSmalltext]}>
-              Inserire le credenziali di Neocare
-            </Text>
-          </View>
+        <View style={styles.cardTitle}>
+          <Text style={styles.cardText}>LOGIN</Text>
+          <Text style={[styles.cardText, styles.cardSmalltext]}>
+            Inserire le credenziali di Neocare
+          </Text>
+        </View>
         <View style={styles.containerInput}>
           {showConfigInput && (
             <TextInput
@@ -194,7 +208,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
 
     height: 10,
-    width: 10, 
+    width: 10,
     paddingVertical: 0,
     backgroundColor: GlobalStyles.colors.BG_App_Blue,
   },

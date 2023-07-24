@@ -2,6 +2,7 @@ const { createContext, useState } = require("react");
 
 export const AuthContext = createContext({
   sessionID: "",
+  urlsetted: "",
   sessionTimer: 10,
   isAuthenticated: false,
   cognome: "",
@@ -14,25 +15,32 @@ export const AuthContext = createContext({
   readLatte: () => {},
   readSessionTimer: (timer) => {},
   authenticate: (sessionID) => {},
+  readUrlSetted: () => {},
   logout: () => {},
 });
 
 function AuthContentProvider({ children }) {
   const [authSessionIDs, setAuthSessionIDs] = useState();
-  const [sessTimer, setSessTimer] = useState();
+  const [urlSetup, setUrlSetup] = useState();
+  const [sessTimer, setSessTimer] = useState(10);
   const [cognome, setCognome] = useState();
   const [nome, setNome] = useState();
   const [neonato, setNeonato] = useState();
   const [genitore, setGenitore] = useState();
   const [latte, setLatte] = useState();
-
-  function authenticate(sessionID, timer, cognome, nome) {
+  
+  function authenticatef(sessionID, timer, cognome, nome) {
     setAuthSessionIDs(sessionID);
     setCognome(cognome);
     setNome(nome);
     setSessTimer(timer);
+    // console.log('Auth-Context sessTimer status: ', sessTimer)
   }
 
+  function readUrlSettf(urlp) {
+    setUrlSetup(urlp);
+  }
+  
   function logout() {
     setAuthSessionIDs(null);
   }
@@ -49,6 +57,7 @@ function AuthContentProvider({ children }) {
     setLatte(latte);
   }
 
+
   function readSessTimer(timer) {
     console.log('timer', timer)
     setSessTimer(timer);
@@ -57,7 +66,8 @@ function AuthContentProvider({ children }) {
 
   const value = {
     sessionID: authSessionIDs,
-    sessionTimer: 5,
+    urlsetted: urlSetup,
+    sessionTimer: sessTimer,
     isAuthenticated: !!authSessionIDs,
     cognome: cognome,
     nome: nome,
@@ -68,7 +78,8 @@ function AuthContentProvider({ children }) {
     readGenitore: readGen,
     readLatte: readLat,
     readSessionTimer: readSessTimer,
-    authenticate: authenticate,
+    authenticate: authenticatef,
+    readUrlSetted: readUrlSettf,
     logout: logout,
   };
 
