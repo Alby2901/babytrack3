@@ -79,6 +79,7 @@ function InputScreen({ navigation }) {
       Alert.alert("ASSENZA DATO", "Non è stato scansionato il genitore!");
     } else {
       const [ret, messageData, childName, motherName] = await getChkParent(
+        authCtx.urlsetted,
         authCtx.sessionID,
         authCtx.neonato,
         authCtx.genitore
@@ -90,6 +91,8 @@ function InputScreen({ navigation }) {
       setMessage(messageData);
       setChildN(childName);
       setMotherN(motherName);
+
+
 
       if (authCtx.neonato === authCtx.genitore) {
         // return (<Modal
@@ -166,7 +169,7 @@ function InputScreen({ navigation }) {
     authCtx.readNeonato(null);
     authCtx.readGenitore(null);
     authCtx.readLatte(null);
-    // authCtx.readSessionTimer(4);
+    authCtx.readSessionTimer(4);
 
     setUtente("");
     setNeonato("");
@@ -183,11 +186,10 @@ function InputScreen({ navigation }) {
             <Text style={styles.textUtente}>{cognomeNome}</Text>
             <View style={styles.containerSessione}>
               <Text style={styles.textSessione}>
-                (Sessione: {authCtx.sessionID}) - 
-              </Text>
+                (Sessione: {authCtx.sessionID}) - </Text>
               <CountdownTimerAuto style={styles.textSessione} />
             </View>
-
+            <Text > --- {authCtx.urlsetted} --- </Text>
             {/* <UtenteInput onSetUtente={setUtenteHandler} /> */}
           </View>
           <View style={styles.inputsContainer}>
