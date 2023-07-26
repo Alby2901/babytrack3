@@ -62,6 +62,23 @@ function InputScreen({ navigation }) {
   //   setLatteCulla(lattecullaBack);
   // }
 
+  function Reset() {
+    authCtx.readNeonato(null);
+    authCtx.readGenitore(null);
+    authCtx.readLatte(null);
+    authCtx.readSessionTimer(4);
+
+    setUtente("");
+    setNeonato("");
+    setGenitore("");
+    setLatteCulla("");
+  }
+
+  function resetAndLogout(){
+    Reset();
+    authCtx.logout();
+  }
+
   async function VerificaGenitore() {
     const n = JSON.stringify(authCtx.neonato);
     const g = JSON.stringify(authCtx.genitore);
@@ -140,6 +157,7 @@ function InputScreen({ navigation }) {
         );
       }
     }
+    Reset();
   }
 
   function VerificaLatteCulla() {
@@ -166,23 +184,6 @@ function InputScreen({ navigation }) {
         );
       }
     }
-  }
-
-  function Reset() {
-    authCtx.readNeonato(null);
-    authCtx.readGenitore(null);
-    authCtx.readLatte(null);
-    authCtx.readSessionTimer(4);
-
-    setUtente("");
-    setNeonato("");
-    setGenitore("");
-    setLatteCulla("");
-  }
-
-  function resetAndLogout(){
-    Reset();
-    authCtx.logout();
   }
 
   return (
