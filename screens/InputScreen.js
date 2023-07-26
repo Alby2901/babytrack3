@@ -9,6 +9,7 @@ import {
   ScrollView,
   SafeAreaView,
   Modal,
+  Pressable
 } from "react-native";
 import UtenteInput from "../components/UtenteInput";
 import NeonatoInput from "../components/NeonatoInput";
@@ -62,8 +63,36 @@ function InputScreen({ navigation }) {
   //   setLatteCulla(lattecullaBack);
   // }
 
-  async function VerificaGenitore() {
+  const [modalVisible, setModalVisible] = useState(true);
 
+  function showModal() {
+    console.log('modal 1: ');
+    return (
+    <View style={styles.centeredView}>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setModalVisible(!modalVisible);
+        }}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>Hello World!</Text>
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => setModalVisible(!modalVisible)}
+            >
+              <Text style={styles.textStyle}>Hide Modal</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+    </View>)
+  }
+
+  async function VerificaGenitore() {
     const n = JSON.stringify(authCtx.neonato);
     const g = JSON.stringify(authCtx.genitore);
 
@@ -92,30 +121,30 @@ function InputScreen({ navigation }) {
       setChildN(childName);
       setMotherN(motherName);
 
-
-
       if (authCtx.neonato === authCtx.genitore) {
-        // return (<Modal
-        //   animationType="slide"
-        //   transparent={true}
-        //   visible={modalVisible}
-        //   // onRequestClose={() => {
-        //   //   Alert.alert("Modal has been closed.");
-        //   //   setModalVisible(!modalVisible);
-        //   // }}
-        // >
-        //   <View style={styles.centeredView}>
-        //     <View style={styles.modalView}>
-        //       <Text style={styles.modalText}>Hello World!</Text>
-        //       <Pressable
-        //         style={[styles.button, styles.buttonClose]}
-        //         onPress={() => setModalVisible(!modalVisible)}
-        //       >
-        //         <Text style={styles.textStyle}>Hide Modal</Text>
-        //       </Pressable>
-        //     </View>
-        //   </View>
-        // </Modal>)
+        return (
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            // onRequestClose={() => {
+            //   Alert.alert("Modal has been closed.");
+            //   setModalVisible(!modalVisible);
+            // }}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Text style={styles.modalText}>Hello World!</Text>
+                <Pressable
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={() => setModalVisible(!modalVisible)}
+                >
+                  <Text style={styles.textStyle}>Hide Modal</Text>
+                </Pressable>
+              </View>
+            </View>
+          </Modal>
+        );
         Alert.alert(
           "RICONOSCIMENTO CORRETTO",
           // "Il riconoscimento Neonato <=> Genitore è stato eseguito correttamente"
@@ -186,10 +215,11 @@ function InputScreen({ navigation }) {
             <Text style={styles.textUtente}>{cognomeNome}</Text>
             <View style={styles.containerSessione}>
               <Text style={styles.textSessione}>
-                (Sessione: {authCtx.sessionID}) - </Text>
+                (Sessione: {authCtx.sessionID}) -{" "}
+              </Text>
               <CountdownTimerAuto style={styles.textSessione} />
             </View>
-            <Text > --- {authCtx.urlsetted} --- </Text>
+            <Text> --- {authCtx.urlsetted} --- </Text>
             {/* <UtenteInput onSetUtente={setUtenteHandler} /> */}
           </View>
           <View style={styles.inputsContainer}>
@@ -263,6 +293,15 @@ function InputScreen({ navigation }) {
               />
             </View>
           </View>
+          <View style={styles.buttonsContainer2}>
+            <View style={styles.buttonResetContainer}>
+              <Button
+                title="Test Modal"
+                onPress={showModal}
+                color={GlobalStyles.colors.Button_Reset}
+              ></Button>
+            </View>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -272,6 +311,49 @@ function InputScreen({ navigation }) {
 export default InputScreen;
 
 const styles = StyleSheet.create({
+  // -----test Modal ------------
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
+  },
+  // --------------------------------------
   containerOuter: {
     flex: 1,
     alignItems: "center",
@@ -366,7 +448,7 @@ const styles = StyleSheet.create({
   },
   containerSessione: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
   },
