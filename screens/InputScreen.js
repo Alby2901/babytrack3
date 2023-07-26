@@ -1,5 +1,5 @@
 import React from "react";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import {
   Text,
   View,
@@ -63,7 +63,6 @@ function InputScreen({ navigation }) {
   // }
 
   async function VerificaGenitore() {
-
     const n = JSON.stringify(authCtx.neonato);
     const g = JSON.stringify(authCtx.genitore);
 
@@ -92,9 +91,7 @@ function InputScreen({ navigation }) {
       setChildN(childName);
       setMotherN(motherName);
 
-
-
-      if (authCtx.neonato === authCtx.genitore) {
+      if (ret === '0' && authCtx.neonato === authCtx.genitore) {
         // return (<Modal
         //   animationType="slide"
         //   transparent={true}
@@ -119,7 +116,10 @@ function InputScreen({ navigation }) {
         Alert.alert(
           "RICONOSCIMENTO CORRETTO",
           // "Il riconoscimento Neonato <=> Genitore è stato eseguito correttamente"
-          messageData +
+          "ret: " +
+            ret +
+            "\n\nMsg: " +
+            messageData +
             "\n\nBambino: " +
             childName +
             "\n\nGenitore: " +
@@ -129,7 +129,10 @@ function InputScreen({ navigation }) {
         Alert.alert(
           "RICONOSCIMENTO ERRATO",
           // "ATENZIONE riconoscimento Neonato <=> Genitore ERRATO! "
-          messageData +
+          "ret: " +
+            ret +
+            "\n\nMsg: " +
+            messageData +
             "\n\nBambino: " +
             childName +
             "\n\nGenitore: " +
@@ -177,6 +180,11 @@ function InputScreen({ navigation }) {
     setLatteCulla("");
   }
 
+  function resetAndLogout(){
+    Reset();
+    authCtx.logout();
+  }
+
   return (
     <SafeAreaView>
       <ScrollView>
@@ -186,10 +194,11 @@ function InputScreen({ navigation }) {
             <Text style={styles.textUtente}>{cognomeNome}</Text>
             <View style={styles.containerSessione}>
               <Text style={styles.textSessione}>
-                (Sessione: {authCtx.sessionID}) - </Text>
-              <CountdownTimerAuto style={styles.textSessione} />
+                (Sessione: {authCtx.sessionID}) -{" "}
+              </Text>
+              {/* <CountdownTimerAuto style={styles.textSessione} /> */}
             </View>
-            <Text > --- {authCtx.urlsetted} --- </Text>
+            {/* <Text> --- {authCtx.urlsetted} --- </Text> */}
             {/* <UtenteInput onSetUtente={setUtenteHandler} /> */}
           </View>
           <View style={styles.inputsContainer}>
@@ -201,7 +210,7 @@ function InputScreen({ navigation }) {
                   color={GlobalStyles.colors.Button_Scan}
                 />
               </View>
-              <Text style={styles.text}>Neonato: {authCtx.neonato}</Text>
+              <Text style={styles.text}>Barcode neonato: {authCtx.neonato}</Text>
             </View>
             <View style={styles.buttonsScanContainer}>
               <View style={styles.buttonScanContainer}>
@@ -211,9 +220,9 @@ function InputScreen({ navigation }) {
                   color={GlobalStyles.colors.Button_Scan}
                 />
               </View>
-              <Text style={styles.text}>Genitore: {authCtx.genitore}</Text>
+              <Text style={styles.text}>Barcode genitore: {authCtx.genitore}</Text>
             </View>
-            <View style={styles.buttonsScanContainer}>
+            {/* <View style={styles.buttonsScanContainer}>
               <View style={styles.buttonScanContainer}>
                 <Button
                   title="Scan Latte"
@@ -222,7 +231,7 @@ function InputScreen({ navigation }) {
                 />
               </View>
               <Text style={styles.text}>Latte/Culla: {authCtx.latte}</Text>
-            </View>
+            </View> */}
 
             {/* {ret && <Text style={styles.text}>Ret: {ret}</Text>}
             {message && <Text style={styles.text}>Msg: {message}</Text>}
@@ -238,16 +247,13 @@ function InputScreen({ navigation }) {
                 color={GlobalStyles.colors.BG_DarkBlue}
               ></Button>
             </View>
-            <View style={styles.buttonContainer}>
+            {/* <View style={styles.buttonContainer}>
               <Button
                 title="Chk Latte"
                 onPress={VerificaLatteCulla}
                 color={GlobalStyles.colors.BG_DarkBlue}
               ></Button>
-            </View>
-          </View>
-
-          <View style={styles.buttonsContainer2}>
+            </View> */}
             <View style={styles.buttonResetContainer}>
               <Button
                 title="Reset"
@@ -255,10 +261,14 @@ function InputScreen({ navigation }) {
                 color={GlobalStyles.colors.Button_Reset}
               ></Button>
             </View>
+          </View>
+
+          <View style={styles.buttonsContainer2}>
             <View style={styles.buttonLogoutContainer}>
               <Button
                 title="Logout"
-                onPress={authCtx.logout}
+                // onPress={authCtx.logout}
+                onPress={resetAndLogout}
                 color={GlobalStyles.colors.Button_Logout}
               />
             </View>
@@ -276,7 +286,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     // justifyContent: "center",
-    paddingBottom: 200,
+    paddingBottom: 115,
     backgroundColor: GlobalStyles.colors.BG_App_Blue,
   },
   userContainer: {
@@ -285,6 +295,7 @@ const styles = StyleSheet.create({
     // justifyContent: "center",
     backgroundColor: GlobalStyles.colors.BG_DarkBlue,
     marginTop: 20,
+    marginBottom: 20,
     paddingHorizontal: 10,
     paddingVertical: 10,
     minHeight: 50,
@@ -292,10 +303,9 @@ const styles = StyleSheet.create({
   },
   inputsContainer: {
     flex: 4,
-
     paddingHorizontal: 10,
     paddingVertical: 10,
-    height: 360,
+    minHeight: 200,
     minWidth: 280,
 
     // borderColor: 'blue',
@@ -330,11 +340,13 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
+    // justifyContent: "space-between",
+    justifyContent: "center",
     paddingTop: 10,
     paddingBottom: 10,
     paddingHorizontal: 4,
     width: 280,
+    // minHeight: 150,
   },
   buttonContainer: {
     minWidth: 120,
@@ -346,6 +358,7 @@ const styles = StyleSheet.create({
   buttonLogoutContainer: {
     backgroundColor: GlobalStyles.colors.Buton_Logout,
     minWidth: 120,
+    minhight: 100,
   },
   text: {
     fontSize: 15,
@@ -353,7 +366,7 @@ const styles = StyleSheet.create({
     color: "white",
   },
   textUtente: {
-    fontSize: 30,
+    fontSize: 25,
     fontWeight: "bold",
     textAlign: "center",
     color: "white",
@@ -366,7 +379,7 @@ const styles = StyleSheet.create({
   },
   containerSessione: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
   },

@@ -23,12 +23,12 @@ function LoginScreen({ navigation }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showConfigInput, setshowConfigInput] = useState(false);
   const { isInputOk, setIsInputOk } = useState(true);
-  const [url, setUrl] = useState("http://130.0.151.40:8090");
+  const [url, setUrl] = useState("http://172.31.234.97:8084");
   
   // ----------------------------
   // ELIMINARE IL DEFAULT!
-  const [usr, setUsr] = useState("pino");
-  const [pwd, setPwd] = useState("pino");
+  const [usr, setUsr] = useState("");
+  const [pwd, setPwd] = useState("");
   // ----------------------------
 
   const authCtx = useContext(AuthContext);
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
     backgroundColor: GlobalStyles.colors.BG_App_Blue,
     paddingHorizontal: 20,
     paddingTop: 20,
-    paddingBottom: 420,
+    paddingBottom: 223,
   },
   hideButton: {
     alignItems: "center",
