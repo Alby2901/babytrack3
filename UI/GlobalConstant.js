@@ -18,5 +18,6 @@ export const GlobalStyles = {
       PATH_APP: 'babysafe',
       PATH_LOGIN: 'login',
       PATH_CHECHBAND: 'checkband',
+      PATH_VERIFY: 'verifyband',
     },
   };

@@ -15,12 +15,15 @@ import NeonatoInput from "../components/NeonatoInput";
 import GenitoreInput from "../components/GenitoreInput";
 import LatteCullaInput from "../components/LatteCullaInput";
 import { AuthContext } from "../store/auth-context";
-import { getChkParent } from "../components/http";
+import { getChkBaby, getChkParent } from "../components/http";
 import { GlobalStyles } from "../UI/GlobalConstant";
 import CountdownTimerAuto from "../components/CountdownTimerAuto";
+import LoadingOverlay from "../UI/LoadingOverlay";
 // import ResultScreen from "./ResultScreen";
 
 function InputScreen({ navigation }) {
+  const [isloading, setIsloading] = useState(false);
+
   const [utente, setUtente] = useState("");
   const [neonato, setNeonato] = useState("");
   const [genitore, setGenitore] = useState("");
@@ -34,6 +37,10 @@ function InputScreen({ navigation }) {
   const [motherN, setMotherN] = useState("");
 
   const authCtx = useContext(AuthContext);
+
+  if (isloading) {
+    return <LoadingOverlay></LoadingOverlay>;
+  }
 
   console.log("Input Screen isAuth =>>", authCtx.isAuthenticated);
   console.log("Input Screen SessID =>>", authCtx.sessionID);
@@ -62,6 +69,36 @@ function InputScreen({ navigation }) {
   //   setLatteCulla(lattecullaBack);
   // }
 
+
+  async function VerificaNeonato() {
+
+    if (authCtx.neonato === "" || authCtx.neonato == null) {
+      Alert.alert("ASSENZA DATO", "Non è stato scansionato il neonato!");
+    } else {
+
+      setIsloading(true);
+      Wait(1000)
+      const [ret, messageData, childName] = await getChkBaby(
+        authCtx.urlsetted,
+        authCtx.sessionID,
+        authCtx.neonato,
+      );
+      setIsloading(false);
+
+      setRet(ret);
+      setMessage(messageData);
+      setChildN(childName);
+
+      Alert.alert(
+        "RICONOSCIMENTO CORRETTO",
+        // "Il riconoscimento Neonato <=> Genitore è stato eseguito correttamente"
+        messageData +
+        "\n\nBambino: " +
+        childName
+      );
+    }
+  }
+
   async function VerificaGenitore() {
 
     const n = JSON.stringify(authCtx.neonato);
@@ -78,6 +115,8 @@ function InputScreen({ navigation }) {
     } else if (authCtx.genitore === "" || authCtx.genitore == null) {
       Alert.alert("ASSENZA DATO", "Non è stato scansionato il genitore!");
     } else {
+
+      setIsloading(true);
       const [ret, messageData, childName, motherName] = await getChkParent(
         authCtx.urlsetted,
         authCtx.sessionID,
@@ -86,6 +125,7 @@ function InputScreen({ navigation }) {
         // "2021025214",
         // "322857"
       );
+      setIsloading(false);
 
       setRet(ret);
       setMessage(messageData);
@@ -120,20 +160,20 @@ function InputScreen({ navigation }) {
           "RICONOSCIMENTO CORRETTO",
           // "Il riconoscimento Neonato <=> Genitore è stato eseguito correttamente"
           messageData +
-            "\n\nBambino: " +
-            childName +
-            "\n\nGenitore: " +
-            motherName
+          "\n\nBambino: " +
+          childName +
+          "\n\nGenitore: " +
+          motherName
         );
       } else {
         Alert.alert(
           "RICONOSCIMENTO ERRATO",
           // "ATENZIONE riconoscimento Neonato <=> Genitore ERRATO! "
           messageData +
-            "\n\nBambino: " +
-            childName +
-            "\n\nGenitore: " +
-            motherName
+          "\n\nBambino: " +
+          childName +
+          "\n\nGenitore: " +
+          motherName
         );
       }
     }
@@ -233,14 +273,21 @@ function InputScreen({ navigation }) {
           <View style={styles.buttonsContainer1}>
             <View style={styles.buttonContainer}>
               <Button
-                title="Chk Genitore"
+                title={"Chk \nNeonato"}
+                onPress={VerificaNeonato}
+                color={GlobalStyles.colors.BG_DarkBlue}
+              ></Button>
+            </View>
+            <View style={styles.buttonContainer}>
+              <Button
+                title={"Chk \nGenitore"}
                 onPress={VerificaGenitore}
                 color={GlobalStyles.colors.BG_DarkBlue}
               ></Button>
             </View>
             <View style={styles.buttonContainer}>
               <Button
-                title="Chk Latte"
+                title={"Chk \nLatte"}
                 onPress={VerificaLatteCulla}
                 color={GlobalStyles.colors.BG_DarkBlue}
               ></Button>
@@ -337,7 +384,10 @@ const styles = StyleSheet.create({
     width: 280,
   },
   buttonContainer: {
-    minWidth: 120,
+    // borderColor: 'red',
+    // borderWidth: 1,
+    minWidth: 80,
+    // minHeight: 80,
   },
   buttonResetContainer: {
     backgroundColor: GlobalStyles.colors.Buton_Reset,

@@ -10,7 +10,7 @@ import { GlobalConstants } from "../UI/GlobalConstant";
 // http://10.6.10.135:8080/babysafe/checkband?sessionid=656ceef5-f87d-4cc0-87fc-3edaf414ffcd&child=2021025214&parent=322857
 
 export async function getSession(utente, password, url) {
-  const urlComplete = url + '/' + GlobalConstants.paths.PATH_APP + '/' + GlobalConstants.paths.PATH_LOGIN; 
+  const urlComplete = url + '/' + GlobalConstants.paths.PATH_APP + '/' + GlobalConstants.paths.PATH_LOGIN;
   const response = await axios.get(urlComplete, {
     params: {
       user: utente,
@@ -54,16 +54,62 @@ export async function getSession(utente, password, url) {
 
 // const CHK_PAR_URL = "http://130.0.151.40:8090/babysafe/checkband";
 
+export async function getChkBaby(url, sessionid, neonanto) {
+
+  const urlComplete = url + '/' + GlobalConstants.paths.PATH_APP + '/' + GlobalConstants.paths.PATH_VERIFY; 
+   const response = await axios.get(urlComplete, {
+      params: {
+        sessionid: sessionid,
+        child: neonanto,
+      },
+    });
+
+  console.log("http3: -------------------------------------------------");
+  console.log("http3: Risposta chk gen: " + JSON.stringify(response.data));
+  console.log("http3: -------------------------------------------------");
+
+  for (const param in response.data) {
+    console.log("http3: param: " + param);
+  }
+
+  console.log("http3: param_ret: " + response.data.ret);
+  console.log("http3: param_msg: " + response.data.message);
+  console.log("http3: param_prm: " + response.data.params);
+
+  const message = response.data.message;
+  const ret = response.data.ret.toString();
+
+  let childName = "";
+  let motherName = "";
+
+  if (response.data.ret !== 0) {
+    console.log("http3: Ret if ret !0: ", response.data.ret);
+  } else {
+    console.log("http3: Ret if ret =0: ", response.data.ret);
+
+    childName = response.data.params.childName;
+    motherName = response.data.params.motherName;
+  }
+
+  console.log("http3: CHILD-NAME: " + childName);
+  console.log("http3: MOTHER_NAME: " + motherName);
+
+  // {"ret":0,"message":"Braccialetto madre riconosciuto ","params":{"childName":"Neonato Bimbo","motherName":"Rossi Maria"}}
+
+  return [ ret, message, childName, motherName];
+}
+
+
 export async function getChkParent(url, sessionid, neoanto, genitore) {
 
   const urlComplete = url + '/' + GlobalConstants.paths.PATH_APP + '/' + GlobalConstants.paths.PATH_CHECHBAND; 
-  const response = await axios.get(urlComplete, {
-    params: {
-      sessionid: sessionid,
-      child: neoanto,
-      parent: genitore,
-    },
-  });
+   const response = await axios.get(urlComplete, {
+      params: {
+        sessionid: sessionid,
+        child: neoanto,
+        parent: genitore,
+      },
+    });
 
   console.log("http2: -------------------------------------------------");
   console.log("http2: Risposta chk gen: " + JSON.stringify(response.data));
