@@ -8,7 +8,6 @@ import {
   Alert,
   ScrollView,
   SafeAreaView,
-  Modal,
 } from "react-native";
 import UtenteInput from "../components/UtenteInput";
 import NeonatoInput from "../components/NeonatoInput";
@@ -19,7 +18,6 @@ import { getChkBaby, getChkParent } from "../components/http";
 import { GlobalStyles } from "../UI/GlobalConstant";
 import CountdownTimerAuto from "../components/CountdownTimerAuto";
 import LoadingOverlay from "../UI/LoadingOverlay";
-// import ResultScreen from "./ResultScreen";
 
 function InputScreen({ navigation }) {
   const [isloading, setIsloading] = useState(false);
@@ -28,8 +26,6 @@ function InputScreen({ navigation }) {
   const [neonato, setNeonato] = useState("");
   const [genitore, setGenitore] = useState("");
   const [latteculla, setLatteCulla] = useState("");
-  // const [ViewResultOk, setViewResultOk] = useState(false);
-  // const [modalVisible, setModalVisible] = useState[false]
 
   const [ret, setRet] = useState("");
   const [message, setMessage] = useState("");
@@ -75,9 +71,7 @@ function InputScreen({ navigation }) {
     if (authCtx.neonato === "" || authCtx.neonato == null) {
       Alert.alert("ASSENZA DATO", "Non è stato scansionato il neonato!");
     } else {
-
       setIsloading(true);
-      Wait(1000)
       const [ret, messageData, childName] = await getChkBaby(
         authCtx.urlsetted,
         authCtx.sessionID,
@@ -89,13 +83,33 @@ function InputScreen({ navigation }) {
       setMessage(messageData);
       setChildN(childName);
 
-      Alert.alert(
-        "RICONOSCIMENTO CORRETTO",
-        // "Il riconoscimento Neonato <=> Genitore è stato eseguito correttamente"
-        messageData +
-        "\n\nBambino: " +
-        childName
-      );
+      if (childName) {
+        navigation.navigate("ModalScrOK", {
+          titolo: "RICONOSCIMENTO CORRETTO",
+          testo1: "Neonato: " + childName,
+          testo2: "",
+          testo3: "Ret: " + ret,
+          testo4: "Message: " + messageData,
+          testobottone: "Chiudi",
+        });
+      } else {
+        navigation.navigate("ModalScrKO", {
+          titolo: "RICONOSCIMENTO ERRATO",
+          testo1: "Neonato non trovato!",
+          testo2: "",
+          testo3: "Ret: " + ret,
+          testo4: "Message: " + messageData,
+          testobottone: "Chiudi",
+        })
+      };
+      // Alert.alert(
+      //   "RICONOSCIMENTO CORRETTO",
+      //   // "Il riconoscimento Neonato <=> Genitore è stato eseguito correttamente"
+      //   messageData +
+      //   "\n\nBambino: " +
+      //   childName
+      // );
+      Reset();
     }
   }
 
@@ -132,50 +146,46 @@ function InputScreen({ navigation }) {
       setChildN(childName);
       setMotherN(motherName);
 
+      if (ret === '0' && authCtx.neonato === authCtx.genitore) {
 
-
-      if (authCtx.neonato === authCtx.genitore) {
-        // return (<Modal
-        //   animationType="slide"
-        //   transparent={true}
-        //   visible={modalVisible}
-        //   // onRequestClose={() => {
-        //   //   Alert.alert("Modal has been closed.");
-        //   //   setModalVisible(!modalVisible);
-        //   // }}
-        // >
-        //   <View style={styles.centeredView}>
-        //     <View style={styles.modalView}>
-        //       <Text style={styles.modalText}>Hello World!</Text>
-        //       <Pressable
-        //         style={[styles.button, styles.buttonClose]}
-        //         onPress={() => setModalVisible(!modalVisible)}
-        //       >
-        //         <Text style={styles.textStyle}>Hide Modal</Text>
-        //       </Pressable>
-        //     </View>
-        //   </View>
-        // </Modal>)
-        Alert.alert(
-          "RICONOSCIMENTO CORRETTO",
-          // "Il riconoscimento Neonato <=> Genitore è stato eseguito correttamente"
-          messageData +
-          "\n\nBambino: " +
-          childName +
-          "\n\nGenitore: " +
-          motherName
-        );
+       navigation.navigate("ModalScrOK", {
+            titolo: "RICONOSCIMENTO CORRETTO",
+            testo1: "Neonato: " + childName,
+            testo2: "Genitore: " + motherName,
+            testo3: "Ret: " + ret,
+            testo4: "Message: " + messageData,
+            testobottone: "Chiudi",
+          });
+        // Alert.alert(
+        //   "RICONOSCIMENTO CORRETTO",
+        //   // "Il riconoscimento Neonato <=> Genitore è stato eseguito correttamente"
+        //   messageData +
+        //   "\n\nBambino: " +
+        //   childName +
+        //   "\n\nGenitore: " +
+        //   motherName
+        // );
       } else {
-        Alert.alert(
-          "RICONOSCIMENTO ERRATO",
-          // "ATENZIONE riconoscimento Neonato <=> Genitore ERRATO! "
-          messageData +
-          "\n\nBambino: " +
-          childName +
-          "\n\nGenitore: " +
-          motherName
-        );
+        navigation.navigate("ModalScrKO", {
+          titolo: "RICONOSCIMENTO ERRATO",
+          testo1: "Neonato  o genitore",
+          testo2: "non trovati!",
+          testo3: "Ret: " + ret,
+          testo4: "Message: " + messageData,
+          testobottone: "Chiudi",
+        })
+
+        // Alert.alert(
+        //   "RICONOSCIMENTO ERRATO",
+        //   // "ATENZIONE riconoscimento Neonato <=> Genitore ERRATO! "
+        //   messageData +
+        //   "\n\nBambino: " +
+        //   childName +
+        //   "\n\nGenitore: " +
+        //   motherName
+        // );
       }
+      Reset();
     }
   }
 
@@ -202,6 +212,7 @@ function InputScreen({ navigation }) {
           "ATENZIONE riconoscimento Neonato <=> Culla/Latte ERRATO!"
         );
       }
+      Reset();
     }
   }
 
@@ -215,6 +226,11 @@ function InputScreen({ navigation }) {
     setNeonato("");
     setGenitore("");
     setLatteCulla("");
+  }
+
+  function resetAndLogout(){
+    Reset();
+    authCtx.logout();
   }
 
   return (
@@ -305,11 +321,12 @@ function InputScreen({ navigation }) {
             <View style={styles.buttonLogoutContainer}>
               <Button
                 title="Logout"
-                onPress={authCtx.logout}
+                onPress={resetAndLogout}
                 color={GlobalStyles.colors.Button_Logout}
               />
             </View>
           </View>
+
         </View>
       </ScrollView>
     </SafeAreaView>
