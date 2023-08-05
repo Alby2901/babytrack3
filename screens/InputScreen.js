@@ -8,6 +8,8 @@ import {
   Alert,
   ScrollView,
   SafeAreaView,
+  Modal,
+  Pressable
 } from "react-native";
 import UtenteInput from "../components/UtenteInput";
 import NeonatoInput from "../components/NeonatoInput";
@@ -31,6 +33,8 @@ function InputScreen({ navigation }) {
   const [message, setMessage] = useState("");
   const [childN, setChildN] = useState("");
   const [motherN, setMotherN] = useState("");
+
+  const [modalVisible, setModalVisible] = useState(false);
 
   const authCtx = useContext(AuthContext);
 
@@ -84,14 +88,16 @@ function InputScreen({ navigation }) {
       setChildN(childName);
 
       if (childName) {
-        navigation.navigate("ModalScrOK", {
-          titolo: "RICONOSCIMENTO CORRETTO",
-          testo1: "Neonato: " + childName,
-          testo2: "",
-          testo3: "Ret: " + ret,
-          testo4: "Message: " + messageData,
-          testobottone: "Chiudi",
-        });
+
+        setModalVisible(!modalVisible);
+        //  navigation.navigate("ModalScrOK", {
+        //     titolo: "RICONOSCIMENTO CORRETTO",
+        //     testo1: "Neonato: " + childName,
+        //     testo2: "",
+        //     testo3: "Ret: " + ret,
+        //     testo4: "Message: " + messageData,
+        //     testobottone: "Chiudi",
+        //   });
       } else {
         navigation.navigate("ModalScrKO", {
           titolo: "RICONOSCIMENTO ERRATO",
@@ -148,14 +154,14 @@ function InputScreen({ navigation }) {
 
       if (ret === '0' && authCtx.neonato === authCtx.genitore) {
 
-       navigation.navigate("ModalScrOK", {
-            titolo: "RICONOSCIMENTO CORRETTO",
-            testo1: "Neonato: " + childName,
-            testo2: "Genitore: " + motherName,
-            testo3: "Ret: " + ret,
-            testo4: "Message: " + messageData,
-            testobottone: "Chiudi",
-          });
+        navigation.navigate("ModalScrOK", {
+          titolo: "RICONOSCIMENTO CORRETTO",
+          testo1: "Neonato: " + childName,
+          testo2: "Genitore: " + motherName,
+          testo3: "Ret: " + ret,
+          testo4: "Message: " + messageData,
+          testobottone: "Chiudi",
+        });
         // Alert.alert(
         //   "RICONOSCIMENTO CORRETTO",
         //   // "Il riconoscimento Neonato <=> Genitore è stato eseguito correttamente"
@@ -228,7 +234,7 @@ function InputScreen({ navigation }) {
     setLatteCulla("");
   }
 
-  function resetAndLogout(){
+  function resetAndLogout() {
     Reset();
     authCtx.logout();
   }
@@ -237,6 +243,35 @@ function InputScreen({ navigation }) {
     <SafeAreaView>
       <ScrollView>
         <View style={styles.containerOuter}>
+
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              Alert.alert('Modal has been closed.');
+              setModalVisible(!modalVisible);
+            }}>
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <View style={styles.centeredView1}>
+                    <Text style={styles.modalTitle}>{JSON.stringify("RICONOSCIMENTO CORRETTO").slice(1, -1)}</Text>
+                    <Text style={styles.modalText}>{JSON.stringify("Neonato: " + childN).slice(1, -1)}</Text>
+                    <Text style={styles.modalText}>{JSON.stringify("").slice(1, -1)}</Text>
+                    <Pressable
+                      style={[styles.button, styles.buttonOpen]}
+                      // onPress={() => navigation.goBack()}
+                      onPress={() => setModalVisible(!modalVisible)}
+                    >
+                      <Text style={styles.textStyle}>{JSON.stringify("Chiudi").slice(1, -1)}</Text>
+                    </Pressable>
+                    <Text style={styles.msgText}>{JSON.stringify("Ret: " + ret).slice(1, -1)}</Text>
+                    <Text style={styles.msgText}>{JSON.stringify("Message: " + message).slice(1, -1)}</Text>
+                </View>
+              </View>
+            </View>
+          </Modal>
+
           <View style={styles.userContainer}>
             <Text style={styles.textUtenteSmall}>Buongiorno</Text>
             <Text style={styles.textUtente}>{cognomeNome}</Text>
@@ -407,11 +442,11 @@ const styles = StyleSheet.create({
     // minHeight: 80,
   },
   buttonResetContainer: {
-    backgroundColor: GlobalStyles.colors.Buton_Reset,
+    backgroundColor: GlobalStyles.colors.Button_Reset,
     minWidth: 120,
   },
   buttonLogoutContainer: {
-    backgroundColor: GlobalStyles.colors.Buton_Logout,
+    backgroundColor: GlobalStyles.colors.Button_Logout,
     minWidth: 120,
   },
   text: {
@@ -445,18 +480,32 @@ const styles = StyleSheet.create({
   textTitle: {
     fontSize: 40,
     fontWeight: "bold",
-  },
+  },  
   centeredView: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22,
+    marginVertical: 270,
+    marginHorizontal: 46,
+    borderRadius: 20,
+    borderColor: "yallow",
+    backgroundColor: 'blue',
+  },
+  centeredView1: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 0,
+    // backgroundColor: 'red',
   },
   modalView: {
-    margin: 20,
+    margin: 0,
+    height: 250,
     backgroundColor: "white",
     borderRadius: 20,
-    padding: 35,
+    borderColor: "green",
+    borderWidth: 10,
+    padding: 20,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -467,17 +516,47 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
+  modalTitle: {
+    marginBottom: 15,
+    textAlign: "center",
+    fontWeight: "bold",
+    fontSize: 15,
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
+    fontSize: 20,
+  },
+  msgText: {
+    marginBottom: 5,
+    textAlign: "center",
+    fontSize: 8,
+  },
+
   button: {
-    borderRadius: 20,
-    padding: 10,
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 30,
     elevation: 2,
+    marginBottom: 10
   },
   buttonOpen: {
-    backgroundColor: "#F194FF",
+    backgroundColor: "green",
   },
   buttonClose: {
-    backgroundColor: "#2196F3",
+    backgroundColor: GlobalStyles.colors.BG_Blue,
   },
+  // button: {
+  //   borderRadius: 20,
+  //   padding: 10,
+  //   elevation: 2,
+  // },
+  // buttonOpen: {
+  //   backgroundColor: "#F194FF",
+  // },
+  // buttonClose: {
+  //   backgroundColor: "#2196F3",
+  // },
   textStyle: {
     color: "white",
     fontWeight: "bold",

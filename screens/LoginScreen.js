@@ -23,7 +23,7 @@ function LoginScreen({ navigation }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showConfigInput, setshowConfigInput] = useState(false);
   const { isInputOk, setIsInputOk } = useState(true);
-  const [url, setUrl] = useState("http://130.0.151.40:8090");
+  const [url, setUrl] = useState("http://37.159.251.165:8090");
   
   // ----------------------------
   // ELIMINARE IL DEFAULT!
