@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import { StatusBar } from "expo-status-bar";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Button, Text, View } from "react-native";
 import LoginScreen from "./screens/LoginScreen";
 import InputScreen from "./screens/InputScreen";
 import ScanScreen from "./screens/ScanScreen";
@@ -14,70 +14,39 @@ import ModalScreenKO from "./screens/ModalScreenKO";
 import AuthContentProvider, { AuthContext } from "./store/auth-context";
 import { GlobalStyles } from "./UI/GlobalConstant";
 import ResultScreen from "./screens/ResultScreen";
+import IconButton from './UI/IconButton';
+import StoreLocalScreen from "./screens/StoreLocalScreen";
 
 // export default function App() {
 
-const Stack = createNativeStackNavigator();
+export default function App() {
+  const Stack = createNativeStackNavigator();
 
-function AuthStack() {
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        title: "Baby Track",
-        headerStyle: {
-          backgroundColor: GlobalStyles.colors.BG_Blue,
-        },
-        headerTintColor: GlobalStyles.colors.Text_Main,
-        headerTitleAlign: "center",
-        headerTitleStyle: {
-          fontWeight: "bold",
-          fontSize: 30,
-        },
-      }}
-    >
-      <Stack.Screen name="Login" component={LoginScreen} />
-      {/* <Stack.Screen name="Signup" component={SignupScreen} /> */}
-    </Stack.Navigator>
-  );
-}
+  function AuthStack() {
 
-function AuthenticatedStack() {
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        title: "Baby Track 2023",
-        headerStyle: {
-          backgroundColor: GlobalStyles.colors.BG_Blue,
-        },
-        headerTintColor: GlobalStyles.colors.Text_Main,
-        headerTitleAlign: "center",
-        headerTitleStyle: {
-          fontWeight: "bold",
-          fontSize: 30,
-        },
-      }}
-    >
-      <Stack.Group>
-        <Stack.Screen
-          name="Input"
-          component={InputScreen}
-          options={{
-            title: "Baby Track 2023",
-          }}
-        />
-        <Stack.Screen name="ResultOk" component={ResultScreen} />
-        <Stack.Screen name="Scan" component={ScanScreen} />
-        <Stack.Screen name="ScanNeo" component={ScanScreenNeonato} />
-        <Stack.Screen name="ScanGen" component={ScanScreenGenitore} />
-        <Stack.Screen name="ScanLat" component={ScanScreenLatte} />
-      </Stack.Group>
 
-      <Stack.Group
+    return (
+      <Stack.Navigator
+        screenOptions={{
+          title: "Baby Track",
+          headerStyle: { backgroundColor: GlobalStyles.colors.BG_Blue, },
+          headerTintColor: GlobalStyles.colors.Text_Main,
+          headerTitleAlign: "center",
+          headerTitleStyle: { fontWeight: "bold", fontSize: 30, },
+        }}
+      >
+        <Stack.Screen name="Login" component={LoginScreen}/>
+        {/* <Stack.Screen name="Signup" component={SignupScreen} /> */}
+        <Stack.Screen name='Settings' component={StoreLocalScreen}></Stack.Screen>
+      </Stack.Navigator>
+    );
+  }
+
+  function AuthenticatedStack() {
+    return (
+      <Stack.Navigator
         screenOptions={{
           title: "Baby Track 2023",
-          presentation: "modal",
-          backgroundColor: 'red',
-          // headerShown: false,
           headerStyle: {
             backgroundColor: GlobalStyles.colors.BG_Blue,
           },
@@ -89,38 +58,69 @@ function AuthenticatedStack() {
           },
         }}
       >
-        <Stack.Screen
-          name="ModalScrOK"
-          component={ModalScreenOK}
-        // Options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="ModalScrKO"
-          component={ModalScreenKO}
-        // Options={{ headerShown: false }}
-        />
-      </Stack.Group>
-    </Stack.Navigator>
-  );
-}
+        <Stack.Group>
+          <Stack.Screen
+            name="Input"
+            component={InputScreen}
+            options={{
+              title: "Baby Track 2023",
+            }}
+          />
+          <Stack.Screen name="ResultOk" component={ResultScreen} />
+          <Stack.Screen name="Scan" component={ScanScreen} />
+          <Stack.Screen name="ScanNeo" component={ScanScreenNeonato} />
+          <Stack.Screen name="ScanGen" component={ScanScreenGenitore} />
+          <Stack.Screen name="ScanLat" component={ScanScreenLatte} />
+        </Stack.Group>
 
-function Navigation() {
-  const authCtx = useContext(AuthContext);
+        <Stack.Group
+          screenOptions={{
+            title: "Baby Track 2023",
+            presentation: "modal",
+            backgroundColor: 'red',
+            // headerShown: false,
+            headerStyle: {
+              backgroundColor: GlobalStyles.colors.BG_Blue,
+            },
+            headerTintColor: GlobalStyles.colors.Text_Main,
+            headerTitleAlign: "center",
+            headerTitleStyle: {
+              fontWeight: "bold",
+              fontSize: 30,
+            },
+          }}
+        >
+          <Stack.Screen
+            name="ModalScrOK"
+            component={ModalScreenOK}
+          // Options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ModalScrKO"
+            component={ModalScreenKO}
+          // Options={{ headerShown: false }}
+          />
+        </Stack.Group>
+      </Stack.Navigator>
+    );
+  }
 
-  console.log("App authCtx.isAuthenticated =>>", authCtx.isAuthenticated);
-  console.log("APP authCtx.sessionID =>>", authCtx.sessionID);
-  console.log("APP authCtx.urlsetted =>>", authCtx.urlsetted);
-  console.log("APP authCtx.sessionTimer =>>", authCtx.sessionTimer);
+  function Navigation() {
+    const authCtx = useContext(AuthContext);
 
-  return (
-    <NavigationContainer>
-      {!authCtx.isAuthenticated && <AuthStack />}
-      {authCtx.isAuthenticated && <AuthenticatedStack />}
-    </NavigationContainer>
-  );
-}
+    console.log("App authCtx.isAuthenticated =>>", authCtx.isAuthenticated);
+    console.log("APP authCtx.sessionID =>>", authCtx.sessionID);
+    console.log("APP authCtx.urlsetted =>>", authCtx.urlsetted);
+    console.log("APP authCtx.sessionTimer =>>", authCtx.sessionTimer);
 
-export default function App() {
+    return (
+      <NavigationContainer>
+        {!authCtx.isAuthenticated && <AuthStack />}
+        {authCtx.isAuthenticated && <AuthenticatedStack />}
+      </NavigationContainer>
+    );
+  }
+
   return (
     <>
       <StatusBar style="auto" />
@@ -130,22 +130,6 @@ export default function App() {
     </>
   );
 }
-
-//   return (
-//     <>
-//       <AuthContentProvider>
-//         <NavigationContainer>
-//           <Stack.Navigator>
-//             <Stack.Screen name="Login" component={LoginScreen} />
-//             <Stack.Screen name="Input" component={InputScreen} />
-//             <Stack.Screen name="Scan" component={ScanScreen} />
-//           </Stack.Navigator>
-//         </NavigationContainer>
-//       </AuthContentProvider>
-//       <StatusBar style="auto"></StatusBar>
-//     </>
-//   );
-// }
 
 const styles = StyleSheet.create({
   container: {

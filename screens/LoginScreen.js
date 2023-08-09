@@ -10,10 +10,11 @@ import {
   Alert,
 } from "react-native";
 import { getSession } from "../components/http";
-import { useContext, useState } from "react";
+import { useContext, useState, useLayoutEffect } from "react";
 import { AuthContext } from "../store/auth-context";
 import LoadingOverlay from "../UI/LoadingOverlay";
 import { GlobalStyles } from "../UI/GlobalConstant";
+import IconButton from '../UI/IconButton';
 
 function LoginScreen({ navigation }) {
   const [errorHTTP, setErrorHTTP] = useState("");
@@ -24,7 +25,7 @@ function LoginScreen({ navigation }) {
   const [showConfigInput, setshowConfigInput] = useState(false);
   const { isInputOk, setIsInputOk } = useState(true);
   const [url, setUrl] = useState("http://37.159.251.165:8090");
-  
+
   // ----------------------------
   // ELIMINARE IL DEFAULT!
   const [usr, setUsr] = useState("pino");
@@ -32,6 +33,26 @@ function LoginScreen({ navigation }) {
   // ----------------------------
 
   const authCtx = useContext(AuthContext);
+
+  function headerSettingsIconPressHandler(){
+    console.log('siamo qui!');
+    navigation.navigate('Settings');
+  }
+
+  useLayoutEffect(() => {
+   navigation.setOptions({
+      headerRight: () => {
+        return (
+        <IconButton
+          icon="settings-outline"
+          size={24}
+          color='white'
+          // onPress={() => {}}
+          onPress={headerSettingsIconPressHandler}
+        />)
+      }
+   });
+  }, [navigation, headerSettingsIconPressHandler]);
 
   // function checkInput(usrp, pwdp, urlp) {
   //   if (usrp && pwdp && urlp) {
