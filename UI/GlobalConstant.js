@@ -19,5 +19,6 @@ export const GlobalStyles = {
       PATH_LOGIN: 'login',
       PATH_CHECHBAND: 'checkband',
       PATH_VERIFY: 'verifyband',
+      KEY_URL: 'Url_server',
     },
   };

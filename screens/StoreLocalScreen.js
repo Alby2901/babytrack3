@@ -2,18 +2,19 @@
 import { useContext, useState, useLayoutEffect } from "react";
 import { View, Text, Button, StyleSheet, Pressable, TextInput } from "react-native";
 import { setObjectToStore, getObjectFromStore, clearStore, getAllKeys } from '../store/StoreDataLocal';
-import { GlobalStyles } from "../UI/GlobalConstant";
+import { GlobalConstants, GlobalStyles } from "../UI/GlobalConstant";
 
 function StoreLocalScreen({ navigation }) {
   const [dataRed, setDataRed] = useState();
-  const [url, setUrl] = useState();
+  const [urlState, setUrlState] = useState();
 
   function urlInputHandler(enteredUrl) {
-    setUrl(enteredUrl);
+    setUrlState(enteredUrl);
   }
 
   function setToStore() {
-    const oggetto = { name: "John", age: 30, city: "New York" }
+    const oggetto = { url_address: urlState }
+    console.log('Key sent: ', oggetto);
     console.log('Obj: ', oggetto);
     setObjectToStore(oggetto);
   }
@@ -37,41 +38,53 @@ function StoreLocalScreen({ navigation }) {
   }
 
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text style={{ fontSize: 30 }}>This is the home screen!</Text>
-      <View style={{ flex: 1, alignItems: "center", justifyContent: 'space-evenly' }}>
-        <TextInput
-          style={styles.inputText}
-          onChangeText={urlInputHandler}
-          value={url}
-          placeholder="URL"
-        />
-
-        <Button
-          title="Save to store"
-          onPress={setToStore}
-        />
-
-        <Button
-          title="Chek keys"
-          onPress={getKeys}
-        />
-
-        <Button
-          title="Clear store"
-          onPress={clearAllStore}
-        />
-
-        <Button
-          title="Get from store"
-          onPress={getfromstore}
-        />
-
-        {dataRed && <Text>Nome: {dataRed.name}</Text>}
-        {dataRed && <Text>Età: {dataRed.age}</Text>}
-        {dataRed && <Text>Città: {dataRed.city}</Text>}
+    <View style={styles.AllContainer}>
+      <View style={styles.titleContainer}>
+        <Text style={{ fontSize: 30 }}>Setting screen!</Text>
       </View>
-    </View>
+      <View style={styles.dataAllContainer}>
+        <View style={styles.dataContainer}>
+          <TextInput
+            style={styles.inputText}
+            onChangeText={urlInputHandler}
+            value={urlState}
+            placeholder="http:// url : port "
+          />
+        </View>
+
+        <View style={styles.dataOutContainer}>
+        {dataRed && <Text style={styles.textOutLable}>Url_Address:</Text>}
+        {dataRed && <Text style={styles.textOutData}>{dataRed.url_address}</Text>}
+        </View>
+
+        <View style={styles.buttonAllContainer}>
+          <View style={styles.buttonRowContainer}>
+            <Pressable style={styles.buttonContainer} onPress={setToStore}>
+              <View style={styles.button}>
+                <Text style={styles.buttonText}>Save to store</Text>
+              </View>
+            </Pressable>
+            <Pressable style={styles.buttonContainer} onPress={getKeys}>
+              <View style={styles.button}>
+                <Text style={styles.buttonText}>Chek keys</Text>
+              </View>
+            </Pressable>
+          </View>
+          <View style={styles.buttonRowContainer}>
+            <Pressable style={styles.buttonContainer} onPress={clearAllStore}>
+              <View style={styles.button}>
+                <Text style={styles.buttonText}>Clear Store</Text>
+              </View>
+            </Pressable>
+            <Pressable style={styles.buttonContainer} onPress={getfromstore}>
+              <View style={styles.button}>
+                <Text style={styles.buttonText}>Get from store</Text>
+              </View>
+            </Pressable>
+          </View>
+        </View>
+      </View>
+    </View >
   );
 }
 
@@ -88,10 +101,85 @@ const styles = StyleSheet.create({
     padding: 4,
     minWidth: 200,
   },
-  button: {
+  AllContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  titleContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 5,
+  },
+  dataAllContainer: {
+    flex: 6,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: 'red',
+    borderWidth: 1,
+    margin: 2,
+  },
+  dataContainer: {
+    flex: 3,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    borderColor: 'blue',
+    borderWidth: 1,
+    margin: 2,
+  },
+  dataOutContainer: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    borderColor: 'blue',
+    borderWidth: 1,
+    margin: 2,
+  },
+  buttonAllContainer: {
+    flex: 1,
+    // justifyContent: 'space-between',
+    // alignItems: 'center',
+    margin: 2,
+    borderColor: 'green',
+    borderWidth: 1,
+    marginBottom: 20,
+  },
+  buttonRowContainer: {
+    // flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    margin: 2,
+    borderColor: 'blue',
+    borderWidth: 1,
+    height: 60,
+  },
+  buttonContainer: {
     borderRadius: 20,
-    margin: 20,
-    padding: 10,
-    elevation: 2,
+    minWidth: 120,
+    minHeight: 50,
+    backgroundColor: GlobalStyles.colors.BG_DarkBlue,
+    margin: 5,
+    padding: 0,
+    // elevation: 2,
+  },
+  button: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 4,
+  },
+  buttonText: {
+    color: 'white',
+  },
+  textOutLable: {
+    textAlign: 'left',
+  },
+  textOutData: {
+    alignContent: 'flex-start',
+    textAlign: 'left',
+    fontWeight: 'bold'
   },
 });
