@@ -14,7 +14,6 @@ import ModalScreenKO from "./screens/ModalScreenKO";
 import AuthContentProvider, { AuthContext } from "./store/auth-context";
 import { GlobalStyles } from "./UI/GlobalConstant";
 import ResultScreen from "./screens/ResultScreen";
-import IconButton from './UI/IconButton';
 import StoreLocalScreen from "./screens/StoreLocalScreen";
 
 // export default function App() {
@@ -23,8 +22,6 @@ export default function App() {
   const Stack = createNativeStackNavigator();
 
   function AuthStack() {
-
-
     return (
       <Stack.Navigator
         screenOptions={{
@@ -106,12 +103,15 @@ export default function App() {
   }
 
   function Navigation() {
+    
     const authCtx = useContext(AuthContext);
 
     console.log("App authCtx.isAuthenticated =>>", authCtx.isAuthenticated);
     console.log("APP authCtx.sessionID =>>", authCtx.sessionID);
     console.log("APP authCtx.urlsetted =>>", authCtx.urlsetted);
     console.log("APP authCtx.sessionTimer =>>", authCtx.sessionTimer);
+    console.log("APP authCtx.key1 =>>", authCtx.key1);
+    console.log("APP authCtx.value1 =>>", authCtx.value1);
 
     return (
       <NavigationContainer>

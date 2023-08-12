@@ -3,38 +3,95 @@ import { useContext, useState, useLayoutEffect } from "react";
 import { View, Text, Button, StyleSheet, Pressable, TextInput } from "react-native";
 import { setObjectToStore, getObjectFromStore, clearStore, getAllKeys } from '../store/StoreDataLocal';
 import { GlobalConstants, GlobalStyles } from "../UI/GlobalConstant";
+import { AuthContext } from "../store/auth-context";
 
 function StoreLocalScreen({ navigation }) {
   const [dataRed, setDataRed] = useState();
+  const [keysStored, setKeysStored] = useState();
+  const [keyState, setKeyState] = useState();
   const [urlState, setUrlState] = useState();
+  const [modeState, setModeState] = useState();
+
+  const autxCtx = useContext(AuthContext);
 
   function urlInputHandler(enteredUrl) {
     setUrlState(enteredUrl);
   }
 
-  function setToStore() {
-    const oggetto = { url_address: urlState }
-    console.log('Key sent: ', oggetto);
-    console.log('Obj: ', oggetto);
-    setObjectToStore(oggetto);
+  function keyInputHandler(enteredKey) {
+    setKeyState(enteredKey);
   }
 
-  function getKeys() {
-    getAllKeys();
+  function modeInputHandler(enteredStatus) {
+    setModeState(enteredStatus);
   }
 
-  function clearAllStore() {
-    clearStore();
+  async function setToStore() {
+    // const keyObj = { key: keyState };
+    // console.log('KeyObj sent: ', keyObj);
+    const valObj = { url_address: urlState, mode_status: modeState };
+    console.log('ValObj sent: ', valObj);
+    await setObjectToStore(keyState, valObj);
+
+    console.log('autxCtxCtx.Key1_before: ', autxCtx.key1);
+    console.log('autxCtxCtx.Val1_before: ', autxCtx.value1);
+
+    autxCtx.setKey1(keyState);
+    autxCtx.setValue1(valObj);
+
+    console.log('autxCtxCtx.Key1_after: ', autxCtx.key1);
+    console.log('autxCtxCtx.Val1_before: ', autxCtx.value1);
+
+  }
+
+  async function getKeys() {
+    console.log('keysStored_before: ', keysStored);
+    const allKeys =  await getAllKeys();
+    console.log('keys from store: ', allKeys);
+    setKeysStored(allKeys[0]);
+    console.log('keysStored_after: ', keysStored);
+  }
+
+  async function clearAllStore() {
+    await clearStore();
     setDataRed(null);
-  }
+    setKeysStored(null)
+    setKeyState(null);
+    setUrlState(null);
+    setModeState(null)
+  };
 
   async function getfromstore() {
     console.log('get 01');
-    const objGetted = await getObjectFromStore()
+    const objGetted = await getObjectFromStore(keyState)
     console.log('get obj: ', objGetted);
     console.log('get 02');
-    setDataRed(objGetted);
+
+    setDataRed(existingValues => ({
+      ...existingValues,
+      mode_status: objGetted.mode_status,
+      url_address: objGetted.url_address
+    }))
+
+    console.log('objGetted.url_address: ', objGetted.url_address);
+    console.log('objGetted.mode_status: ', objGetted.mode_status);
+
+    setUrlState(objGetted.url_address.toString());
+    setModeState(objGetted.mode_status);
+
     console.log('get 03');
+  };
+
+  function showAllState() {
+    console.log('DataRed_State: ', dataRed);
+    console.log('KeysStored_State: ', keysStored);
+    console.log('KeyState_State: ', keyState);
+    console.log('UrlState_State: ', urlState);
+    console.log('ModeState_State: ', modeState);
+  }
+
+  function tbdef(){
+    console.log('To be define: ');
   }
 
   return (
@@ -46,15 +103,39 @@ function StoreLocalScreen({ navigation }) {
         <View style={styles.dataContainer}>
           <TextInput
             style={styles.inputText}
+            onChangeText={keyInputHandler}
+            value={keyState}
+            placeholder="Key"
+          />
+        </View>
+        <View style={styles.dataContainer}>
+          <TextInput
+            style={styles.inputText}
             onChangeText={urlInputHandler}
             value={urlState}
             placeholder="http:// url : port "
           />
         </View>
+        <View style={styles.dataContainer}>
+          <TextInput
+            style={styles.inputText}
+            onChangeText={modeInputHandler}
+            value={modeState}
+            placeholder="Prodction/Develop"
+          />
+        </View>
 
         <View style={styles.dataOutContainer}>
-        {dataRed && <Text style={styles.textOutLable}>Url_Address:</Text>}
-        {dataRed && <Text style={styles.textOutData}>{dataRed.url_address}</Text>}
+          {dataRed && <Text style={styles.textOutLable}>Keys:</Text>}
+          {/* {dataRed && <Text style={styles.textOutData}>{keysStored.map(item => {`key:  ${item}`})}</Text>} */}
+          {dataRed && <Text style={styles.textOutData}>{keysStored}</Text>}
+        </View>
+
+
+        <View style={styles.dataOutContainer}>
+          {dataRed && <Text style={styles.textOutLable}>Data From store:</Text>}
+          {dataRed && <Text style={styles.textOutData}>{dataRed.mode_status}</Text>}
+          {dataRed && <Text style={styles.textOutData}>{dataRed.url_address}</Text>}
         </View>
 
         <View style={styles.buttonAllContainer}>
@@ -82,6 +163,20 @@ function StoreLocalScreen({ navigation }) {
               </View>
             </Pressable>
           </View>
+
+          <View style={styles.buttonRowContainer}>
+            <Pressable style={styles.buttonContainer} onPress={showAllState}>
+              <View style={styles.button}>
+                <Text style={styles.buttonText}>Show All State</Text>
+              </View>
+            </Pressable>
+            <Pressable style={styles.buttonContainer} onPress={tbdef}>
+              <View style={styles.button}>
+                <Text style={styles.buttonText}>TBD</Text>
+              </View>
+            </Pressable>
+          </View>
+
         </View>
       </View>
     </View >
@@ -121,7 +216,7 @@ const styles = StyleSheet.create({
     margin: 2,
   },
   dataContainer: {
-    flex: 3,
+    flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
     borderColor: 'blue',
@@ -143,7 +238,7 @@ const styles = StyleSheet.create({
     margin: 2,
     borderColor: 'green',
     borderWidth: 1,
-    marginBottom: 20,
+    marginBottom: 120,
   },
   buttonRowContainer: {
     // flex: 1,
