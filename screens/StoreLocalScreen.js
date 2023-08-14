@@ -1,5 +1,5 @@
 // import * as React from "react";
-import { useContext, useState, useLayoutEffect } from "react";
+import { useContext, useState, useLayoutEffect, useEffect } from "react";
 import { View, Text, Button, StyleSheet, Pressable, TextInput } from "react-native";
 import { setObjectToStore, getObjectFromStore, clearStore, getAllKeys } from '../store/StoreDataLocal';
 import { GlobalConstants, GlobalStyles } from "../UI/GlobalConstant";
@@ -11,8 +11,86 @@ function StoreLocalScreen({ navigation }) {
   const [keyState, setKeyState] = useState();
   const [urlState, setUrlState] = useState();
   const [modeState, setModeState] = useState();
+  const [testState, setTestState] = useState();
 
   const autxCtx = useContext(AuthContext);
+
+  useEffect(() => {
+    
+    console.log('--------------- UseEffect --------------------------------------');
+
+    async function getKeysAtLoading() {
+
+      console.log('--------------- UseEffect Async Function START--------------------------------------');
+      // console.log('keysState_before: ', keyState);
+      const allKeys = await getAllKeys();
+      // console.log('keys from store: ', allKeys);
+      // console.log('keys from store[0]: ', allKeys[0]);
+      setKeyState(allKeys[0]);
+      // console.log('keysState_after: ', keyState);
+
+      if (allKeys[0]) {
+        console.log('==> Key foud, get values... ');
+        const objGetted = await getObjectFromStore(allKeys[0])
+        setDataRed(existingValues => ({
+          ...existingValues,
+          mode_status: objGetted.mode_status,
+          url_address: objGetted.url_address
+        }))
+
+        console.log('objGetted.url_address: ', objGetted.url_address);
+        console.log('objGetted.mode_status: ', objGetted.mode_status);
+
+        console.log('==> Value getted! Set State value... ');
+
+        setUrlState(objGetted.url_address.toString());
+        setModeState(objGetted.mode_status);
+
+        console.log('UrlState_after: ', urlState);
+        console.log('ModeState_after: ', modeState);
+
+        console.log('==> State value setted! Set contex value... ');
+
+        console.log('objGetted.url_address.toString()... ', objGetted.url_address.toString());
+
+        autxCtx.urlsetted = objGetted.url_address.toString();
+
+        console.log('autxCtx.urlsetted: ', autxCtx.urlsetted);
+
+        console.log('--------------- UseEffect if end --------------------------------------');
+
+      } else {
+
+        console.log('keysStored non setted: ');
+
+      }
+
+      // console.log('TestState_before: ', testState);
+      // console.log('==> Set State Test... ');
+      // setTestState('Pippo');
+      // console.log('TestState_after: ', testState);
+
+      console.log('Test: ', test);
+
+      console.log('--------------- UseEffect async function END --------------------------------------');
+
+      return test
+
+    }
+
+    console.log('TestState_before2: ', testState);
+    
+    // const ttt = getKeysAtLoading();
+    getKeysAtLoading();
+    
+    // console.log('ttt: ', ttt);
+    // console.log('==> Set State Test... ');
+    // setTestState(ttt);
+    // console.log('TestState_after: ', testState);
+
+    console.log('--------------- UseEffect THE END --------------------------------------');
+
+  }, [])
 
   function urlInputHandler(enteredUrl) {
     setUrlState(enteredUrl);
@@ -46,7 +124,7 @@ function StoreLocalScreen({ navigation }) {
 
   async function getKeys() {
     console.log('keysStored_before: ', keysStored);
-    const allKeys =  await getAllKeys();
+    const allKeys = await getAllKeys();
     console.log('keys from store: ', allKeys);
     setKeysStored(allKeys[0]);
     console.log('keysStored_after: ', keysStored);
@@ -90,14 +168,16 @@ function StoreLocalScreen({ navigation }) {
     console.log('ModeState_State: ', modeState);
   }
 
-  function tbdef(){
-    console.log('To be define: ');
+  function backToLogin() {
+    console.log('Back to Login: ');
+    navigation.navigate('Login');
   }
 
   return (
     <View style={styles.AllContainer}>
       <View style={styles.titleContainer}>
         <Text style={{ fontSize: 30 }}>Setting screen!</Text>
+        <Text style={{ fontSize: 10 }}>Test: {testState}</Text>
       </View>
       <View style={styles.dataAllContainer}>
         <View style={styles.dataContainer}>
@@ -126,9 +206,9 @@ function StoreLocalScreen({ navigation }) {
         </View>
 
         <View style={styles.dataOutContainer}>
-          {dataRed && <Text style={styles.textOutLable}>Keys:</Text>}
+          {keysStored && <Text style={styles.textOutLable}>Keys:</Text>}
           {/* {dataRed && <Text style={styles.textOutData}>{keysStored.map(item => {`key:  ${item}`})}</Text>} */}
-          {dataRed && <Text style={styles.textOutData}>{keysStored}</Text>}
+          {keysStored && <Text style={styles.textOutData}>{keysStored}</Text>}
         </View>
 
 
@@ -170,9 +250,9 @@ function StoreLocalScreen({ navigation }) {
                 <Text style={styles.buttonText}>Show All State</Text>
               </View>
             </Pressable>
-            <Pressable style={styles.buttonContainer} onPress={tbdef}>
+            <Pressable style={styles.buttonContainer} onPress={backToLogin}>
               <View style={styles.button}>
-                <Text style={styles.buttonText}>TBD</Text>
+                <Text style={styles.buttonText}>To Login</Text>
               </View>
             </Pressable>
           </View>

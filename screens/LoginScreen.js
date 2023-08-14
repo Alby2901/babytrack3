@@ -35,7 +35,7 @@ function LoginScreen({ navigation }) {
   const authCtx = useContext(AuthContext);
   
   function headerSettingsIconPressHandler(){
-    console.log('Open setting screen... ');
+    console.log('From Login Screen => Open setting screen... ');
     navigation.navigate('Settings');
   }
 
@@ -124,6 +124,8 @@ function LoginScreen({ navigation }) {
     setshowConfigInput(!showConfigInput);
   }
 
+  const test01 = authCtx.urlsetted;
+
   return (
     // <SafeAreaView>
     <ScrollView>
@@ -138,6 +140,12 @@ function LoginScreen({ navigation }) {
             Inserire le credenziali di Neocare
           </Text>
         </View>
+
+        <View >
+          <Text >autxCtx.urlsetted: {test01} </Text>
+          <Text style={[styles.cardText, styles.cardSmalltext]}></Text>
+        </View>
+
         <View style={styles.containerInput}>
           {showConfigInput && (
             <TextInput
