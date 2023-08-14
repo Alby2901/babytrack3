@@ -30,7 +30,7 @@ function StoreLocalScreen({ navigation }) {
       // console.log('keysState_after: ', keyState);
 
       if (allKeys[0]) {
-        console.log('==> Key foud, get values... ');
+        // console.log('==> Key foud, get values... ');
         const objGetted = await getObjectFromStore(allKeys[0])
         setDataRed(existingValues => ({
           ...existingValues,
@@ -38,30 +38,30 @@ function StoreLocalScreen({ navigation }) {
           url_address: objGetted.url_address
         }))
 
-        console.log('objGetted.url_address: ', objGetted.url_address);
-        console.log('objGetted.mode_status: ', objGetted.mode_status);
+        // console.log('objGetted.url_address: ', objGetted.url_address);
+        // console.log('objGetted.mode_status: ', objGetted.mode_status);
 
-        console.log('==> Value getted! Set State value... ');
+        // console.log('==> Value getted! Set State value... ');
 
         setUrlState(objGetted.url_address.toString());
         setModeState(objGetted.mode_status);
 
-        console.log('UrlState_after: ', urlState);
-        console.log('ModeState_after: ', modeState);
+        // console.log('UrlState_after: ', urlState);
+        // console.log('ModeState_after: ', modeState);
 
-        console.log('==> State value setted! Set contex value... ');
+        // console.log('==> State value setted! Set contex value... ');
 
-        console.log('objGetted.url_address.toString()... ', objGetted.url_address.toString());
+        // console.log('objGetted.url_address.toString()... ', objGetted.url_address.toString());
 
         autxCtx.urlsetted = objGetted.url_address.toString();
 
-        console.log('autxCtx.urlsetted: ', autxCtx.urlsetted);
+        // console.log('autxCtx.urlsetted: ', autxCtx.urlsetted);
 
-        console.log('--------------- UseEffect if end --------------------------------------');
+        // console.log('--------------- UseEffect if end --------------------------------------');
 
       } else {
 
-        console.log('keysStored non setted: ');
+        // console.log('keysStored non setted: ');
 
       }
 
@@ -70,15 +70,15 @@ function StoreLocalScreen({ navigation }) {
       // setTestState('Pippo');
       // console.log('TestState_after: ', testState);
 
-      console.log('Test: ', test);
+      // console.log('Test: ', test);
 
-      console.log('--------------- UseEffect async function END --------------------------------------');
+      // console.log('--------------- UseEffect async function END --------------------------------------');
 
-      return test
+      // return test
 
     }
 
-    console.log('TestState_before2: ', testState);
+    // console.log('TestState_before2: ', testState);
     
     // const ttt = getKeysAtLoading();
     getKeysAtLoading();

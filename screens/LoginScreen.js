@@ -10,7 +10,7 @@ import {
   Alert,
 } from "react-native";
 import { getSession } from "../components/http";
-import { useContext, useState, useLayoutEffect } from "react";
+import { useContext, useState, useLayoutEffect, useEffect } from "react";
 import { AuthContext } from "../store/auth-context";
 import LoadingOverlay from "../UI/LoadingOverlay";
 import { GlobalStyles } from "../UI/GlobalConstant";
@@ -20,6 +20,7 @@ function LoginScreen({ navigation }) {
   const [errorHTTP, setErrorHTTP] = useState("");
   const [sessionID, setSessionID] = useState("");
   const [message, setmessage] = useState("");
+  const [serverSetted, setServerSetted] = useState(false);
   const [isLogged, setIsLogged] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showConfigInput, setshowConfigInput] = useState(false);
@@ -33,26 +34,36 @@ function LoginScreen({ navigation }) {
   // ----------------------------
 
   const authCtx = useContext(AuthContext);
-  
-  function headerSettingsIconPressHandler(){
+
+  function headerSettingsIconPressHandler() {
     console.log('From Login Screen => Open setting screen... ');
     navigation.navigate('Settings');
   }
 
   useLayoutEffect(() => {
-   navigation.setOptions({
+    navigation.setOptions({
       headerRight: () => {
         return (
-        <IconButton
-          icon="settings-outline"
-          size={24}
-          color='white'
-          // onPress={() => {}}
-          onPress={headerSettingsIconPressHandler}
-        />)
+          <IconButton
+            icon="settings-outline"
+            size={24}
+            color='white'
+            // onPress={() => {}}
+            onPress={headerSettingsIconPressHandler}
+          />)
       }
-   });
+    });
   }, [navigation, headerSettingsIconPressHandler]);
+
+
+  useEffect(() => {
+    if (authCtx.urlsetted) {
+      setUrl(authCtx.urlsetted);
+      setServerSetted(true);
+    } else {
+      setServerSetted(false);
+    }
+  }, [authCtx.urlsetted])
 
   // function checkInput(usrp, pwdp, urlp) {
   //   if (usrp && pwdp && urlp) {
@@ -124,8 +135,6 @@ function LoginScreen({ navigation }) {
     setshowConfigInput(!showConfigInput);
   }
 
-  const test01 = authCtx.urlsetted;
-
   return (
     // <SafeAreaView>
     <ScrollView>
@@ -142,8 +151,7 @@ function LoginScreen({ navigation }) {
         </View>
 
         <View >
-          <Text >autxCtx.urlsetted: {test01} </Text>
-          <Text style={[styles.cardText, styles.cardSmalltext]}></Text>
+          {serverSetted ? <Text >Server: {authCtx.urlsetted} </Text> : <Text >ATTENZIONE! Server non impostato</Text>}  
         </View>
 
         <View style={styles.containerInput}>
@@ -182,7 +190,7 @@ function LoginScreen({ navigation }) {
         )}
         {isLogged && (
           <View style={styles.containerMessage}>
-            {/* <Text>The Session ID is: {sessionID}</Text> */}
+            <Text>The Session ID is: {sessionID}</Text>
 
             {/* {!isInputOk && <Text style={styles.textAlert}>I CAMPI SONO VUOTI!</Text>} */}
 
@@ -190,11 +198,7 @@ function LoginScreen({ navigation }) {
             {isLogged && <Text style={styles.textAlert}>{message}</Text>}
 
             {/* {isLogged && sessionID && <Text style={styles.textAlert}>The Session ID is: {sessionID}</Text>} */}
-            {/* {isLogged && !sessionID && (
-          <Text style={styles.textAlert}>
-            The Session ID is not avaiable!
-          </Text>
-        )} */}
+            {/* {isLogged && !sessionID && (<Text style={styles.textAlert}>The Session ID is not avaiable!</Text>)} */}
           </View>
         )}
 

@@ -18,9 +18,9 @@ export const AuthContext = createContext({
   readUrlSetted: () => { },
   logout: () => { },
   key1: "",
-  value1: "",
+  mode: "",
   setKey1: () => { },
-  setValue1: () => { },
+  setMode: () => { },
 });
 
 function AuthContentProvider({ children }) {
@@ -35,7 +35,7 @@ function AuthContentProvider({ children }) {
   const [latte, setLatte] = useState();
 
   const [key1State, setKey1State] = useState();
-  const [value1State, setValue1State] = useState();
+  const [mode1State, setMode1State] = useState();
 
   function authenticatef(sessionID, timer, cognome, nome) {
     setAuthSessionIDs(sessionID);
@@ -75,8 +75,8 @@ function AuthContentProvider({ children }) {
     setKey1State(key1p);
   }
 
-  function setV1(val1p) {
-    setValue1State(val1p);
+  function setM1(mode1p) {
+    setMode1State(mode1p);
   }
 
   const value = {
@@ -97,9 +97,9 @@ function AuthContentProvider({ children }) {
     readUrlSetted: readUrlSettf,
     logout: logout,
     key1: key1State,
-    value1: value1State,
+    mode: mode1State,
     setKey1: setK1,
-    setValue1: setV1,
+    setMode: setM1,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
