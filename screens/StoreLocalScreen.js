@@ -16,7 +16,7 @@ function StoreLocalScreen({ navigation }) {
   const autxCtx = useContext(AuthContext);
 
   useEffect(() => {
-    
+
     console.log('--------------- UseEffect --------------------------------------');
 
     async function getKeysAtLoading() {
@@ -79,10 +79,10 @@ function StoreLocalScreen({ navigation }) {
     }
 
     // console.log('TestState_before2: ', testState);
-    
+
     // const ttt = getKeysAtLoading();
     getKeysAtLoading();
-    
+
     // console.log('ttt: ', ttt);
     // console.log('==> Set State Test... ');
     // setTestState(ttt);
@@ -112,13 +112,16 @@ function StoreLocalScreen({ navigation }) {
     await setObjectToStore(keyState, valObj);
 
     console.log('autxCtxCtx.Key1_before: ', autxCtx.key1);
-    console.log('autxCtxCtx.Val1_before: ', autxCtx.value1);
+    console.log('autxCtxCtx.url_address_before: ', autxCtx.urlsetted);
+    console.log('autxCtxCtx.mode_before: ', autxCtx.mode);
 
     autxCtx.setKey1(keyState);
-    autxCtx.setValue1(valObj);
+    autxCtx.url_address(valObj.url_address);
+    autxCtx.mode(valObj.mode_status);
 
     console.log('autxCtxCtx.Key1_after: ', autxCtx.key1);
-    console.log('autxCtxCtx.Val1_before: ', autxCtx.value1);
+    console.log('autxCtxCtx.url_address_after: ', autxCtx.urlsetted);
+    console.log('autxCtxCtx.mode_after: ', autxCtx.mode);
 
   }
 
@@ -141,21 +144,28 @@ function StoreLocalScreen({ navigation }) {
 
   async function getfromstore() {
     console.log('get 01');
-    const objGetted = await getObjectFromStore(keyState)
-    console.log('get obj: ', objGetted);
-    console.log('get 02');
+    if (keyState) {
+      const objGetted = await getObjectFromStore(keyState)
+      console.log('get obj: ', objGetted);
+      console.log('get 02');
 
-    setDataRed(existingValues => ({
-      ...existingValues,
-      mode_status: objGetted.mode_status,
-      url_address: objGetted.url_address
-    }))
+      setDataRed(existingValues => ({
+        ...existingValues,
+        mode_status: objGetted.mode_status,
+        url_address: objGetted.url_address
+      }))
 
-    console.log('objGetted.url_address: ', objGetted.url_address);
-    console.log('objGetted.mode_status: ', objGetted.mode_status);
+      console.log('objGetted.url_address: ', objGetted.url_address);
+      console.log('objGetted.mode_status: ', objGetted.mode_status);
 
-    setUrlState(objGetted.url_address.toString());
-    setModeState(objGetted.mode_status);
+      setUrlState(objGetted.url_address.toString());
+      setModeState(objGetted.mode_status);
+
+    } else {
+
+      console.log('Non ci sono chiavi!');
+
+    }
 
     console.log('get 03');
   };

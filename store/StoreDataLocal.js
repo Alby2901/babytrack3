@@ -18,10 +18,10 @@ export async function setObjectToStore(keyp,value) {
                 
     } catch (e) {
         // save error
-        console.log('Error Set to Store: ', e);
+        console.log('StoreDataLocal => Error Set to Store: ', e);
     }
 
-    console.log('Stored Done.')
+    console.log('StoreDataLocal => Stored Done.')
 }
 
 export async function getObjectFromStore(keyp) {

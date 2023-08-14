@@ -103,12 +103,13 @@ function AuthenticatedStack() {
 function Navigation() {
   const authCtx = useContext(AuthContext);
   
-  console.log("App authCtx.isAuthenticated =>>", authCtx.isAuthenticated);
-  console.log("APP authCtx.sessionID =>>", authCtx.sessionID);
-  console.log("APP authCtx.urlsetted =>>", authCtx.urlsetted);
-  console.log("APP authCtx.sessionTimer =>>", authCtx.sessionTimer);
-  console.log("APP authCtx.key1 =>>", authCtx.key1);
-  console.log("APP authCtx.value1 =>>", authCtx.value1);
+  console.log("App NAVIGATION authCtx.isAuthenticated =>>", authCtx.isAuthenticated);
+  console.log("APP NAVIGATION authCtx.sessionID =>>", authCtx.sessionID);
+  console.log("APP NAVIGATION authCtx.urlsetted =>>", authCtx.urlsetted);
+  console.log("APP NAVIGATION authCtx.sessionTimer =>>", authCtx.sessionTimer);
+  console.log("APP NAVIGATION authCtx.key1 =>>", authCtx.key1);
+  console.log("APP NAVIGATION authCtx.url =>>", authCtx.urlsetted);
+  console.log("APP NAVIGATION authCtx.mode =>>", authCtx.mode);
   
   return (
     <NavigationContainer>
@@ -129,6 +130,7 @@ function Root() {
     async function getKeysAtLoading() {
 
       console.log('--------------- APP UseEffect Async Function START--------------------------------------');
+      
       const allKeys = await getAllKeys();
 
       // setKeyState(allKeys[0]);
