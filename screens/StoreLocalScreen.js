@@ -17,11 +17,11 @@ function StoreLocalScreen({ navigation }) {
 
   useEffect(() => {
 
-    console.log('--------------- UseEffect --------------------------------------');
+    console.log('--------------- STORE LOCAL SCREEN - UseEffect --------------------------------------');
 
     async function getKeysAtLoading() {
 
-      console.log('--------------- UseEffect Async Function START--------------------------------------');
+      console.log('--------------- STORE LOCAL SCREEN - UseEffect Async Function START--------------------------------------');
       // console.log('keysState_before: ', keyState);
       const allKeys = await getAllKeys();
       // console.log('keys from store: ', allKeys);
@@ -72,7 +72,7 @@ function StoreLocalScreen({ navigation }) {
 
       // console.log('Test: ', test);
 
-      // console.log('--------------- UseEffect async function END --------------------------------------');
+      console.log('--------------- STORE LOCAL SCREEN - UseEffect async function END --------------------------------------');
 
       // return test
 
@@ -88,7 +88,7 @@ function StoreLocalScreen({ navigation }) {
     // setTestState(ttt);
     // console.log('TestState_after: ', testState);
 
-    console.log('--------------- UseEffect THE END --------------------------------------');
+    console.log('--------------- STORE LOCAL SCREEN - UseEffect THE END --------------------------------------');
 
   }, [])
 
@@ -105,49 +105,63 @@ function StoreLocalScreen({ navigation }) {
   }
 
   async function setToStore() {
+    console.log('---------------------------- SAVE TO STORE KEY  - START ---------------- ');
     // const keyObj = { key: keyState };
     // console.log('KeyObj sent: ', keyObj);
     const valObj = { url_address: urlState, mode_status: modeState };
-    console.log('ValObj sent: ', valObj);
+    console.log('STORE LOCAL SCREEN ValObj sent: ', valObj);
     await setObjectToStore(keyState, valObj);
+    console.log('STORE LOCAL SCREEN ValObj.url_address: ', valObj.url_address);
+    console.log('STORE LOCAL SCREEN ValObj.mode_status: ', valObj.mode_status);
 
-    console.log('autxCtxCtx.Key1_before: ', autxCtx.key1);
-    console.log('autxCtxCtx.url_address_before: ', autxCtx.urlsetted);
-    console.log('autxCtxCtx.mode_before: ', autxCtx.mode);
+
+    console.log('STORE LOCAL SCREEN autxCtxCtx.Key1_before: ', autxCtx.key1);
+    console.log('STORE LOCAL SCREEN autxCtxCtx.url_address_before: ', autxCtx.urlsetted);
+    console.log('STORE LOCAL SCREEN autxCtxCtx.mode_before: ', autxCtx.mode);
 
     autxCtx.setKey1(keyState);
-    autxCtx.url_address(valObj.url_address);
-    autxCtx.mode(valObj.mode_status);
+    autxCtx.readUrlSetted(valObj.url_address);
+    autxCtx.setMode(valObj.mode_status);
 
-    console.log('autxCtxCtx.Key1_after: ', autxCtx.key1);
-    console.log('autxCtxCtx.url_address_after: ', autxCtx.urlsetted);
-    console.log('autxCtxCtx.mode_after: ', autxCtx.mode);
+    console.log('STORE LOCAL SCREEN autxCtxCtx.Key1_after: ', autxCtx.key1);
+    console.log('STORE LOCAL SCREEN autxCtxCtx.url_address_after: ', autxCtx.urlsetted);
+    console.log('STORE LOCAL SCREEN autxCtxCtx.mode_after: ', autxCtx.mode);
+
+    console.log('---------------------------- SAVE TO STORE KEY - THE END ---------------- ');
 
   }
 
   async function getKeys() {
+    console.log('---------------------------- GET KEYS - START ---------------- ');
     console.log('keysStored_before: ', keysStored);
     const allKeys = await getAllKeys();
     console.log('keys from store: ', allKeys);
     setKeysStored(allKeys[0]);
     console.log('keysStored_after: ', keysStored);
+    console.log('---------------------------- GET KEYS - THE END ---------------- ');
   }
 
   async function clearAllStore() {
+    console.log('---------------------------- CLEAR ALL STORE, CONTEXY§T END STATES - START ---------------- ');
     await clearStore();
     setDataRed(null);
     setKeysStored(null)
     setKeyState(null);
     setUrlState(null);
-    setModeState(null)
+    setModeState(null);
+    autxCtx.setKey1(null);
+    autxCtx.setMode(null);
+    autxCtx.readUrlSetted(null);
+    console.log('---------------------------- CLEAR ALL STORE, CONTEXY§T END STATES - START ---------------- ');
   };
 
   async function getfromstore() {
-    console.log('get 01');
+    console.log('---------------------------- GET VALUE FROM STRORE  - START ---------------- ');
+
     if (keyState) {
       const objGetted = await getObjectFromStore(keyState)
       console.log('get obj: ', objGetted);
-      console.log('get 02');
+      // console.log('get 02');
 
       setDataRed(existingValues => ({
         ...existingValues,
@@ -166,21 +180,35 @@ function StoreLocalScreen({ navigation }) {
       console.log('Non ci sono chiavi!');
 
     }
-
-    console.log('get 03');
+    console.log('---------------------------- GET VALUE FROM STRORE - THE END ---------------- ');
   };
 
   function showAllState() {
+    console.log('---------------------------- SHOW ALL STATE - START ---------------- ');
     console.log('DataRed_State: ', dataRed);
     console.log('KeysStored_State: ', keysStored);
     console.log('KeyState_State: ', keyState);
     console.log('UrlState_State: ', urlState);
     console.log('ModeState_State: ', modeState);
+    console.log('---------------------------- SHOW ALL STATE - THE END ---------------- ');
   }
 
   function backToLogin() {
+    console.log('---------------------------- BACK TO LOGIN - START ---------------- ');
     console.log('Back to Login: ');
     navigation.navigate('Login');
+    console.log('---------------------------- BACK TO LOGIN - THE END ---------------- ');
+  }
+
+  function checkAllContx() {
+    console.log('---------------------------- CHECK ALL CONTEXT - START ---------------- ');
+    console.log('sessionID_Ctx: ', autxCtx.sessionID);
+    console.log('sessionTimer_Ctx: ', autxCtx.sessionTimer);
+    console.log('isAuthenticated_Ctx: ', autxCtx.isAuthenticated);
+    console.log('urlsetted_Ctx: ', autxCtx.urlsetted);
+    console.log('key1_Ctx: ', autxCtx.key1);
+    console.log('mode_Ctx: ', autxCtx.mode);
+    console.log('---------------------------- CHECK ALL CONTEXT - THE END ---------------- ');
   }
 
   return (
@@ -260,9 +288,9 @@ function StoreLocalScreen({ navigation }) {
                 <Text style={styles.buttonText}>Show All State</Text>
               </View>
             </Pressable>
-            <Pressable style={styles.buttonContainer} onPress={backToLogin}>
+            <Pressable style={styles.buttonContainer} onPress={checkAllContx}>
               <View style={styles.button}>
-                <Text style={styles.buttonText}>To Login</Text>
+                <Text style={styles.buttonText}>Chk All Cntx</Text>
               </View>
             </Pressable>
           </View>
