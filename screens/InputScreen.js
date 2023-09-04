@@ -16,7 +16,7 @@ import NeonatoInput from "../components/NeonatoInput";
 import GenitoreInput from "../components/GenitoreInput";
 import LatteCullaInput from "../components/LatteCullaInput";
 import { AuthContext } from "../store/auth-context";
-import { getChkBaby, getChkParent } from "../components/http";
+import { getChkBaby, getChkParent, checkSessionStatus } from "../components/http";
 import { GlobalStyles } from "../UI/GlobalConstant";
 import CountdownTimerAuto from "../components/CountdownTimerAuto";
 import LoadingOverlay from "../UI/LoadingOverlay";
@@ -234,6 +234,22 @@ function InputScreen({ navigation }) {
     setLatteCulla("");
   }
 
+  async function checkSession() {
+ 
+    console.log('INPUT_SCR-CheckSession ----START----')
+    console.log('INPUT_SCR-CheckSession ----SessionID: ', authCtx.sessionID)
+
+    // setIsloading(true);
+    const sessionState = await checkSessionStatus(
+      authCtx.urlsetted,
+      authCtx.sessionID,
+      );
+    // setIsloading(false);
+
+    console.log('INPUT_SCR-CheckSession ----Response: ', sessionState)
+
+  }
+
   function resetAndLogout() {
     Reset();
     authCtx.logout();
@@ -294,6 +310,19 @@ function InputScreen({ navigation }) {
               </View>
               <Text style={styles.text}>Neonato: {authCtx.neonato}</Text>
             </View>
+
+            <View style={styles.buttonsScanContainer}>
+              <View style={styles.buttonScanContainer}>
+                <Button
+                  title="Scan Neonato 2"
+                  onPress={() => navigation.navigate("ScanNeo2")}
+                  color={GlobalStyles.colors.Button_Scan}
+                />
+              </View>
+              <Text style={styles.text}>Neonato: {authCtx.neonato}</Text>
+            </View>
+
+
             <View style={styles.buttonsScanContainer}>
               <View style={styles.buttonScanContainer}>
                 <Button
@@ -359,6 +388,16 @@ function InputScreen({ navigation }) {
                 onPress={resetAndLogout}
                 color={GlobalStyles.colors.Button_Logout}
               />
+            </View>
+          </View>
+
+          <View style={styles.buttonsContainer2}>
+            <View style={styles.buttonResetContainer}>
+              <Button
+                title="Test Session"
+                onPress={checkSession}
+                color={GlobalStyles.colors.Button_Reset}
+              ></Button>
             </View>
           </View>
 

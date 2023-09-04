@@ -4,9 +4,9 @@ import { GlobalConstants } from "../UI/GlobalConstant";
 // const BASE_URL = "http://pinocomo.ddns.net:9999/babysafe/login?user=pino&pwd=pino";
 // const BASE_URL = "http://pinocomo.ddns.net:9999/babysafe/login";
 // const BASE_URL = "http://172.31.234.97:8084/babysafe/login";
-// const BASE_URL = "http://130.0.151.40:8090/babysafe/login";
+// const BASE_URL = "http://37.159.251.165:8090/babysafe/login";
 
-// http://130.0.151.40:8090/babysafe/checkband?sessionid=304ce6ec-a6fc-448c-b0b2-cbde5e86983c&child=2021025214&parent=322857
+// http://37.159.251.165:8090/babysafe/checkband?sessionid=304ce6ec-a6fc-448c-b0b2-cbde5e86983c&child=2021025214&parent=322857
 // http://10.6.10.135:8080/babysafe/checkband?sessionid=656ceef5-f87d-4cc0-87fc-3edaf414ffcd&child=2021025214&parent=322857
 
 export async function getSession(utente, password, url) {
@@ -50,6 +50,23 @@ export async function getSession(utente, password, url) {
   console.log("http: NOME: " + nome);
 
   return [sessionID, message, cognome, nome];
+}
+
+// const CHK_PAR_URL = "http://37.159.251.165:8090/babysafe/checksession?sessionid=";
+
+export async function checkSessionStatus(url, sessionID) {
+  const urlComplete = url + '/' + GlobalConstants.paths.PATH_APP + '/' + GlobalConstants.paths.PATH_CHKSESSION;
+  const response = await axios.get(urlComplete, {
+    params: {
+      sessionid: sessionID,
+    },
+  });
+
+  console.log("http: --- CHECK SESSION -------------------------------");
+  console.log("http: --- Risposta: " + JSON.stringify(response.data));
+  console.log("http: --- CHECK SESSION -------------------------------");
+
+  return response.data;
 }
 
 // const CHK_PAR_URL = "http://130.0.151.40:8090/babysafe/checkband";

@@ -7,6 +7,7 @@ import LoginScreen from "./screens/LoginScreen";
 import InputScreen from "./screens/InputScreen";
 import ScanScreen from "./screens/ScanScreen";
 import ScanScreenNeonato from "./screens/ScanScreenNeonato";
+import ScanScreenNeonato2 from "./screens/ScanScreenNeonato2";
 import ScanScreenGenitore from "./screens/ScanScreenGenitore";
 import ScanScreenLatte from "./screens/ScanScreenLatte";
 import ModalScreenOK from "./screens/ModalScreenOK";
@@ -64,6 +65,7 @@ function AuthenticatedStack() {
         <Stack.Screen name="ResultOk" component={ResultScreen} />
         <Stack.Screen name="Scan" component={ScanScreen} />
         <Stack.Screen name="ScanNeo" component={ScanScreenNeonato} />
+        <Stack.Screen name="ScanNeo2" component={ScanScreenNeonato2} />
         <Stack.Screen name="ScanGen" component={ScanScreenGenitore} />
         <Stack.Screen name="ScanLat" component={ScanScreenLatte} />
       </Stack.Group>

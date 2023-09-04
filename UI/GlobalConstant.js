@@ -19,6 +19,7 @@ export const GlobalStyles = {
       PATH_LOGIN: 'login',
       PATH_CHECHBAND: 'checkband',
       PATH_VERIFY: 'verifyband',
+      PATH_CHKSESSION: 'checksession',
       KEY_URL: 'Url_server',
     },
   };

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { StyleSheet, View, Text, Button, Alert } from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { AuthContext } from "../store/auth-context";
+import { Camera } from 'expo-camera';
 
 // function ScanQR() {
   function ScanScreen({ navigation }) {
@@ -31,7 +32,7 @@ import { AuthContext } from "../store/auth-context";
 
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
     authCtx.readNeonato(data);
     navigation.navigate('Input')
   };
@@ -96,7 +97,7 @@ import { AuthContext } from "../store/auth-context";
         )}
   
         <Button
-          title={'Toggle Flashlight'}
+          title={'Attiva torcia'}
           onPress={toggleFlashlight}
           style={styles.flashlightButton}
         />
