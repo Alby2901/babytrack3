@@ -1,19 +1,27 @@
 import React, { useState, useEffect, useContext } from "react";
 import { StyleSheet, View, Text, Button, Alert } from "react-native";
-import { BarCodeScanner } from "expo-barcode-scanner";
 import { AuthContext } from "../store/auth-context";
 import { Camera } from 'expo-camera';
+import { BarCodeScanner } from "expo-barcode-scanner";
 
 // function ScanQR() {
-  function ScanScreen({ navigation }) {
+function ScanScreen({ navigation, route }) {
   const [loading, setLoading] = useState(true);
   const [permission, setPermission] = useState(true);
 
   // const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [flashlight, setFlashlight] = useState(Camera.Constants.FlashMode.off);
+  const [scanRichiesto, setScanrichiesto] = useState('');
 
-  const datoScansionato = "Dato dallo schermo 2";
+  const { scanElement } = route.params;
+  console.log('SCAN_SCREEN - Parametro 1 ricevuto: ', JSON.stringify(scanElement));
+
+  useEffect(() => {
+    setScanrichiesto(JSON.stringify(scanElement));
+  }, [scanElement]);
+
+  console.log('SCAN_SCREEN - scanRichiestoState: ', scanRichiesto);
 
   const authCtx = useContext(AuthContext);
 
@@ -25,15 +33,31 @@ import { Camera } from 'expo-camera';
     );
   };
 
-  function sendDataBack(data) {
-    authCtx.readNeonato(data);
-    navigation.navigate('Input')
-  }
+  // function sendDataBack(data) {
+  //   // authCtx.readNeonato(data);
+  //   navigation.navigate('Input')
+  // }
 
   const handleBarCodeScanned = ({ type, data }) => {
+    console.log('SCAN_SCREEN - HandleBarCodeScanned');
+    console.log('SCAN_SCREEN - HandleBarCodeScanned - scanRichiestoState: ', scanRichiesto);
     setScanned(true);
     // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-    authCtx.readNeonato(data);
+
+    if (scanRichiesto == 1) {
+      console.log('SCAN_SCREEN - Case Neonato!');
+      authCtx.readNeonato(data);
+    } else if (scanRichiesto == 2) {
+      console.log('SCAN_SCREEN - Case Genitore!');
+      authCtx.readGenitore(data);
+    } else if (scanRichiesto == 3) {
+      console.log('SCAN_SCREEN - Case Latte!');
+      authCtx.readLatte(data);
+    } else {
+      console.log('SCAN_SCREEN - Non FUNZIONA: ');
+    }
+
+    // authCtx.readNeonato(data);
     navigation.navigate('Input')
   };
 
@@ -95,13 +119,13 @@ import { Camera } from 'expo-camera';
             onPress={() => setScanned(false)}
           />
         )}
-  
+
         <Button
           title={'Attiva torcia'}
           onPress={toggleFlashlight}
           style={styles.flashlightButton}
         />
-  
+
       </View>
     );
 
@@ -112,7 +136,7 @@ import { Camera } from 'expo-camera';
 
 export default ScanScreen;
 
-const opacity = 'rgba(0, 0, 0, .6)';
+const opacity = 'rgba(0, 0, 0, .4)';
 const styles = StyleSheet.create({
   button: {
     margin: 20,

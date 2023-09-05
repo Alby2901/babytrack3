@@ -300,7 +300,8 @@ function InputScreen({ navigation }) {
             {/* <UtenteInput onSetUtente={setUtenteHandler} /> */}
           </View>
           <View style={styles.inputsContainer}>
-            <View style={styles.buttonsScanContainer}>
+
+            {/* <View style={styles.buttonsScanContainer}>
               <View style={styles.buttonScanContainer}>
                 <Button
                   title="Scan Neonato"
@@ -309,21 +310,37 @@ function InputScreen({ navigation }) {
                 />
               </View>
               <Text style={styles.text}>Neonato: {authCtx.neonato}</Text>
-            </View>
+            </View> */}
 
             <View style={styles.buttonsScanContainer}>
               <View style={styles.buttonScanContainer}>
                 <Button
                   title="Scan Neonato 2"
-                  onPress={() => navigation.navigate("ScanNeo2")}
+                  onPress={() => navigation.navigate("ScanNeo2", 
+                  {
+                    scanElement: 1,
+                  })}
                   color={GlobalStyles.colors.Button_Scan}
                 />
               </View>
               <Text style={styles.text}>Neonato: {authCtx.neonato}</Text>
             </View>
 
-
             <View style={styles.buttonsScanContainer}>
+              <View style={styles.buttonScanContainer}>
+                <Button
+                  title="Scan genitore 2"
+                  onPress={() => navigation.navigate("ScanNeo2", 
+                  {
+                    scanElement: 2,
+                  })}
+                  color={GlobalStyles.colors.Button_Scan}
+                />
+              </View>
+              <Text style={styles.text}>Genitore: {authCtx.genitore}</Text>
+            </View>
+
+            {/* <View style={styles.buttonsScanContainer}>
               <View style={styles.buttonScanContainer}>
                 <Button
                   title="Scan Genitore"
@@ -332,7 +349,8 @@ function InputScreen({ navigation }) {
                 />
               </View>
               <Text style={styles.text}>Genitore: {authCtx.genitore}</Text>
-            </View>
+            </View> */}
+
             <View style={styles.buttonsScanContainer}>
               <View style={styles.buttonScanContainer}>
                 <Button
