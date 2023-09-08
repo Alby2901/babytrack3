@@ -1,14 +1,14 @@
 import axios from "axios";
 import { GlobalConstants } from "../UI/GlobalConstant";
 
-// const BASE_URL = "http://pinocomo.ddns.net:9999/babysafe/login?user=pino&pwd=pino";
-// const BASE_URL = "http://pinocomo.ddns.net:9999/babysafe/login";
-// const BASE_URL = "http://172.31.234.97:8084/babysafe/login";
-// const BASE_URL = "http://37.159.251.165:8090/babysafe/login?user=pino&pwd=pino";
-
-// http://37.159.251.165:8090/babysafe/checkband?sessionid=304ce6ec-a6fc-448c-b0b2-cbde5e86983c&child=2021025214&parent=322857
-// http://10.6.10.135:8080/babysafe/checkband?sessionid=656ceef5-f87d-4cc0-87fc-3edaf414ffcd&child=2021025214&parent=322857
-
+// ------------------- LOGIN (get session) ------------------------
+//
+// http://172.31.234.97:8084/babysafe/login?user=pino&pwd=pino
+//
+// http://37.159.251.165:8090/babysafe/login?user=pino&pwd=pino
+// http://10.6.10.8:7070/babysafe/login?user=pino&pwd=pino
+// http://10.6.10.135:8080/babysafe/login?user=pino&pwd=pino
+// ------------------- v v v v v ----------------------------------
 export async function getSession(utente, password, url) {
   const urlComplete = url + '/' + GlobalConstants.paths.PATH_APP + '/' + GlobalConstants.paths.PATH_LOGIN;
   const response = await axios.get(urlComplete, {
@@ -52,8 +52,13 @@ export async function getSession(utente, password, url) {
   return [sessionID, message, cognome, nome];
 }
 
-// const CHK_PAR_URL = "http://37.159.251.165:8090/babysafe/checksession?sessionid=";
-
+// ------------------- CHECK SESSION ------------------------------
+//
+// http://172.31.234.97:8084/babysafe/checksession?sessionid=
+//
+// http://37.159.251.165:8090/babysafe/checksession?sessionid=
+//
+// ------------------- v v v v v v v v v --------------------------
 export async function checkSessionStatus(url, sessionID) {
   const urlComplete = url + '/' + GlobalConstants.paths.PATH_APP + '/' + GlobalConstants.paths.PATH_CHKSESSION;
   const response = await axios.get(urlComplete, {
@@ -69,9 +74,13 @@ export async function checkSessionStatus(url, sessionID) {
   return response.data;
 }
 
-// const CHK_PAR_URL = http://37.159.251.165:8090/babysafe/verifyband?sessionid=50cc8a1f-3239-45c9-ac98-31daeb2990b1&child=025504&parent=322857
-
-
+// ------------------- CHECK BABY ---------------------------------
+//
+// http://172.31.234.97:8084/babysafe/verifyband?sessionid=50cc8a1f-3239-45c9-ac98-31daeb2990b1&child=025504
+//
+// http://37.159.251.165:8090/babysafe/verifyband?sessionid=50cc8a1f-3239-45c9-ac98-31daeb2990b1&child=025504
+//
+// ------------------- v v v v v ----------------------------------
 export async function getChkBaby(url, sessionid, neonato) {
   console.log('--------------- HTTP Component - getChkBaby - START --------------------------------------');
   console.log('--------------- HTTP Component - getChkBaby - axio.get START ---------------------');
@@ -134,8 +143,13 @@ export async function getChkBaby(url, sessionid, neonato) {
   return [ret, message, childName, motherName];
 }
 
-// const CHK_PAR_URL = http://37.159.251.165:8090/babysafe/checkband?sessionid=304ce6ec-a6fc-448c-b0b2-cbde5e86983c&child=025504
-
+// ------------------- CHECK BABY AND PARENT ------------------------
+//
+// http://172.31.234.97:8084/babysafe/checkband?sessionid=50cc8a1f-3239-45c9-ac98-31daeb2990b1&child=025504&parent=322857
+//
+// http://37.159.251.165:8090/babysafe/checkband?sessionid=50cc8a1f-3239-45c9-ac98-31daeb2990b1&child=025504&parent=322857
+//
+// ------------------- v v v v v v ----------------------------------
 export async function getChkParent(url, sessionid, neoanto, genitore) {
 
   const urlComplete = url + '/' + GlobalConstants.paths.PATH_APP + '/' + GlobalConstants.paths.PATH_CHECHBAND;
