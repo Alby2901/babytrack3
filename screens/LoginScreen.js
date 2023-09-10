@@ -15,6 +15,7 @@ import { AuthContext } from "../store/auth-context";
 import LoadingOverlay from "../UI/LoadingOverlay";
 import { GlobalStyles } from "../UI/GlobalConstant";
 import IconButton from '../UI/IconButton';
+import { setObjectToStore} from '../store/StoreDataLocal';
 
 function LoginScreen({ navigation }) {
   const [errorHTTP, setErrorHTTP] = useState("");
@@ -29,8 +30,8 @@ function LoginScreen({ navigation }) {
 
   // ----------------------------
   // ELIMINARE IL DEFAULT!
-  const [usr, setUsr] = useState("pino");
-  const [pwd, setPwd] = useState("pino");
+  const [usr, setUsr] = useState("");
+  const [pwd, setPwd] = useState("");
   // ----------------------------
 
   const authCtx = useContext(AuthContext);
@@ -60,10 +61,12 @@ function LoginScreen({ navigation }) {
     if (authCtx.urlsetted) {
       setUrl(authCtx.urlsetted);
       setServerSetted(true);
+      setUsr(authCtx.user);
+      console.log('LOGIN_SCREEN => useEffect => authCtx.user: ', usr )
     } else {
       setServerSetted(false);
     }
-  }, [authCtx.urlsetted])
+  }, [authCtx.urlsetted,authCtx.user])
 
   // function checkInput(usrp, pwdp, urlp) {
   //   if (usrp && pwdp && urlp) {
@@ -85,8 +88,13 @@ function LoginScreen({ navigation }) {
     console.log("Login Screen url: ", url);
 
     authCtx.readUrlSetted(url);
-
     console.log("Login Screen authCtx.urlsetted: ", authCtx.urlsetted);
+
+    authCtx.setUser(usr);
+    const valObj = {url_address: url, mode_status: authCtx.mode, user_status: usr};
+    console.log('Login Screen => Store di local Obj: ', valObj);
+    await setObjectToStore(authCtx.key1, valObj);
+
 
     setIsAuthenticated(true);
     // wait(2000);
@@ -97,8 +105,10 @@ function LoginScreen({ navigation }) {
     );
     setIsAuthenticated(false);
 
+    
+
     console.log("Login Screen SessId: ", sessionIDData);
-    authCtx.authenticate(sessionIDData, 8, cognome, nome);
+    authCtx.authenticate(sessionIDData, 2, cognome, nome);
     const p1 = authCtx.sessionID;
     const p2 = authCtx.isAuthenticated;
     console.log("Login Screen Ctx.sessionID (p1): ", p1);

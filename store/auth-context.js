@@ -19,8 +19,10 @@ export const AuthContext = createContext({
   logout: () => { },
   key1: "",
   mode: "",
+  user:"",
   setKey1: () => { },
   setMode: () => { },
+  setUser: () => { },
 });
 
 function AuthContentProvider({ children }) {
@@ -36,6 +38,7 @@ function AuthContentProvider({ children }) {
 
   const [key1State, setKey1State] = useState();
   const [mode1State, setMode1State] = useState();
+  const [userState, setUserState] = useState();
 
   function authenticatef(sessionID, timer, cognome, nome) {
     setAuthSessionIDs(sessionID);
@@ -79,6 +82,10 @@ function AuthContentProvider({ children }) {
     setMode1State(mode1p);
   }
 
+  function setUser1(mode1p) {
+    setUserState(mode1p);
+  }
+
   const value = {
     sessionID: authSessionIDs,
     urlsetted: urlSetup,
@@ -98,8 +105,10 @@ function AuthContentProvider({ children }) {
     logout: logout,
     key1: key1State,
     mode: mode1State,
+    user: userState,
     setKey1: setK1,
     setMode: setM1,
+    setUser: setUser1,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

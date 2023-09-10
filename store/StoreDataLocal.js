@@ -6,8 +6,8 @@ export async function setObjectToStore(keyp,value) {
 
     try {
         
-        console.log('StoreDataLocal => setObjectToStore => Keyp ', keyp);
-        console.log('StoreDataLocal => setObjectToStore => Value', value);
+        console.log('StoreDataLocal => setObjectToStore => Keyp => ', keyp);
+        console.log('StoreDataLocal => setObjectToStore => Value =>', value);
 
         const key = JSON.stringify(keyp);
         const jsonValue = JSON.stringify(value);

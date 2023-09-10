@@ -24,7 +24,6 @@ import LoadingOverlay from "../UI/LoadingOverlay";
 function InputScreen({ navigation }) {
   const [isloading, setIsloading] = useState(false);
 
-  const [utente, setUtente] = useState("");
   const [neonato, setNeonato] = useState("");
   const [genitore, setGenitore] = useState("");
   const [latteculla, setLatteCulla] = useState("");
@@ -53,10 +52,6 @@ function InputScreen({ navigation }) {
   console.log("Input Screen BC Lat =>>", authCtx.latte);
 
   const cognomeNome = authCtx.cognome + " " + authCtx.nome;
-
-  // function setUtenteHandler(utenteBack) {
-  //   setUtente(utenteBack);
-  // }
 
   // function setNeonatoHandler(neonatoBack) {
   //   setNeonato(neonatoBack);
@@ -226,9 +221,8 @@ function InputScreen({ navigation }) {
     authCtx.readNeonato(null);
     authCtx.readGenitore(null);
     authCtx.readLatte(null);
-    authCtx.readSessionTimer(4);
+    authCtx.readSessionTimer(2);
 
-    setUtente("");
     setNeonato("");
     setGenitore("");
     setLatteCulla("");
@@ -301,21 +295,10 @@ function InputScreen({ navigation }) {
           </View>
           <View style={styles.inputsContainer}>
 
-            {/* <View style={styles.buttonsScanContainer}>
-              <View style={styles.buttonScanContainer}>
-                <Button
-                  title="Scan Neonato"
-                  onPress={() => navigation.navigate("ScanNeo")}
-                  color={GlobalStyles.colors.Button_Scan}
-                />
-              </View>
-              <Text style={styles.text}>Neonato: {authCtx.neonato}</Text>
-            </View> */}
-
             <View style={styles.buttonsScanContainer}>
               <View style={styles.buttonScanContainer}>
                 <Button
-                  title="Scan Neonato 2"
+                  title="Scan Neonato"
                   onPress={() => navigation.navigate("ScanNeo2", 
                   {
                     scanElement: 1,
@@ -329,7 +312,7 @@ function InputScreen({ navigation }) {
             <View style={styles.buttonsScanContainer}>
               <View style={styles.buttonScanContainer}>
                 <Button
-                  title="Scan genitore 2"
+                  title="Scan genitore"
                   onPress={() => navigation.navigate("ScanNeo2", 
                   {
                     scanElement: 2,
@@ -340,22 +323,11 @@ function InputScreen({ navigation }) {
               <Text style={styles.text}>Genitore: {authCtx.genitore}</Text>
             </View>
 
-            {/* <View style={styles.buttonsScanContainer}>
-              <View style={styles.buttonScanContainer}>
-                <Button
-                  title="Scan Genitore"
-                  onPress={() => navigation.navigate("ScanGen")}
-                  color={GlobalStyles.colors.Button_Scan}
-                />
-              </View>
-              <Text style={styles.text}>Genitore: {authCtx.genitore}</Text>
-            </View> */}
-
             <View style={styles.buttonsScanContainer}>
               <View style={styles.buttonScanContainer}>
                 <Button
                   title="Scan Latte"
-                  onPress={() => navigation.navigate("ScanLat")}
+                  onPress={() => navigation.navigate("ScanNeo2")}
                   color={GlobalStyles.colors.Button_Scan}
                 />
               </View>

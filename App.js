@@ -112,6 +112,7 @@ function Navigation() {
   console.log("APP NAVIGATION authCtx.key1 =>>", authCtx.key1);
   console.log("APP NAVIGATION authCtx.url =>>", authCtx.urlsetted);
   console.log("APP NAVIGATION authCtx.mode =>>", authCtx.mode);
+  console.log("APP NAVIGATION authCtx.user =>>", authCtx.user);
   
   return (
     <NavigationContainer>
@@ -152,6 +153,7 @@ function Root() {
 
         authCtx.readUrlSetted(objGetted.url_address.toString());
         authCtx.setMode(objGetted.mode_status);
+        authCtx.setUser(objGetted.user_status);
 
         // setUrlState(objGetted.url_address.toString());
         // setModeState(objGetted.mode_status);

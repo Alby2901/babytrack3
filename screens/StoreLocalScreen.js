@@ -1,6 +1,6 @@
 // import * as React from "react";
 import { useContext, useState, useLayoutEffect, useEffect } from "react";
-import { View, Text, Button, StyleSheet, Pressable, TextInput } from "react-native";
+import { View, Text, Button, StyleSheet, Pressable, TextInput,  ScrollView, SafeAreaView, } from "react-native";
 import { setObjectToStore, getObjectFromStore, clearStore, getAllKeys } from '../store/StoreDataLocal';
 import { GlobalConstants, GlobalStyles } from "../UI/GlobalConstant";
 import { AuthContext } from "../store/auth-context";
@@ -12,6 +12,7 @@ function StoreLocalScreen({ navigation }) {
   const [urlState, setUrlState] = useState();
   const [modeState, setModeState] = useState();
   const [testState, setTestState] = useState();
+  const [userState, setUserState] = useState();
 
   const autxCtx = useContext(AuthContext);
 
@@ -45,6 +46,7 @@ function StoreLocalScreen({ navigation }) {
 
         setUrlState(objGetted.url_address.toString());
         setModeState(objGetted.mode_status);
+        setUserState(objGetted.user_status);
 
         // console.log('UrlState_after: ', urlState);
         // console.log('ModeState_after: ', modeState);
@@ -104,28 +106,36 @@ function StoreLocalScreen({ navigation }) {
     setModeState(enteredStatus);
   }
 
+  function userInputHandler(enteredStatus) {
+    setUserState(enteredStatus);
+  }
+
   async function setToStore() {
     console.log('---------------------------- SAVE TO STORE KEY  - START ---------------- ');
     // const keyObj = { key: keyState };
     // console.log('KeyObj sent: ', keyObj);
-    const valObj = { url_address: urlState, mode_status: modeState };
+    const valObj = { url_address: urlState, mode_status: modeState, user_status: userState};
     console.log('STORE LOCAL SCREEN ValObj sent: ', valObj);
     await setObjectToStore(keyState, valObj);
     console.log('STORE LOCAL SCREEN ValObj.url_address: ', valObj.url_address);
     console.log('STORE LOCAL SCREEN ValObj.mode_status: ', valObj.mode_status);
+    console.log('STORE LOCAL SCREEN ValObj.user_status: ', valObj.user_status);
 
 
     console.log('STORE LOCAL SCREEN autxCtxCtx.Key1_before: ', autxCtx.key1);
     console.log('STORE LOCAL SCREEN autxCtxCtx.url_address_before: ', autxCtx.urlsetted);
     console.log('STORE LOCAL SCREEN autxCtxCtx.mode_before: ', autxCtx.mode);
+    console.log('STORE LOCAL SCREEN autxCtxCtx.user_before: ', autxCtx.user);
 
     autxCtx.setKey1(keyState);
     autxCtx.readUrlSetted(valObj.url_address);
     autxCtx.setMode(valObj.mode_status);
+    autxCtx.setUser(valObj.user_status);
 
     console.log('STORE LOCAL SCREEN autxCtxCtx.Key1_after: ', autxCtx.key1);
     console.log('STORE LOCAL SCREEN autxCtxCtx.url_address_after: ', autxCtx.urlsetted);
     console.log('STORE LOCAL SCREEN autxCtxCtx.mode_after: ', autxCtx.mode);
+    console.log('STORE LOCAL SCREEN autxCtxCtx.user_after: ', autxCtx.user);
 
     console.log('---------------------------- SAVE TO STORE KEY - THE END ---------------- ');
 
@@ -165,8 +175,9 @@ function StoreLocalScreen({ navigation }) {
 
       setDataRed(existingValues => ({
         ...existingValues,
+        url_address: objGetted.url_address,
         mode_status: objGetted.mode_status,
-        url_address: objGetted.url_address
+        user_status: objGetted.user_status
       }))
 
       console.log('objGetted.url_address: ', objGetted.url_address);
@@ -174,6 +185,7 @@ function StoreLocalScreen({ navigation }) {
 
       setUrlState(objGetted.url_address.toString());
       setModeState(objGetted.mode_status);
+      setUserState(objGetted.user_status);
 
     } else {
 
@@ -208,96 +220,124 @@ function StoreLocalScreen({ navigation }) {
     console.log('urlsetted_Ctx: ', autxCtx.urlsetted);
     console.log('key1_Ctx: ', autxCtx.key1);
     console.log('mode_Ctx: ', autxCtx.mode);
+    console.log('user_Ctx: ', autxCtx.user);
     console.log('---------------------------- CHECK ALL CONTEXT - THE END ---------------- ');
   }
 
+  function goToLoginScr() {
+    navigation.navigate('Login')
+  }
+
   return (
-    <View style={styles.AllContainer}>
-      <View style={styles.titleContainer}>
-        <Text style={{ fontSize: 30 }}>Setting screen!</Text>
-        <Text style={{ fontSize: 10 }}>Test: {testState}</Text>
-      </View>
-      <View style={styles.dataAllContainer}>
-        <View style={styles.dataContainer}>
-          <TextInput
-            style={styles.inputText}
-            onChangeText={keyInputHandler}
-            value={keyState}
-            placeholder="Key"
-          />
-        </View>
-        <View style={styles.dataContainer}>
-          <TextInput
-            style={styles.inputText}
-            onChangeText={urlInputHandler}
-            value={urlState}
-            placeholder="http:// url : port "
-          />
-        </View>
-        <View style={styles.dataContainer}>
-          <TextInput
-            style={styles.inputText}
-            onChangeText={modeInputHandler}
-            value={modeState}
-            placeholder="Prodction/Develop"
-          />
-        </View>
-
-        <View style={styles.dataOutContainer}>
-          {keysStored && <Text style={styles.textOutLable}>Keys:</Text>}
-          {/* {dataRed && <Text style={styles.textOutData}>{keysStored.map(item => {`key:  ${item}`})}</Text>} */}
-          {keysStored && <Text style={styles.textOutData}>{keysStored}</Text>}
-        </View>
-
-
-        <View style={styles.dataOutContainer}>
-          {dataRed && <Text style={styles.textOutLable}>Data From store:</Text>}
-          {dataRed && <Text style={styles.textOutData}>{dataRed.mode_status}</Text>}
-          {dataRed && <Text style={styles.textOutData}>{dataRed.url_address}</Text>}
-        </View>
-
-        <View style={styles.buttonAllContainer}>
-          <View style={styles.buttonRowContainer}>
-            <Pressable style={styles.buttonContainer} onPress={setToStore}>
-              <View style={styles.button}>
-                <Text style={styles.buttonText}>Save to store</Text>
-              </View>
-            </Pressable>
-            <Pressable style={styles.buttonContainer} onPress={getKeys}>
-              <View style={styles.button}>
-                <Text style={styles.buttonText}>Chek keys</Text>
-              </View>
-            </Pressable>
+    <SafeAreaView>
+      <ScrollView>
+        <View style={styles.AllContainer}>
+          <View style={styles.titleContainer}>
+            <Text style={{ fontSize: 30 }}>Setting screen!</Text>
+            <Text style={{ fontSize: 10 }}>Test: {testState}</Text>
           </View>
-          <View style={styles.buttonRowContainer}>
-            <Pressable style={styles.buttonContainer} onPress={clearAllStore}>
-              <View style={styles.button}>
-                <Text style={styles.buttonText}>Clear Store</Text>
-              </View>
-            </Pressable>
-            <Pressable style={styles.buttonContainer} onPress={getfromstore}>
-              <View style={styles.button}>
-                <Text style={styles.buttonText}>Get from store</Text>
-              </View>
-            </Pressable>
-          </View>
+          <View style={styles.dataAllContainer}>
+            <View style={styles.dataContainer}>
+              <TextInput
+                style={styles.inputText}
+                onChangeText={keyInputHandler}
+                value={keyState}
+                placeholder="Key"
+              />
+            </View>
+            <View style={styles.dataContainer}>
+              <TextInput
+                style={styles.inputText}
+                onChangeText={urlInputHandler}
+                value={urlState}
+                placeholder="http:// url : port "
+              />
+            </View>
+            <View style={styles.dataContainer}>
+              <TextInput
+                style={styles.inputText}
+                onChangeText={modeInputHandler}
+                value={modeState}
+                placeholder="Prodction/Develop"
+              />
+            </View>
+            <View style={styles.dataContainer}>
+              <TextInput
+                style={styles.inputText}
+                onChangeText={userInputHandler}
+                value={userState}
+                placeholder="Utente"
+              />
+            </View>
 
-          <View style={styles.buttonRowContainer}>
-            <Pressable style={styles.buttonContainer} onPress={showAllState}>
-              <View style={styles.button}>
-                <Text style={styles.buttonText}>Show All State</Text>
-              </View>
-            </Pressable>
-            <Pressable style={styles.buttonContainer} onPress={checkAllContx}>
-              <View style={styles.button}>
-                <Text style={styles.buttonText}>Chk All Cntx</Text>
-              </View>
-            </Pressable>
-          </View>
 
-        </View>
-      </View>
-    </View >
+            <View style={styles.dataOutContainer}>
+              {keysStored && <Text style={styles.textOutLable}>Keys:</Text>}
+              {/* {dataRed && <Text style={styles.textOutData}>{keysStored.map(item => {`key:  ${item}`})}</Text>} */}
+              {keysStored && <Text style={styles.textOutData}>{keysStored}</Text>}
+            </View>
+
+
+            <View style={styles.dataOutContainer}>
+              {dataRed && <Text style={styles.textOutLable}>Data From store:</Text>}
+              {dataRed && <Text style={styles.textOutData}>{dataRed.url_address}</Text>}
+              {dataRed && <Text style={styles.textOutData}>{dataRed.mode_status}</Text>}
+              {dataRed && <Text style={styles.textOutData}>{dataRed.user_status}</Text>}
+            </View>
+
+            <View style={styles.buttonAllContainer}>
+              <View style={styles.buttonRowContainer}>
+                <Pressable style={styles.buttonContainer} onPress={setToStore}>
+                  <View style={styles.button}>
+                    <Text style={styles.buttonText}>Save to store</Text>
+                  </View>
+                </Pressable>
+                <Pressable style={styles.buttonContainer} onPress={getKeys}>
+                  <View style={styles.button}>
+                    <Text style={styles.buttonText}>Chek keys</Text>
+                  </View>
+                </Pressable>
+              </View>
+              <View style={styles.buttonRowContainer}>
+                <Pressable style={styles.buttonContainer} onPress={clearAllStore}>
+                  <View style={styles.button}>
+                    <Text style={styles.buttonText}>Clear Store</Text>
+                  </View>
+                </Pressable>
+                <Pressable style={styles.buttonContainer} onPress={getfromstore}>
+                  <View style={styles.button}>
+                    <Text style={styles.buttonText}>Get from store</Text>
+                  </View>
+                </Pressable>
+              </View>
+
+              <View style={styles.buttonRowContainer}>
+                <Pressable style={styles.buttonContainer} onPress={showAllState}>
+                  <View style={styles.button}>
+                    <Text style={styles.buttonText}>Show All State</Text>
+                  </View>
+                </Pressable>
+                <Pressable style={styles.buttonContainer} onPress={checkAllContx}>
+                  <View style={styles.button}>
+                    <Text style={styles.buttonText}>Chk All Cntx</Text>
+                  </View>
+                </Pressable>
+              </View>
+
+              <View style={styles.buttonRowContainer}>
+                <Pressable style={styles.buttonContainer} onPress={goToLoginScr}>
+                  <View style={styles.button}>
+                    <Text style={styles.buttonText}>Back to Login</Text>
+                  </View>
+                </Pressable>
+              </View>
+
+
+            </View>
+          </View>
+        </View >
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
