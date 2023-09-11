@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useContext, useState } from "react";
 import {
   Text,
@@ -23,6 +23,7 @@ import LoadingOverlay from "../UI/LoadingOverlay";
 
 function InputScreen({ navigation }) {
   const [isloading, setIsloading] = useState(false);
+  const [sessionActive, setSessionActive] = useState();
 
   const [neonato, setNeonato] = useState("");
   const [genitore, setGenitore] = useState("");
@@ -36,6 +37,28 @@ function InputScreen({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
 
   const authCtx = useContext(AuthContext);
+
+  useEffect(() => {
+
+    console.log('--------------- LOGIN SCR UseEffect START--------------------------------------');
+
+    async function checkSession() {
+
+      // setIsloading(true);
+      const sessionState = await checkSessionStatus(
+        authCtx.urlsetted,
+        authCtx.sessionID,
+      );
+      // setIsloading(false);
+      setSessionActive(sessionState ? 'Attiva' : 'Scaduta');
+
+    }
+
+    checkSession();
+
+    console.log('--------------- LOGIN SCR UseEffect THE END --------------------------------------');
+
+  }, [])
 
   if (isloading) {
     return <LoadingOverlay></LoadingOverlay>;
@@ -64,53 +87,87 @@ function InputScreen({ navigation }) {
   //   setLatteCulla(lattecullaBack);
   // }
 
+  async function checkSession() {
+
+    console.log('INPUT_SCR-CheckSession ----START----')
+    console.log('INPUT_SCR-CheckSession ----SessionID: ', authCtx.sessionID)
+
+    // setIsloading(true);
+    const sessionState = await checkSessionStatus(
+      authCtx.urlsetted,
+      authCtx.sessionID,
+    );
+    // setIsloading(false);
+    setSessionActive(sessionState ? 'Attiva' : 'Scaduta');
+
+    console.log('INPUT_SCR-CheckSession ----Response: ', sessionState)
+
+    return sessionState
+
+  }
 
   async function VerificaNeonato() {
 
-    if (authCtx.neonato === "" || authCtx.neonato == null) {
-      Alert.alert("ASSENZA DATO", "Non è stato scansionato il neonato!");
-    } else {
-      setIsloading(true);
-      const [ret, messageData, childName] = await getChkBaby(
-        authCtx.urlsetted,
-        authCtx.sessionID,
-        authCtx.neonato,
+    // setIsloading(false);
+    const sessionState = await checkSessionStatus(
+      authCtx.urlsetted,
+      authCtx.sessionID,
+    );
+    // setIsloading(false);
+    // setSessionActive(sessionState ? 'Attiva' : 'Scaduta');
+
+    if (!sessionState) {
+      Alert.alert(
+        "Sessione Scaduta",
+        "E' necessario effettuare nuovamente il login"
       );
-      setIsloading(false);
+    } else {
 
-      setRet(ret);
-      setMessage(messageData);
-      setChildN(childName);
-
-      if (childName) {
-
-        setModalVisible(!modalVisible);
-        //  navigation.navigate("ModalScrOK", {
-        //     titolo: "RICONOSCIMENTO CORRETTO",
-        //     testo1: "Neonato: " + childName,
-        //     testo2: "",
-        //     testo3: "Ret: " + ret,
-        //     testo4: "Message: " + messageData,
-        //     testobottone: "Chiudi",
-        //   });
+      if (authCtx.neonato === "" || authCtx.neonato == null) {
+        Alert.alert("ASSENZA DATO", "Non è stato scansionato il neonato!");
       } else {
-        navigation.navigate("ModalScrKO", {
-          titolo: "RICONOSCIMENTO ERRATO",
-          testo1: "Neonato non trovato!",
-          testo2: "",
-          testo3: "Ret: " + ret,
-          testo4: "Message: " + messageData,
-          testobottone: "Chiudi",
-        })
-      };
-      // Alert.alert(
-      //   "RICONOSCIMENTO CORRETTO",
-      //   // "Il riconoscimento Neonato <=> Genitore è stato eseguito correttamente"
-      //   messageData +
-      //   "\n\nBambino: " +
-      //   childName
-      // );
-      Reset();
+        setIsloading(true);
+        const [ret, messageData, childName] = await getChkBaby(
+          authCtx.urlsetted,
+          authCtx.sessionID,
+          authCtx.neonato,
+        );
+        setIsloading(false);
+
+        setRet(ret);
+        setMessage(messageData);
+        setChildN(childName);
+
+        if (childName) {
+
+          setModalVisible(!modalVisible);
+          //  navigation.navigate("ModalScrOK", {
+          //     titolo: "RICONOSCIMENTO CORRETTO",
+          //     testo1: "Neonato: " + childName,
+          //     testo2: "",
+          //     testo3: "Ret: " + ret,
+          //     testo4: "Message: " + messageData,
+          //     testobottone: "Chiudi",
+          //   });
+        } else {
+          navigation.navigate("ModalScrKO", {
+            titolo: "RICONOSCIMENTO ERRATO",
+            testo1: "Neonato non trovato!",
+            testo2: "",
+            testo3: "Ret: " + ret,
+            testo4: "Message: " + messageData,
+            testobottone: "Chiudi",
+          })
+        };
+        // Alert.alert(
+        //   "RICONOSCIMENTO CORRETTO",
+        //   // "Il riconoscimento Neonato <=> Genitore è stato eseguito correttamente"
+        //   messageData +
+        //   "\n\nBambino: " +
+        //   childName
+        // );
+        Reset();
+      }
     }
   }
 
@@ -228,21 +285,6 @@ function InputScreen({ navigation }) {
     setLatteCulla("");
   }
 
-  async function checkSession() {
- 
-    console.log('INPUT_SCR-CheckSession ----START----')
-    console.log('INPUT_SCR-CheckSession ----SessionID: ', authCtx.sessionID)
-
-    // setIsloading(true);
-    const sessionState = await checkSessionStatus(
-      authCtx.urlsetted,
-      authCtx.sessionID,
-      );
-    // setIsloading(false);
-
-    console.log('INPUT_SCR-CheckSession ----Response: ', sessionState)
-
-  }
 
   function resetAndLogout() {
     Reset();
@@ -265,18 +307,18 @@ function InputScreen({ navigation }) {
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
                 <View style={styles.centeredView1}>
-                    <Text style={styles.modalTitle}>{JSON.stringify("RICONOSCIMENTO CORRETTO").slice(1, -1)}</Text>
-                    <Text style={styles.modalText}>{JSON.stringify("Neonato: " + childN).slice(1, -1)}</Text>
-                    <Text style={styles.modalText}>{JSON.stringify("").slice(1, -1)}</Text>
-                    <Pressable
-                      style={[styles.button, styles.buttonOpen]}
-                      // onPress={() => navigation.goBack()}
-                      onPress={() => setModalVisible(!modalVisible)}
-                    >
-                      <Text style={styles.textStyle}>{JSON.stringify("Chiudi").slice(1, -1)}</Text>
-                    </Pressable>
-                    <Text style={styles.msgText}>{JSON.stringify("Ret: " + ret).slice(1, -1)}</Text>
-                    <Text style={styles.msgText}>{JSON.stringify("Message: " + message).slice(1, -1)}</Text>
+                  <Text style={styles.modalTitle}>{JSON.stringify("RICONOSCIMENTO CORRETTO").slice(1, -1)}</Text>
+                  <Text style={styles.modalText}>{JSON.stringify("Neonato: " + childN).slice(1, -1)}</Text>
+                  <Text style={styles.modalText}>{JSON.stringify("").slice(1, -1)}</Text>
+                  <Pressable
+                    style={[styles.button, styles.buttonOpen]}
+                    // onPress={() => navigation.goBack()}
+                    onPress={() => setModalVisible(!modalVisible)}
+                  >
+                    <Text style={styles.textStyle}>{JSON.stringify("Chiudi").slice(1, -1)}</Text>
+                  </Pressable>
+                  <Text style={styles.msgText}>{JSON.stringify("Ret: " + ret).slice(1, -1)}</Text>
+                  <Text style={styles.msgText}>{JSON.stringify("Message: " + message).slice(1, -1)}</Text>
                 </View>
               </View>
             </View>
@@ -299,10 +341,10 @@ function InputScreen({ navigation }) {
               <View style={styles.buttonScanContainer}>
                 <Button
                   title="Scan Neonato"
-                  onPress={() => navigation.navigate("ScanNeo2", 
-                  {
-                    scanElement: 1,
-                  })}
+                  onPress={() => navigation.navigate("ScanNeo2",
+                    {
+                      scanElement: 1,
+                    })}
                   color={GlobalStyles.colors.Button_Scan}
                 />
               </View>
@@ -313,10 +355,10 @@ function InputScreen({ navigation }) {
               <View style={styles.buttonScanContainer}>
                 <Button
                   title="Scan genitore"
-                  onPress={() => navigation.navigate("ScanNeo2", 
-                  {
-                    scanElement: 2,
-                  })}
+                  onPress={() => navigation.navigate("ScanNeo2",
+                    {
+                      scanElement: 2,
+                    })}
                   color={GlobalStyles.colors.Button_Scan}
                 />
               </View>
@@ -388,6 +430,9 @@ function InputScreen({ navigation }) {
                 onPress={checkSession}
                 color={GlobalStyles.colors.Button_Reset}
               ></Button>
+            </View>
+            <View >
+              <Text>Sessione: {sessionActive}</Text>
             </View>
           </View>
 
@@ -509,7 +554,7 @@ const styles = StyleSheet.create({
   textTitle: {
     fontSize: 40,
     fontWeight: "bold",
-  },  
+  },
   centeredView: {
     flex: 1,
     justifyContent: "center",

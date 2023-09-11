@@ -28,7 +28,7 @@ export const AuthContext = createContext({
 function AuthContentProvider({ children }) {
   const [authSessionIDs, setAuthSessionIDs] = useState();
   const [urlSetup, setUrlSetup] = useState();
-  const [sessTimer, setSessTimer] = useState(10);
+  const [sessTimer, setSessTimer] = useState(2);
   
   const [cognome, setCognome] = useState();
   const [nome, setNome] = useState();
