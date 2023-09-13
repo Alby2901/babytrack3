@@ -102,6 +102,8 @@ function InputScreen({ navigation }) {
 
     console.log('INPUT_SCR-CheckSession ----Response: ', sessionState)
 
+    console.log('INPUT_SCR-CheckSession ----THE END ----')
+
     return sessionState
 
   }
@@ -140,16 +142,16 @@ function InputScreen({ navigation }) {
 
         if (childName) {
 
-          setModalVisible(!modalVisible);
-          //  navigation.navigate("ResultsScreen", {
-          //     titolo: "RICONOSCIMENTO CORRETTO",
-          //     testo1: "Neonato: " + childName,
-          //     testo2: "",
-          //     testo3: "Ret: " + ret,
-          //     testo4: "Message: " + messageData,
-          //     testobottone: "Chiudi",
-          //     colore: 'green',
-          //   });
+          // setModalVisible(!modalVisible);
+           navigation.navigate("ResultsScreen", {
+              titolo: "RICONOSCIMENTO CORRETTO",
+              testo1: "Neonato: " + childName,
+              testo2: "",
+              testo3: "Ret: " + ret,
+              testo4: "Message: " + messageData,
+              testobottone: "Chiudi",
+              colore: 'green',
+            });
         } else {
           navigation.navigate("ResultsScreen", {
             titolo: "RICONOSCIMENTO ERRATO",
@@ -208,13 +210,14 @@ function InputScreen({ navigation }) {
 
       if (ret === '0' && authCtx.neonato === authCtx.genitore) {
 
-        navigation.navigate("ModalScrOK", {
+        navigation.navigate("ResultsScreen", {
           titolo: "RICONOSCIMENTO CORRETTO",
           testo1: "Neonato: " + childName,
           testo2: "Genitore: " + motherName,
           testo3: "Ret: " + ret,
           testo4: "Message: " + messageData,
           testobottone: "Chiudi",
+          colore: 'green',
         });
         // Alert.alert(
         //   "RICONOSCIMENTO CORRETTO",
@@ -226,13 +229,14 @@ function InputScreen({ navigation }) {
         //   motherName
         // );
       } else {
-        navigation.navigate("ModalScrKO", {
+        navigation.navigate("ResultsScreen", {
           titolo: "RICONOSCIMENTO ERRATO",
           testo1: "Neonato  o genitore",
           testo2: "non trovati!",
           testo3: "Ret: " + ret,
           testo4: "Message: " + messageData,
           testobottone: "Chiudi",
+          colore: 'red',
         })
 
         // Alert.alert(
@@ -276,6 +280,31 @@ function InputScreen({ navigation }) {
     }
   }
 
+  async function scanNeonato(){
+    const sessState = await checkSession();
+    console.log('INPUT_SCR- SCAN Neonato - CheckSessio - Response: ', sessState);
+    if (sessState){
+      navigation.navigate("ScanNeo2", {scanElement: 1,})
+    } else {
+      return (
+        <View>
+          <Text> SESSIONE SCADUTA</Text>
+        </View>
+      )
+    }
+  }
+
+  async function scanGenitore(){
+    const sessState = await checkSession();
+    console.log('INPUT_SCR- SCAN Neonato - CheckSessio - Response: ', sessState);
+    navigation.navigate("ScanNeo2", {scanElement: 2,})
+  }
+  async function scanLatte(){
+    const sessState = await checkSession();
+    console.log('INPUT_SCR- SCAN Neonato - CheckSessio - Response: ', sessState);
+    navigation.navigate("ScanNeo2", {scanElement: 3,})
+  }
+
   function Reset() {
     authCtx.readNeonato(null);
     authCtx.readGenitore(null);
@@ -286,7 +315,6 @@ function InputScreen({ navigation }) {
     setGenitore("");
     setLatteCulla("");
   }
-
 
   function resetAndLogout() {
     Reset();
@@ -343,10 +371,7 @@ function InputScreen({ navigation }) {
               <View style={styles.buttonScanContainer}>
                 <Button
                   title="Scan Neonato"
-                  onPress={() => navigation.navigate("ScanNeo2",
-                    {
-                      scanElement: 1,
-                    })}
+                  onPress={scanNeonato}
                   color={GlobalStyles.colors.Button_Scan}
                 />
               </View>
@@ -357,10 +382,7 @@ function InputScreen({ navigation }) {
               <View style={styles.buttonScanContainer}>
                 <Button
                   title="Scan genitore"
-                  onPress={() => navigation.navigate("ScanNeo2",
-                    {
-                      scanElement: 2,
-                    })}
+                  onPress={scanGenitore}
                   color={GlobalStyles.colors.Button_Scan}
                 />
               </View>
@@ -371,7 +393,7 @@ function InputScreen({ navigation }) {
               <View style={styles.buttonScanContainer}>
                 <Button
                   title="Scan Latte"
-                  onPress={() => navigation.navigate("ScanNeo2")}
+                  onPress={scanLatte}
                   color={GlobalStyles.colors.Button_Scan}
                 />
               </View>
