@@ -26,9 +26,9 @@ export async function setObjectToStore(keyp,value) {
 
 export async function getObjectFromStore(keyp) {
     try {
-        console.log('StoreDataLocal => getObjectFromStore => keyp', keyp);
+        console.log('StoreDataLocal => getObjectFromStore => keyp: ', keyp);
         const jsonValue = await AsyncStorage.getItem(keyp)
-        console.log('StoreDataLocal => getObjectFromStore => ', jsonValue);
+        console.log('StoreDataLocal => getObjectFromStore => jsonValue: ', jsonValue);
         return jsonValue != null ? JSON.parse(jsonValue) : null
     } catch (e) {
         // read error
