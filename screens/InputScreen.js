@@ -38,23 +38,42 @@ function InputScreen({ navigation }) {
 
   const authCtx = useContext(AuthContext);
 
+  async function checkSession() {
+
+    console.log('INPUT_SCR-CheckSession ----START----')
+    console.log('INPUT_SCR-CheckSession ----SessionID: ', authCtx.sessionID)
+
+    // setIsloading(true);
+    const sessionState = await checkSessionStatus(
+      authCtx.urlsetted,
+      authCtx.sessionID,
+    );
+    // setIsloading(false);
+    setSessionActive(sessionState ? 'Attiva' : 'Scaduta');
+
+    console.log('INPUT_SCR-CheckSession ----Response: ', sessionState)
+    console.log('INPUT_SCR-CheckSession ----THE END ----')
+
+    return sessionState
+
+  }
+
   useEffect(() => {
 
     console.log('--------------- LOGIN SCR UseEffect START--------------------------------------');
 
     async function checkSession() {
 
-      // setIsloading(true);
+    //   // setIsloading(true);
       const sessionState = await checkSessionStatus(
         authCtx.urlsetted,
         authCtx.sessionID,
       );
       // setIsloading(false);
       setSessionActive(sessionState ? 'Attiva' : 'Scaduta');
-
-    }
-
-    checkSession();
+    }    
+    
+    checkSession()
 
     console.log('--------------- LOGIN SCR UseEffect THE END --------------------------------------');
 
@@ -87,26 +106,7 @@ function InputScreen({ navigation }) {
   //   setLatteCulla(lattecullaBack);
   // }
 
-  async function checkSession() {
-
-    console.log('INPUT_SCR-CheckSession ----START----')
-    console.log('INPUT_SCR-CheckSession ----SessionID: ', authCtx.sessionID)
-
-    // setIsloading(true);
-    const sessionState = await checkSessionStatus(
-      authCtx.urlsetted,
-      authCtx.sessionID,
-    );
-    // setIsloading(false);
-    setSessionActive(sessionState ? 'Attiva' : 'Scaduta');
-
-    console.log('INPUT_SCR-CheckSession ----Response: ', sessionState)
-
-    console.log('INPUT_SCR-CheckSession ----THE END ----')
-
-    return sessionState
-
-  }
+ 
 
   async function VerificaNeonato() {
 
@@ -286,14 +286,13 @@ function InputScreen({ navigation }) {
     if (sessState){
       navigation.navigate("ScanNeo2", {scanElement: 1,})
     } else {
-      return (
-        <View>
-          <Text> SESSIONE SCADUTA</Text>
-        </View>
+      Alert.alert(
+        "Sessione Scaduta!",
+        "Premere \"LOGOUT\" ed effettuare nuovamente il LOGIN"
       )
     }
-  }
 
+  }
   async function scanGenitore(){
     const sessState = await checkSession();
     console.log('INPUT_SCR- SCAN Neonato - CheckSessio - Response: ', sessState);
