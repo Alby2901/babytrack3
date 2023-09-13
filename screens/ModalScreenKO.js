@@ -1,16 +1,16 @@
 import { View, Text, Pressable, StyleSheet } from "react-native";
 import { GlobalStyles } from "../UI/GlobalConstant";
 
-function ModalScreenOK({ route, navigation }) {
-  const { titolo, testo1, testo2, testobottone, testo3, testo4 } = route.params;
+function ModalScreenKO({ route, navigation }) {
+  const { titolo, testo1, testo2, testobottone, testo3, testo4, colore } = route.params;
   return (
     <View style={styles.centeredView}>
-      <View style={styles.modalView}>
+      <View style={[styles.modalView, {borderColor: colore}]}>
         <Text style={styles.modalTitle}>{JSON.stringify(titolo).slice(1,-1)}</Text>
         <Text style={styles.modalText}>{JSON.stringify(testo1).slice(1,-1)}</Text>
         <Text style={styles.modalText}>{JSON.stringify(testo2).slice(1,-1)}</Text>
         <Pressable
-          style={[styles.button, styles.buttonOpen]}
+          style={[styles.button, {backgroundColor: colore}]}
           onPress={() => navigation.goBack()}
         >
           <Text style={styles.textStyle}>{JSON.stringify(testobottone).slice(1,-1)}</Text>
@@ -22,7 +22,7 @@ function ModalScreenOK({ route, navigation }) {
   );
 }
 
-export default ModalScreenOK;
+export default ModalScreenKO;
 
 const styles = StyleSheet.create({
   centeredView: {
@@ -33,12 +33,11 @@ const styles = StyleSheet.create({
     backgroundColor: GlobalStyles.colors.BG_App_Blue,
   },
   modalView: {
-    // margin: 10,
     marginBottom: 100,
     backgroundColor: 'white',
     // backgroundColor: "green",
     borderRadius: 20,
-    borderColor: "red",
+    // borderColor: "red",
     borderWidth: 10,
     padding: 30,
     alignItems: "center",
@@ -56,6 +55,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 30,
     elevation: 2,
+    marginBottom: 10
   },
   buttonOpen: {
     backgroundColor: "red",
@@ -78,5 +78,10 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     textAlign: "center",
     fontSize: 20,
+  },
+  msgText: {
+    marginBottom: 5,
+    textAlign: "center",
+    fontSize: 8,
   },
 });

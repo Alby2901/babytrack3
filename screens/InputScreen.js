@@ -141,22 +141,24 @@ function InputScreen({ navigation }) {
         if (childName) {
 
           setModalVisible(!modalVisible);
-          //  navigation.navigate("ModalScrOK", {
+          //  navigation.navigate("ResultsScreen", {
           //     titolo: "RICONOSCIMENTO CORRETTO",
           //     testo1: "Neonato: " + childName,
           //     testo2: "",
           //     testo3: "Ret: " + ret,
           //     testo4: "Message: " + messageData,
           //     testobottone: "Chiudi",
+          //     colore: 'green',
           //   });
         } else {
-          navigation.navigate("ModalScrKO", {
+          navigation.navigate("ResultsScreen", {
             titolo: "RICONOSCIMENTO ERRATO",
             testo1: "Neonato non trovato!",
             testo2: "",
             testo3: "Ret: " + ret,
             testo4: "Message: " + messageData,
             testobottone: "Chiudi",
+            colore: 'red',
           })
         };
         // Alert.alert(

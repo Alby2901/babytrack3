@@ -1,16 +1,16 @@
 import { View, Text, Pressable, StyleSheet } from "react-native";
 import { GlobalStyles } from "../UI/GlobalConstant";
 
-function ModalScreenOK({ route, navigation }) {
-  const { titolo, testo1, testo2, testobottone, testo3, testo4 } = route.params;
+function ResultsScreen({ route, navigation }) {
+  const { titolo, testo1, testo2, testobottone, testo3, testo4, colore } = route.params;
   return (
     <View style={styles.centeredView}>
-      <View style={styles.modalView}>
+      <View style={[styles.modalView, {borderColor: colore}]}>
         <Text style={styles.modalTitle}>{JSON.stringify(titolo).slice(1,-1)}</Text>
         <Text style={styles.modalText}>{JSON.stringify(testo1).slice(1,-1)}</Text>
         <Text style={styles.modalText}>{JSON.stringify(testo2).slice(1,-1)}</Text>
         <Pressable
-          style={[styles.button, styles.buttonOpen]}
+          style={[styles.button, {backgroundColor: colore}]}
           onPress={() => navigation.goBack()}
         >
           <Text style={styles.textStyle}>{JSON.stringify(testobottone).slice(1,-1)}</Text>
@@ -22,7 +22,7 @@ function ModalScreenOK({ route, navigation }) {
   );
 }
 
-export default ModalScreenOK;
+export default ResultsScreen;
 
 const styles = StyleSheet.create({
   centeredView: {
@@ -35,9 +35,7 @@ const styles = StyleSheet.create({
   modalView: {
     marginBottom: 100,
     backgroundColor: 'white',
-    // backgroundColor: "green",
     borderRadius: 20,
-    borderColor: "green",
     borderWidth: 10,
     padding: 30,
     alignItems: "center",
@@ -56,9 +54,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     elevation: 2,
     marginBottom: 10
-  },
-  buttonOpen: {
-    backgroundColor: "green",
   },
   buttonClose: {
     backgroundColor: GlobalStyles.colors.BG_Blue,
