@@ -106,8 +106,6 @@ function InputScreen({ navigation }) {
   //   setLatteCulla(lattecullaBack);
   // }
 
- 
-
   async function VerificaNeonato() {
 
     // setIsloading(false);
@@ -314,7 +312,6 @@ function InputScreen({ navigation }) {
     setGenitore("");
     setLatteCulla("");
   }
-
   function resetAndLogout() {
     Reset();
     authCtx.logout();
@@ -388,7 +385,7 @@ function InputScreen({ navigation }) {
               <Text style={styles.text}>Genitore: {authCtx.genitore}</Text>
             </View>
 
-            <View style={styles.buttonsScanContainer}>
+            {/* <View style={styles.buttonsScanContainer}>
               <View style={styles.buttonScanContainer}>
                 <Button
                   title="Scan Latte"
@@ -397,7 +394,7 @@ function InputScreen({ navigation }) {
                 />
               </View>
               <Text style={styles.text}>Latte/Culla: {authCtx.latte}</Text>
-            </View>
+            </View> */}
 
             {/* {ret && <Text style={styles.text}>Ret: {ret}</Text>}
             {message && <Text style={styles.text}>Msg: {message}</Text>}
@@ -420,13 +417,13 @@ function InputScreen({ navigation }) {
                 color={GlobalStyles.colors.BG_DarkBlue}
               ></Button>
             </View>
-            <View style={styles.buttonContainer}>
+            {/* <View style={styles.buttonContainer}>
               <Button
                 title={"Chk \nLatte"}
                 onPress={VerificaLatteCulla}
                 color={GlobalStyles.colors.BG_DarkBlue}
               ></Button>
-            </View>
+            </View> */}
           </View>
 
           <View style={styles.buttonsContainer2}>
@@ -446,7 +443,7 @@ function InputScreen({ navigation }) {
             </View>
           </View>
 
-          <View style={styles.buttonsContainer2}>
+          {/* <View style={styles.buttonsContainer2}>
             <View style={styles.buttonResetContainer}>
               <Button
                 title="Test Session"
@@ -457,7 +454,7 @@ function InputScreen({ navigation }) {
             <View >
               <Text>Sessione: {sessionActive}</Text>
             </View>
-          </View>
+          </View> */}
 
         </View>
       </ScrollView>
