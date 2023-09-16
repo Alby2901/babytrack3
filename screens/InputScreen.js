@@ -140,7 +140,7 @@ function InputScreen({ navigation }) {
 
         if (childName) {
 
-          // setModalVisible(!modalVisible);
+          //  setModalVisible(!modalVisible);
            navigation.navigate("ResultsScreen", {
               titolo: "RICONOSCIMENTO CORRETTO",
               testo1: "Neonato: " + childName,
@@ -353,12 +353,12 @@ function InputScreen({ navigation }) {
           <View style={styles.userContainer}>
             <Text style={styles.textUtenteSmall}>Buongiorno</Text>
             <Text style={styles.textUtente}>{cognomeNome}</Text>
-            <View style={styles.containerSessione}>
+            {/* <View style={styles.containerSessione}>
               <Text style={styles.textSessione}>
                 (Sessione: {authCtx.sessionID}) - </Text>
               <CountdownTimerAuto style={styles.textSessione} />
-            </View>
-            <Text > --- {authCtx.urlsetted} --- </Text>
+            </View> */}
+            {/* <Text > --- {authCtx.urlsetted} --- </Text> */}
             {/* <UtenteInput onSetUtente={setUtenteHandler} /> */}
           </View>
           <View style={styles.inputsContainer}>
@@ -469,7 +469,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     // justifyContent: "center",
-    paddingBottom: 200,
+    paddingBottom: 125,
     backgroundColor: GlobalStyles.colors.BG_App_Blue,
   },
   userContainer: {
@@ -485,12 +485,10 @@ const styles = StyleSheet.create({
   },
   inputsContainer: {
     flex: 4,
-
     paddingHorizontal: 10,
     paddingVertical: 10,
-    height: 360,
+    height: 200,
     minWidth: 280,
-
     // borderColor: 'blue',
     // borderWidth: 1,
   },
@@ -532,7 +530,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     // borderColor: 'red',
     // borderWidth: 1,
-    minWidth: 80,
+    minWidth: 120,
     // minHeight: 80,
   },
   buttonResetContainer: {

@@ -119,12 +119,13 @@ function ScanScreen({ navigation, route }) {
             onPress={() => setScanned(false)}
           />
         )}
-
-        <Button
-          title={'Attiva torcia'}
-          onPress={toggleFlashlight}
-          style={styles.flashlightButton}
-        />
+        <View>
+          <Button
+            title={'Attiva/Disattiva Torcia'}
+            onPress={toggleFlashlight}
+            style={styles.flashlightButton}
+          />
+        </View>
 
       </View>
     );
