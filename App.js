@@ -2,21 +2,15 @@ import { useContext, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { StyleSheet, Button, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import AuthContentProvider, { AuthContext } from "./store/auth-context";
 import { GlobalStyles } from "./UI/GlobalConstant";
 import LoginScreen from "./screens/LoginScreen";
 import InputScreen from "./screens/InputScreen";
-import ScanScreenNeonato2 from "./screens/ScanScreenNeonato2";
+import ScanScreen from "./screens/ScanScreen";
 import ResultsScreen from "./screens/ResultsScreen";
 import StoreLocalScreen from "./screens/StoreLocalScreen";
-import { setObjectToStore, getObjectFromStore, clearStore, getAllKeys } from './store/StoreDataLocal';
-// import ScanScreen from "./screens/ScanScreen";
-// import ScanScreenNeonato from "./screens/ScanScreenNeonato";
-// import ScanScreenGenitore from "./screens/ScanScreenGenitore";
-// import ScanScreenLatte from "./screens/ScanScreenLatte";
-// import ModalScreenOK from "./screens/ModalScreenOK";
-// import ModalScreenKO from "./screens/ModalScreenKO";
+import { getObjectFromStore, getAllKeys } from './store/StoreDataLocal';
 
 const Stack = createNativeStackNavigator();
 
@@ -62,11 +56,7 @@ function AuthenticatedStack() {
             title: "Baby Track 2023",
           }}
         />
-        <Stack.Screen name="ScanNeo2" component={ScanScreenNeonato2} />
-        {/* <Stack.Screen name="Scan" component={ScanScreen} />
-        <Stack.Screen name="ScanNeo" component={ScanScreenNeonato} />
-        <Stack.Screen name="ScanGen" component={ScanScreenGenitore} />
-        <Stack.Screen name="ScanLat" component={ScanScreenLatte} /> */}
+        <Stack.Screen name="Scan" component={ScanScreen} />
       </Stack.Group>
 
       <Stack.Group
@@ -86,21 +76,11 @@ function AuthenticatedStack() {
           },
         }}
       >
-        {/* <Stack.Screen
-          name="ModalScrOK"
-          component={ModalScreenOK}
-        // Options={{ headerShown: false }}
-        /> */}
         <Stack.Screen
           name="ResultsScreen"
           component={ResultsScreen}
         // Options={{ headerShown: false }}
         />
-        {/* <Stack.Screen
-          name="ModalScrKO"
-          component={ModalScreenKO}
-        // Options={{ headerShown: false }}
-        /> */}
       </Stack.Group>
     </Stack.Navigator>
   );

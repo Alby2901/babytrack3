@@ -249,7 +249,7 @@ function InputScreen({ navigation }) {
       Reset();
     }
   }
-  function VerificaLatteCulla() {
+  async function VerificaLatteCulla() {
     const n = JSON.stringify(neonato);
     const l = JSON.stringify(latteculla);
 
@@ -276,29 +276,49 @@ function InputScreen({ navigation }) {
     }
   }
 
-  async function scanNeonato() {
+  async function scan(dataToScan) {
     const sessState = await checkSession();
     console.log('INPUT_SCR- SCAN Neonato - CheckSessio - Response: ', sessState);
+    console.log('INPUT_SCR- SCAN - Parameter caller: ', dataToScan);
+    let param = 0;
+    if (dataToScan == 'baby') {param = 1};
+    if (dataToScan == 'parent') {param = 2};
+    if (dataToScan == 'milk') {param = 3};
+    
     if (sessState) {
-      navigation.navigate("ScanNeo2", { scanElement: 1, })
+      navigation.navigate("Scan", { scanElement: param, });
     } else {
       Alert.alert(
         "Sessione Scaduta!",
         "Premere \"LOGOUT\" ed effettuare nuovamente il LOGIN"
       )
     }
+  }
 
-  }
-  async function scanGenitore() {
-    const sessState = await checkSession();
-    console.log('INPUT_SCR- SCAN Neonato - CheckSessio - Response: ', sessState);
-    navigation.navigate("ScanNeo2", { scanElement: 2, })
-  }
-  async function scanLatte() {
-    const sessState = await checkSession();
-    console.log('INPUT_SCR- SCAN Neonato - CheckSessio - Response: ', sessState);
-    navigation.navigate("ScanNeo2", { scanElement: 3, })
-  }
+  // async function scanNeonato() {
+  //   const sessState = await checkSession();
+  //   console.log('INPUT_SCR- SCAN Neonato - CheckSessio - Response: ', sessState);
+  //   if (sessState) {
+  //     navigation.navigate("Scan", { scanElement: 1, })
+  //   } else {
+  //     Alert.alert(
+  //       "Sessione Scaduta!",
+  //       "Premere \"LOGOUT\" ed effettuare nuovamente il LOGIN"
+  //     )
+  //   }
+  // }
+
+  // async function scanGenitore() {
+  //   const sessState = await checkSession();
+  //   console.log('INPUT_SCR- SCAN Neonato - CheckSessio - Response: ', sessState);
+  //   navigation.navigate("Scan", { scanElement: 2, })
+  // }
+
+  // async function scanLatte() {
+  //   const sessState = await checkSession();
+  //   console.log('INPUT_SCR- SCAN Neonato - CheckSessio - Response: ', sessState);
+  //   navigation.navigate("Scan", { scanElement: 3, })
+  // }
 
   function Reset() {
     authCtx.readNeonato(null);
@@ -370,7 +390,8 @@ function InputScreen({ navigation }) {
               <View style={styles.buttonScanContainer}>
                 <Button
                   title="Scan Neonato"
-                  onPress={scanNeonato}
+                  // onPress={scanNeonato.bind(this, 'baby')}
+                  onPress={scan.bind(this, 'baby')}
                   color={GlobalStyles.colors.Button_Scan}
                 />
               </View>
@@ -381,7 +402,8 @@ function InputScreen({ navigation }) {
               <View style={styles.buttonScanContainer}>
                 <Button
                   title="Scan genitore"
-                  onPress={scanGenitore}
+                  // onPress={scanGenitore}
+                  onPress={scan.bind(this, 'parent')}
                   color={GlobalStyles.colors.Button_Scan}
                 />
               </View>
@@ -393,7 +415,8 @@ function InputScreen({ navigation }) {
                 <View style={styles.buttonScanContainer}>
                   <Button
                     title="Scan Latte"
-                    onPress={scanLatte}
+                    // onPress={scanLatte}
+                    onPress={scan.bind(this, 'milk')}
                     color={GlobalStyles.colors.Button_Scan}
                   />
                 </View>

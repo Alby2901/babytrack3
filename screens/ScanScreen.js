@@ -1,22 +1,65 @@
 import React, { useState, useEffect, useContext } from "react";
 import { StyleSheet, View, Text, Button, Alert } from "react-native";
-import { BarCodeScanner } from "expo-barcode-scanner";
 import { AuthContext } from "../store/auth-context";
+import { Camera } from 'expo-camera';
+import { BarCodeScanner } from "expo-barcode-scanner";
 
 // function ScanQR() {
-  function ScanScreen({ navigation }) {
+function ScanScreen({ navigation, route }) {
   const [loading, setLoading] = useState(true);
-  const [scanData, setScanData] = useState("");
   const [permission, setPermission] = useState(true);
 
-  const datoScansionato = "Dato dallo schermo 2";
+  // const [hasPermission, setHasPermission] = useState(null);
+  const [scanned, setScanned] = useState(false);
+  const [flashlight, setFlashlight] = useState(Camera.Constants.FlashMode.off);
+  const [scanRichiesto, setScanrichiesto] = useState('');
+
+  const { scanElement } = route.params;
+  console.log('SCAN_SCREEN - Parametro 1 ricevuto: ', JSON.stringify(scanElement));
+
+  useEffect(() => {
+    setScanrichiesto(JSON.stringify(scanElement));
+  }, [scanElement]);
+
+  console.log('SCAN_SCREEN - scanRichiestoState: ', scanRichiesto);
 
   const authCtx = useContext(AuthContext);
 
-  function sendDataBack(data) {
-    
-    navigation.navigate('Login')
-  }
+  const toggleFlashlight = () => {
+    setFlashlight(
+      flashlight === Camera.Constants.FlashMode.off
+        ? Camera.Constants.FlashMode.torch
+        : Camera.Constants.FlashMode.off
+    );
+  };
+
+  // function sendDataBack(data) {
+  //   // authCtx.readNeonato(data);
+  //   navigation.navigate('Input')
+  // }
+
+  const handleBarCodeScanned = ({ type, data }) => {
+    console.log('SCAN_SCREEN - HandleBarCodeScanned');
+    console.log('SCAN_SCREEN - HandleBarCodeScanned - scanRichiestoState: ', scanRichiesto);
+    setScanned(true);
+    // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+
+    if (scanRichiesto == 1) {
+      console.log('SCAN_SCREEN - Case Neonato!');
+      authCtx.readNeonato(data);
+    } else if (scanRichiesto == 2) {
+      console.log('SCAN_SCREEN - Case Genitore!');
+      authCtx.readGenitore(data);
+    } else if (scanRichiesto == 3) {
+      console.log('SCAN_SCREEN - Case Latte!');
+      authCtx.readLatte(data);
+    } else {
+      console.log('SCAN_SCREEN - Non FUNZIONA: ');
+    }
+
+    // authCtx.readNeonato(data);
+    navigation.navigate('Input')
+  };
 
   useEffect(() => {
     requestCameraPermission();
@@ -26,16 +69,16 @@ import { AuthContext } from "../store/auth-context";
     try {
       const { status, granted } =
         await BarCodeScanner.requestPermissionsAsync();
-      console.log(`Status: ${status}, granted: ${granted}`);
+      // console.log(`Status: ${status}, granted: ${granted}`);
 
       if (status === "granted") {
-        console.log("access granted");
+        // console.log("access granted");
         setPermission(true);
       } else {
         setPermission(false);
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       setPermission(false);
     } finally {
       setLoading(false);
@@ -49,51 +92,43 @@ import { AuthContext } from "../store/auth-context";
       </View>
     );
 
-  // if (scanData) {
-  //   Alert.alert("ScanData ok");
-  //   return (
-  //     <View style={styles.container2}>
-  //       <Text>{scanData}</Text>
-  //       <Button
-  //         title="ScanAgain"
-  //         onPress={() => setScanData(undefined)}
-  //       ></Button>
-  //     </View>
-  //   );
-  // }
-
-  //   if (permission) {
-  //     Alert.alert("Permission ok");
-  //     return (
-  //       <BarCodeScanner
-  //         style={[styles.container1]}
-  //         onBarCodeScanned={({ type, data }) => {
-  //             Alert.alert("ScanData ok" + data);
-  //             sendDataBack(data);
-
   if (permission) {
-    Alert.alert("Permission ok");
-    return (
-      <BarCodeScanner
-        style={[styles.container1]}
-        onBarCodeScanned={({ type, data }) => {
-          Alert.alert("ScanData ok" + data);
-          sendDataBack(data);
+    // Alert.alert("Permission ok");
 
-          // try {
-          //   console.log("Tipo dato: " + type);
-          //   console.log("Dato: " + data);
-          //   // let _data = JSON.parse(data);
-          //   let _data = data;
-          //   setScanData(_data);
-          // } catch (error) {
-          //   console.error("Unable to parse string: ", error);
-          // }
-        }}
-      >
-        {/* <Text style={styles.text}>Scan the QR code.</Text> */}
-      </BarCodeScanner>
+    return (
+      <View style={styles.container}>
+        <Camera
+          style={styles.camera}
+          type={Camera.Constants.Type.back}
+          flashMode={flashlight}
+          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+        >
+          <View style={styles.layerTop} />
+          <View style={styles.layerCenter}>
+            <View style={styles.layerLeft} />
+            <View style={styles.focused}>
+              <View style={styles.layerRight} />
+            </View>
+            <View style={styles.layerLeft} />
+          </View>
+          <View style={styles.layerBottom} />
+        </Camera>
+        {scanned && (
+          <Button
+            title={'Tap to Scan Again'}
+            onPress={() => setScanned(false)}
+          />
+        )}
+
+        <Button
+          title={'Attiva torcia'}
+          onPress={toggleFlashlight}
+          style={styles.flashlightButton}
+        />
+
+      </View>
     );
+
   } else {
     return <Text style={styles.textError}>Permission rejected.</Text>;
   }
@@ -101,6 +136,7 @@ import { AuthContext } from "../store/auth-context";
 
 export default ScanScreen;
 
+const opacity = 'rgba(0, 0, 0, .4)';
 const styles = StyleSheet.create({
   button: {
     margin: 20,
@@ -134,5 +170,39 @@ const styles = StyleSheet.create({
   text: {
     backgroundColor: "black",
     color: "white",
+  },
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    backgroundColor: 'black',
+  },
+  camera: {
+    flex: 1,
+  },
+  layerTop: {
+    flex: 2,
+    backgroundColor: opacity,
+  },
+  layerCenter: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  layerLeft: {
+    flex: 1,
+    backgroundColor: opacity,
+  },
+  focused: {
+    flex: 10,
+  },
+  layerRight: {
+    flex: 1,
+    backgroundColor: opacity,
+  },
+  layerBottom: {
+    flex: 2,
+    backgroundColor: opacity,
+  },
+  flashlightButton: {
+    marginTop: 20,
   },
 });
