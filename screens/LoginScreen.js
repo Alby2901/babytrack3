@@ -15,7 +15,7 @@ import { AuthContext } from "../store/auth-context";
 import LoadingOverlay from "../UI/LoadingOverlay";
 import { GlobalStyles } from "../UI/GlobalConstant";
 import IconButton from '../UI/IconButton';
-import { setObjectToStore} from '../store/StoreDataLocal';
+import { setObjectToStore } from '../store/StoreDataLocal';
 
 function LoginScreen({ navigation }) {
   const [errorHTTP, setErrorHTTP] = useState("");
@@ -26,7 +26,7 @@ function LoginScreen({ navigation }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showConfigInput, setshowConfigInput] = useState(false);
   const { isInputOk, setIsInputOk } = useState(true);
-  const [url, setUrl] = useState("http://130.0.151.46:8090");
+  const [url, setUrl] = useState("http://37.159.251.165:8090");
 
   // ----------------------------
   // ELIMINARE IL DEFAULT!
@@ -48,7 +48,7 @@ function LoginScreen({ navigation }) {
           <IconButton
             icon="settings-outline"
             size={24}
-            color='white'
+            color={(authCtx.mode == 'Prod' ? GlobalStyles.colors.BG_Blue : 'white')}
             // onPress={() => {}}
             onPress={headerSettingsIconPressHandler}
           />)
@@ -62,11 +62,11 @@ function LoginScreen({ navigation }) {
       setUrl(authCtx.urlsetted);
       setServerSetted(true);
       setUsr(authCtx.user);
-      console.log('LOGIN_SCREEN => useEffect => authCtx.user: ', usr )
+      console.log('LOGIN_SCREEN => useEffect => authCtx.user: ', usr)
     } else {
       setServerSetted(false);
-    }
-  }, [authCtx.urlsetted,authCtx.user])
+    };
+  }, [authCtx.urlsetted, authCtx.user, authCtx.mode])
 
   // function checkInput(usrp, pwdp, urlp) {
   //   if (usrp && pwdp && urlp) {
@@ -91,7 +91,7 @@ function LoginScreen({ navigation }) {
     console.log("Login Screen authCtx.urlsetted: ", authCtx.urlsetted);
 
     authCtx.setUser(usr);
-    const valObj = {url_address: url, mode_status: authCtx.mode, user_status: usr};
+    const valObj = { url_address: url, mode_status: authCtx.mode, user_status: usr };
     console.log('Login Screen => Store di local Obj: ', valObj);
     await setObjectToStore(authCtx.key1, valObj);
 
@@ -104,8 +104,6 @@ function LoginScreen({ navigation }) {
       url
     );
     setIsAuthenticated(false);
-
-    
 
     console.log("Login Screen SessId: ", sessionIDData);
     authCtx.authenticate(sessionIDData, 2, cognome, nome);
@@ -148,7 +146,7 @@ function LoginScreen({ navigation }) {
   return (
     // <SafeAreaView>
     <ScrollView>
-      <View style={styles.containerOuter}>
+      <View style={[styles.containerOuter, { paddingBottom: (authCtx.mode == 'Prod' ? 203 : 378) }]}>
         <Pressable onPress={showConfigInputHandler}>
           <View style={styles.hideButton}></View>
         </Pressable>
@@ -161,7 +159,7 @@ function LoginScreen({ navigation }) {
         </View>
 
         <View >
-          {serverSetted ? <Text >Server: {authCtx.urlsetted} </Text> : <Text >ATTENZIONE! Server non impostato</Text>}  
+          {serverSetted ? <Text >Server: {authCtx.urlsetted} </Text> : <Text >ATTENZIONE! Server non impostato</Text>}
         </View>
 
         <View style={styles.containerInput}>
@@ -245,7 +243,7 @@ const styles = StyleSheet.create({
     backgroundColor: GlobalStyles.colors.BG_App_Blue,
     paddingHorizontal: 20,
     paddingTop: 20,
-    paddingBottom: 420,
+    // paddingBottom: 203, //ZenPhone 203 - MotorolaEdge 420
   },
   hideButton: {
     alignItems: "center",

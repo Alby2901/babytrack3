@@ -64,15 +64,15 @@ function InputScreen({ navigation }) {
 
     async function checkSession() {
 
-    //   // setIsloading(true);
+      //   // setIsloading(true);
       const sessionState = await checkSessionStatus(
         authCtx.urlsetted,
         authCtx.sessionID,
       );
       // setIsloading(false);
       setSessionActive(sessionState ? 'Attiva' : 'Scaduta');
-    }    
-    
+    }
+
     checkSession()
 
     console.log('--------------- LOGIN SCR UseEffect THE END --------------------------------------');
@@ -106,16 +106,14 @@ function InputScreen({ navigation }) {
   //   setLatteCulla(lattecullaBack);
   // }
 
- 
-
   async function VerificaNeonato() {
 
-    // setIsloading(false);
+    setIsloading(true);
     const sessionState = await checkSessionStatus(
       authCtx.urlsetted,
       authCtx.sessionID,
     );
-    // setIsloading(false);
+    setIsloading(false);
     // setSessionActive(sessionState ? 'Attiva' : 'Scaduta');
 
     if (!sessionState) {
@@ -143,15 +141,15 @@ function InputScreen({ navigation }) {
         if (childName) {
 
           // setModalVisible(!modalVisible);
-           navigation.navigate("ResultsScreen", {
-              titolo: "RICONOSCIMENTO CORRETTO",
-              testo1: "Neonato: " + childName,
-              testo2: "",
-              testo3: "Ret: " + ret,
-              testo4: "Message: " + messageData,
-              testobottone: "Chiudi",
-              colore: 'green',
-            });
+          navigation.navigate("ResultsScreen", {
+            titolo: "RICONOSCIMENTO CORRETTO",
+            testo1: "Neonato: " + childName,
+            testo2: "",
+            testo3: "Ret: " + ret,
+            testo4: "Message: " + messageData,
+            testobottone: "Chiudi",
+            colore: 'green',
+          });
         } else {
           navigation.navigate("ResultsScreen", {
             titolo: "RICONOSCIMENTO ERRATO",
@@ -174,7 +172,6 @@ function InputScreen({ navigation }) {
       }
     }
   }
-
   async function VerificaGenitore() {
 
     const n = JSON.stringify(authCtx.neonato);
@@ -252,7 +249,6 @@ function InputScreen({ navigation }) {
       Reset();
     }
   }
-
   function VerificaLatteCulla() {
     const n = JSON.stringify(neonato);
     const l = JSON.stringify(latteculla);
@@ -280,11 +276,11 @@ function InputScreen({ navigation }) {
     }
   }
 
-  async function scanNeonato(){
+  async function scanNeonato() {
     const sessState = await checkSession();
     console.log('INPUT_SCR- SCAN Neonato - CheckSessio - Response: ', sessState);
-    if (sessState){
-      navigation.navigate("ScanNeo2", {scanElement: 1,})
+    if (sessState) {
+      navigation.navigate("ScanNeo2", { scanElement: 1, })
     } else {
       Alert.alert(
         "Sessione Scaduta!",
@@ -293,15 +289,15 @@ function InputScreen({ navigation }) {
     }
 
   }
-  async function scanGenitore(){
+  async function scanGenitore() {
     const sessState = await checkSession();
     console.log('INPUT_SCR- SCAN Neonato - CheckSessio - Response: ', sessState);
-    navigation.navigate("ScanNeo2", {scanElement: 2,})
+    navigation.navigate("ScanNeo2", { scanElement: 2, })
   }
-  async function scanLatte(){
+  async function scanLatte() {
     const sessState = await checkSession();
     console.log('INPUT_SCR- SCAN Neonato - CheckSessio - Response: ', sessState);
-    navigation.navigate("ScanNeo2", {scanElement: 3,})
+    navigation.navigate("ScanNeo2", { scanElement: 3, })
   }
 
   function Reset() {
@@ -314,7 +310,6 @@ function InputScreen({ navigation }) {
     setGenitore("");
     setLatteCulla("");
   }
-
   function resetAndLogout() {
     Reset();
     authCtx.logout();
@@ -323,7 +318,7 @@ function InputScreen({ navigation }) {
   return (
     <SafeAreaView>
       <ScrollView>
-        <View style={styles.containerOuter}>
+        <View style={[styles.containerOuter, { paddingBottom: (authCtx.mode == 'Prod' ? 75 : 60) }]}>
 
           <Modal
             animationType="slide"
@@ -356,15 +351,20 @@ function InputScreen({ navigation }) {
           <View style={styles.userContainer}>
             <Text style={styles.textUtenteSmall}>Buongiorno</Text>
             <Text style={styles.textUtente}>{cognomeNome}</Text>
-            <View style={styles.containerSessione}>
-              <Text style={styles.textSessione}>
-                (Sessione: {authCtx.sessionID}) - </Text>
-              <CountdownTimerAuto style={styles.textSessione} />
-            </View>
-            <Text > --- {authCtx.urlsetted} --- </Text>
+
+            {(authCtx.mode == 'Prod' ? null :
+              <>
+                <View style={styles.containerSessione}>
+                  <Text style={styles.textSessione}>
+                    (Sessione: {authCtx.sessionID}) - </Text>
+                  <CountdownTimerAuto style={styles.textSessione} />
+                </View>
+                <Text > --- {authCtx.urlsetted} --- </Text>
+              </>
+            )}
             {/* <UtenteInput onSetUtente={setUtenteHandler} /> */}
           </View>
-          <View style={styles.inputsContainer}>
+          <View style={[styles.inputsContainer, { height: (authCtx.mode == 'Prod' ? 250 : 350) }]}>
 
             <View style={styles.buttonsScanContainer}>
               <View style={styles.buttonScanContainer}>
@@ -388,16 +388,18 @@ function InputScreen({ navigation }) {
               <Text style={styles.text}>Genitore: {authCtx.genitore}</Text>
             </View>
 
-            <View style={styles.buttonsScanContainer}>
-              <View style={styles.buttonScanContainer}>
-                <Button
-                  title="Scan Latte"
-                  onPress={scanLatte}
-                  color={GlobalStyles.colors.Button_Scan}
-                />
+            {(authCtx.mode == 'Prod' ? null :
+              <View style={styles.buttonsScanContainer}>
+                <View style={styles.buttonScanContainer}>
+                  <Button
+                    title="Scan Latte"
+                    onPress={scanLatte}
+                    color={GlobalStyles.colors.Button_Scan}
+                  />
+                </View>
+                <Text style={styles.text}>Latte/Culla: {authCtx.latte}</Text>
               </View>
-              <Text style={styles.text}>Latte/Culla: {authCtx.latte}</Text>
-            </View>
+            )}
 
             {/* {ret && <Text style={styles.text}>Ret: {ret}</Text>}
             {message && <Text style={styles.text}>Msg: {message}</Text>}
@@ -420,13 +422,16 @@ function InputScreen({ navigation }) {
                 color={GlobalStyles.colors.BG_DarkBlue}
               ></Button>
             </View>
-            <View style={styles.buttonContainer}>
-              <Button
-                title={"Chk \nLatte"}
-                onPress={VerificaLatteCulla}
-                color={GlobalStyles.colors.BG_DarkBlue}
-              ></Button>
-            </View>
+
+            {(authCtx.mode == 'Prod' ? null :
+              <View style={styles.buttonContainer}>
+                <Button
+                  title={"Chk \nLatte"}
+                  onPress={VerificaLatteCulla}
+                  color={GlobalStyles.colors.BG_DarkBlue}
+                ></Button>
+              </View>
+            )}
           </View>
 
           <View style={styles.buttonsContainer2}>
@@ -446,18 +451,20 @@ function InputScreen({ navigation }) {
             </View>
           </View>
 
-          <View style={styles.buttonsContainer2}>
-            <View style={styles.buttonResetContainer}>
-              <Button
-                title="Test Session"
-                onPress={checkSession}
-                color={GlobalStyles.colors.Button_Reset}
-              ></Button>
+          {(authCtx.mode == 'Prod' ? null :
+            <View style={styles.buttonsContainer2}>
+              <View style={styles.buttonResetContainer}>
+                <Button
+                  title="Test Session"
+                  onPress={checkSession}
+                  color={GlobalStyles.colors.Button_Reset}
+                ></Button>
+              </View>
+              <View >
+                <Text>Sessione: {sessionActive}</Text>
+              </View>
             </View>
-            <View >
-              <Text>Sessione: {sessionActive}</Text>
-            </View>
-          </View>
+          )}
 
         </View>
       </ScrollView>
@@ -472,7 +479,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     // justifyContent: "center",
-    paddingBottom: 200,
+    paddingBottom: 60,                     // OLD 200
     backgroundColor: GlobalStyles.colors.BG_App_Blue,
   },
   userContainer: {
@@ -488,10 +495,9 @@ const styles = StyleSheet.create({
   },
   inputsContainer: {
     flex: 4,
-
     paddingHorizontal: 10,
     paddingVertical: 10,
-    height: 360,
+    // height: 350,                          // OLD 350
     minWidth: 280,
 
     // borderColor: 'blue',
