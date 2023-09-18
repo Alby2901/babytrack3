@@ -10,6 +10,7 @@ export const GlobalStyles = {
       Button_Reset: "#008707",
       Button_Logout: '#BE0000',
       Button_Scan: "#94941f",
+      Button_Scan_Dark: "#535312",
     },
   };
 

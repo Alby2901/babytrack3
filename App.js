@@ -136,7 +136,7 @@ function Root() {
         // console.log('objGetted.mode_status: ', objGetted.mode_status);
 
         authCtx.readUrlSetted(objGetted.url_address.toString());
-        authCtx.setMode(objGetted.mode_status);
+        authCtx.setMode(objGetted.mode_status ? objGetted.mode_status : 'Devel');
         authCtx.setUser(objGetted.user_status);
 
         // setUrlState(objGetted.url_address.toString());
@@ -153,6 +153,8 @@ function Root() {
     console.log('--------------- APP UseEffect THE END --------------------------------------');
 
   }, [])
+
+  console.log('--------------- APP UseEffect --------------------------------------');
 
   return <Navigation />
 

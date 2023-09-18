@@ -48,7 +48,7 @@ function LoginScreen({ navigation }) {
           <IconButton
             icon="settings-outline"
             size={24}
-            color={(authCtx.mode == 'Prod' ? GlobalStyles.colors.BG_Blue : 'white')}
+            color={(authCtx.mode == 'Prod' || authCtx.mode == 'Prod-Manual' ? GlobalStyles.colors.BG_Blue : 'white')}
             // onPress={() => {}}
             onPress={headerSettingsIconPressHandler}
           />)

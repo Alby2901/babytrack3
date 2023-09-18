@@ -12,7 +12,7 @@ function NeonatoInput(proprieta) {
   // })
 
   function goalInputHandler(enteredText) {
-    console.log(enteredText);
+    // console.log(enteredText);
     setEnteredNeonatoText(enteredText);
   }
 
@@ -27,12 +27,13 @@ function NeonatoInput(proprieta) {
     <View style={styles.inputContainer}>
       <TextInput
         placeholder="Scansiona neonato"
+        placeholderTextColor='white'
         style={styles.textInput}
         onChangeText={goalInputHandler}
         onSubmitEditing={addNeonatoHandler}
         value={enteredNeonatoText}
       ></TextInput>
-      <Button title="Add Neo" onPress={addNeonatoHandler}></Button>
+      {/* <Button title="Add Neo" onPress={addNeonatoHandler}></Button> */}
     </View>
   );
 }

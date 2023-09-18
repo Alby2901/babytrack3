@@ -11,10 +11,9 @@ import {
   Modal,
   Pressable
 } from "react-native";
-import UtenteInput from "../components/UtenteInput";
-import NeonatoInput from "../components/NeonatoInput";
-import GenitoreInput from "../components/GenitoreInput";
-import LatteCullaInput from "../components/LatteCullaInput";
+import NeonatoInput from "../components/InputNeonato";
+import GenitoreInput from "../components/InputGenitore";
+import LatteCullaInput from "../components/InputLatteCulla";
 import { AuthContext } from "../store/auth-context";
 import { getChkBaby, getChkParent, checkSessionStatus } from "../components/http";
 import { GlobalStyles } from "../UI/GlobalConstant";
@@ -96,17 +95,18 @@ function InputScreen({ navigation }) {
   const cognomeNome = authCtx.cognome + " " + authCtx.nome;
 
   function setNeonatoHandler(neonatoBack) {
-    console.log("Input Screen - NeonatoBack =>>", neonatoBack);
+    // console.log("Input Screen - NeonatoBack =>>", neonatoBack);
     setNeonato(neonatoBack);
     authCtx.readNeonato(neonatoBack)
   }
-
-  // function setGenitoreHandler(genitoreBack) {
-  //   setGenitore(genitoreBack);
-  // }
-  // function setLatteCullaHandler(lattecullaBack) {
-  //   setLatteCulla(lattecullaBack);
-  // }
+  function setGenitoreHandler(genitoreBack) {
+    setGenitore(genitoreBack);
+    authCtx.readGenitore(genitoreBack)
+  }
+  function setLatteCullaHandler(lattecullaBack) {
+    setLatteCulla(lattecullaBack);
+    authCtx.readLatte(lattecullaBack);
+  }
 
   async function VerificaNeonato() {
 
@@ -283,10 +283,10 @@ function InputScreen({ navigation }) {
     console.log('INPUT_SCR- SCAN Neonato - CheckSessio - Response: ', sessState);
     console.log('INPUT_SCR- SCAN - Parameter caller: ', dataToScan);
     let param = 0;
-    if (dataToScan == 'baby') {param = 1};
-    if (dataToScan == 'parent') {param = 2};
-    if (dataToScan == 'milk') {param = 3};
-    
+    if (dataToScan == 'baby') { param = 1 };
+    if (dataToScan == 'parent') { param = 2 };
+    if (dataToScan == 'milk') { param = 3 };
+
     if (sessState) {
       navigation.navigate("Scan", { scanElement: param, });
     } else {
@@ -296,31 +296,6 @@ function InputScreen({ navigation }) {
       )
     }
   }
-
-  // async function scanNeonato() {
-  //   const sessState = await checkSession();
-  //   console.log('INPUT_SCR- SCAN Neonato - CheckSessio - Response: ', sessState);
-  //   if (sessState) {
-  //     navigation.navigate("Scan", { scanElement: 1, })
-  //   } else {
-  //     Alert.alert(
-  //       "Sessione Scaduta!",
-  //       "Premere \"LOGOUT\" ed effettuare nuovamente il LOGIN"
-  //     )
-  //   }
-  // }
-
-  // async function scanGenitore() {
-  //   const sessState = await checkSession();
-  //   console.log('INPUT_SCR- SCAN Neonato - CheckSessio - Response: ', sessState);
-  //   navigation.navigate("Scan", { scanElement: 2, })
-  // }
-
-  // async function scanLatte() {
-  //   const sessState = await checkSession();
-  //   console.log('INPUT_SCR- SCAN Neonato - CheckSessio - Response: ', sessState);
-  //   navigation.navigate("Scan", { scanElement: 3, })
-  // }
 
   function Reset() {
     authCtx.readNeonato(null);
@@ -340,7 +315,7 @@ function InputScreen({ navigation }) {
   return (
     <SafeAreaView>
       <ScrollView>
-        <View style={[styles.containerOuter, { paddingBottom: (authCtx.mode == 'Prod' ? 75 : 60) }]}>
+        <View style={[styles.containerOuter, { paddingBottom: (authCtx.mode.slice(0, 4) == 'Prod' ? 75 : 60) }]}>
 
           <Modal
             animationType="slide"
@@ -374,7 +349,7 @@ function InputScreen({ navigation }) {
             <Text style={styles.textUtenteSmall}>Buongiorno</Text>
             <Text style={styles.textUtente}>{cognomeNome}</Text>
 
-            {(authCtx.mode == 'Prod' ? null :
+            {(authCtx.mode.slice(0, 4) == 'Prod' ? null :
               <>
                 <View style={styles.containerSessione}>
                   <Text style={styles.textSessione}>
@@ -384,45 +359,57 @@ function InputScreen({ navigation }) {
                 <Text > --- {authCtx.urlsetted} --- </Text>
               </>
             )}
-            {/* <UtenteInput onSetUtente={setUtenteHandler} /> */}
           </View>
-          <View style={[styles.inputsContainer, { height: (authCtx.mode == 'Prod' ? 250 : 350) }]}>
+          <View style={[styles.inputsContainer, { height: (authCtx.mode.slice(0, 4) == 'Prod' ? 250 : 350) }]}>
 
             <View style={styles.buttonsScanContainer}>
-              <View style={styles.buttonScanContainer}>
-                <Button
-                  title="Scan Neonato"
-                  // onPress={scanNeonato.bind(this, 'baby')}
-                  onPress={scan.bind(this, 'baby')}
-                  color={GlobalStyles.colors.Button_Scan}
-                />
-              </View>
-              <NeonatoInput style={styles.inputArea} onSetNeonato={setNeonatoHandler} />
-              <Text style={styles.text}>Neonato: {authCtx.neonato}</Text>
-            </View>
-
-            <View style={styles.buttonsScanContainer}>
-              <View style={styles.buttonScanContainer}>
-                <Button
-                  title="Scan genitore"
-                  // onPress={scanGenitore}
-                  onPress={scan.bind(this, 'parent')}
-                  color={GlobalStyles.colors.Button_Scan}
-                />
-              </View>
-              <Text style={styles.text}>Genitore: {authCtx.genitore}</Text>
-            </View>
-
-            {(authCtx.mode == 'Prod' ? null :
-              <View style={styles.buttonsScanContainer}>
+              {(authCtx.mode == 'Prod-Manual' ? null :
                 <View style={styles.buttonScanContainer}>
                   <Button
-                    title="Scan Latte"
-                    // onPress={scanLatte}
-                    onPress={scan.bind(this, 'milk')}
+                    title="Scan Neonato"
+                    // onPress={scanNeonato.bind(this, 'baby')}
+                    onPress={scan.bind(this, 'baby')}
                     color={GlobalStyles.colors.Button_Scan}
                   />
                 </View>
+              )}
+              {(authCtx.mode == 'Prod-Manual' || authCtx.mode == 'Devel' ?
+                (<NeonatoInput style={styles.inputArea} onSetNeonato={setNeonatoHandler} />)
+                : null)}
+              <Text style={styles.text}>Neonato: {authCtx.neonato}</Text>
+            </View>
+
+
+            <View style={styles.buttonsScanContainer}>
+              {(authCtx.mode == 'Prod-Manual' ? null :
+                <View style={styles.buttonScanContainer}>
+                  <Button
+                    title="Scan genitore"
+                    // onPress={scanGenitore}
+                    onPress={scan.bind(this, 'parent')}
+                    color={GlobalStyles.colors.Button_Scan}
+                  />
+                </View>)}
+              {(authCtx.mode == 'Prod-Manual' || authCtx.mode == 'Devel' ?
+                <GenitoreInput style={styles.inputArea} onSetGenitore={setGenitoreHandler} />
+                : null)}
+              <Text style={styles.text}>Genitore: {authCtx.genitore}</Text>
+            </View>
+
+            {(authCtx.mode.slice(0, 4) == 'Prod' ? null :
+              <View style={styles.buttonsScanContainer}>
+                {(authCtx.mode == 'Prod-Manual' ? null :
+                  <View style={styles.buttonScanContainer}>
+                    <Button
+                      title="Scan Latte"
+                      // onPress={scanLatte}
+                      onPress={scan.bind(this, 'milk')}
+                      color={GlobalStyles.colors.Button_Scan}
+                    />
+                  </View>)}
+                {(authCtx.mode == 'Prod-Manual' || authCtx.mode == 'Devel' ?
+                  <LatteCullaInput style={styles.inputArea} onSetLatteCulla={setLatteCullaHandler} />
+                  : null)}
                 <Text style={styles.text}>Latte/Culla: {authCtx.latte}</Text>
               </View>
             )}
@@ -477,7 +464,7 @@ function InputScreen({ navigation }) {
             </View>
           </View>
 
-          {(authCtx.mode == 'Prod' ? null :
+          {(authCtx.mode.slice(0, 4) == 'Prod' ? null :
             <View style={styles.buttonsContainer2}>
               <View style={styles.buttonResetContainer}>
                 <Button
@@ -698,6 +685,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   inputArea: {
-    width: 100,
+    minWidth: 100,
+    // borderColor: 'Green',
+    // borderWidth: 1,
+    margin: 0,
+    padding: 0,
   }
 });

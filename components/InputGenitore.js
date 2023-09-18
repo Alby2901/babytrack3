@@ -5,7 +5,7 @@ import styles from "./InputCSS";
 function GenitoreInput(proprieta) {
   const [enteredGenitoreText, setEnteredGenitoreText] = useState("");
 
-  console.log('Comp.GenitInput: ', proprieta.val);
+  // console.log('Comp.GenitInput: ', proprieta.val);
 
   // useEffect(() => {
   //   setEnteredGenitoreText(proprieta.val)
@@ -27,6 +27,7 @@ function GenitoreInput(proprieta) {
     <View style={styles.inputContainer}>
       <TextInput
         placeholder="Scansiona genitore"
+        placeholderTextColor='white'
         style={styles.textInput}
         onChangeText={goalInputHandler}
         onSubmitEditing={addGenitoreHandler}
