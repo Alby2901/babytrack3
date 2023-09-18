@@ -95,9 +95,11 @@ function InputScreen({ navigation }) {
 
   const cognomeNome = authCtx.cognome + " " + authCtx.nome;
 
-  // function setNeonatoHandler(neonatoBack) {
-  //   setNeonato(neonatoBack);
-  // }
+  function setNeonatoHandler(neonatoBack) {
+    console.log("Input Screen - NeonatoBack =>>", neonatoBack);
+    setNeonato(neonatoBack);
+    authCtx.readNeonato(neonatoBack)
+  }
 
   // function setGenitoreHandler(genitoreBack) {
   //   setGenitore(genitoreBack);
@@ -395,6 +397,7 @@ function InputScreen({ navigation }) {
                   color={GlobalStyles.colors.Button_Scan}
                 />
               </View>
+              <NeonatoInput style={styles.inputArea} onSetNeonato={setNeonatoHandler} />
               <Text style={styles.text}>Neonato: {authCtx.neonato}</Text>
             </View>
 
@@ -694,4 +697,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     textAlign: "center",
   },
+  inputArea: {
+    width: 100,
+  }
 });
