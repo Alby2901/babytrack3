@@ -1,9 +1,10 @@
 // import * as React from "react";
 import { useContext, useState, useLayoutEffect, useEffect } from "react";
-import { View, Text, Button, StyleSheet, Pressable, TextInput,  ScrollView, SafeAreaView, } from "react-native";
+import { View, Text, Button, StyleSheet, Pressable, TextInput, ScrollView, SafeAreaView, } from "react-native";
 import { setObjectToStore, getObjectFromStore, clearStore, getAllKeys } from '../store/StoreDataLocal';
 import { GlobalConstants, GlobalStyles } from "../UI/GlobalConstant";
 import { AuthContext } from "../store/auth-context";
+import { SelectList } from 'react-native-dropdown-select-list'
 
 function StoreLocalScreen({ navigation }) {
   const [dataRed, setDataRed] = useState();
@@ -13,8 +14,15 @@ function StoreLocalScreen({ navigation }) {
   const [modeState, setModeState] = useState();
   const [testState, setTestState] = useState();
   const [userState, setUserState] = useState();
+  const [selected, setSelected] = useState("");
 
   const autxCtx = useContext(AuthContext);
+
+  const data = [
+    { key: 'Devel', value: 'Devel' },
+    { key: 'Prod', value: 'Prod' },
+    { key: 'Prod-Manual', value: 'Prod-Manual' },
+  ]
 
   useEffect(() => {
 
@@ -50,34 +58,24 @@ function StoreLocalScreen({ navigation }) {
 
         // console.log('UrlState_after: ', urlState);
         // console.log('ModeState_after: ', modeState);
-
         // console.log('==> State value setted! Set contex value... ');
-
         // console.log('objGetted.url_address.toString()... ', objGetted.url_address.toString());
 
         autxCtx.urlsetted = objGetted.url_address.toString();
 
         // console.log('autxCtx.urlsetted: ', autxCtx.urlsetted);
-
         // console.log('--------------- UseEffect if end --------------------------------------');
-
       } else {
-
         // console.log('keysStored non setted: ');
-
       }
 
       // console.log('TestState_before: ', testState);
       // console.log('==> Set State Test... ');
       // setTestState('Pippo');
       // console.log('TestState_after: ', testState);
-
       // console.log('Test: ', test);
-
       console.log('--------------- STORE LOCAL SCREEN - UseEffect async function END --------------------------------------');
-
       // return test
-
     }
 
     // console.log('TestState_before2: ', testState);
@@ -97,15 +95,12 @@ function StoreLocalScreen({ navigation }) {
   function urlInputHandler(enteredUrl) {
     setUrlState(enteredUrl);
   }
-
   function keyInputHandler(enteredKey) {
     setKeyState(enteredKey);
   }
-
   function modeInputHandler(enteredStatus) {
     setModeState(enteredStatus);
   }
-
   function userInputHandler(enteredStatus) {
     setUserState(enteredStatus);
   }
@@ -114,7 +109,7 @@ function StoreLocalScreen({ navigation }) {
     console.log('---------------------------- SAVE TO STORE KEY  - START ---------------- ');
     // const keyObj = { key: keyState };
     // console.log('KeyObj sent: ', keyObj);
-    const valObj = { url_address: urlState, mode_status: modeState, user_status: userState};
+    const valObj = { url_address: urlState, mode_status: modeState, user_status: userState };
     console.log('STORE LOCAL SCREEN ValObj sent: ', valObj);
     await setObjectToStore(keyState, valObj);
     console.log('STORE LOCAL SCREEN ValObj.url_address: ', valObj.url_address);
@@ -205,13 +200,6 @@ function StoreLocalScreen({ navigation }) {
     console.log('---------------------------- SHOW ALL STATE - THE END ---------------- ');
   }
 
-  function backToLogin() {
-    console.log('---------------------------- BACK TO LOGIN - START ---------------- ');
-    console.log('Back to Login: ');
-    navigation.navigate('Login');
-    console.log('---------------------------- BACK TO LOGIN - THE END ---------------- ');
-  }
-
   function checkAllContx() {
     console.log('---------------------------- CHECK ALL CONTEXT - START ---------------- ');
     console.log('sessionID_Ctx: ', autxCtx.sessionID);
@@ -256,20 +244,29 @@ function StoreLocalScreen({ navigation }) {
             <View style={styles.dataContainer}>
               <TextInput
                 style={styles.inputText}
-                onChangeText={modeInputHandler}
-                value={modeState}
-                placeholder="Prodction/Develop"
-              />
-            </View>
-            <View style={styles.dataContainer}>
-              <TextInput
-                style={styles.inputText}
                 onChangeText={userInputHandler}
                 value={userState}
                 placeholder="Utente"
               />
             </View>
 
+            {/* <View style={styles.dataContainer}>
+              <TextInput
+                style={styles.inputText}
+                onChangeText={modeInputHandler}
+                value={modeState}
+                placeholder="Prodction/Develop"
+              />
+            </View> */}
+            <View style={styles.dataDropDownContainer}>
+              <SelectList
+                setSelected={(val) => setModeState(val)}
+                data={data}
+                save="value"
+                defaultOption={{ key: modeState, value: modeState }}
+                // onSelect={modeInputHandler}
+              />
+            </View>
 
             <View style={styles.dataOutContainer}>
               {keysStored && <Text style={styles.textOutLable}>Keys:</Text>}
@@ -380,6 +377,18 @@ const styles = StyleSheet.create({
     borderColor: 'blue',
     borderWidth: 1,
     margin: 2,
+  },
+  dataDropDownContainer: {
+    // flex: 1,
+    // justifyContent: 'flex-start',
+    // alignItems: 'center',
+    backgroundColor: GlobalStyles.colors.BG_Blue,
+    borderColor: 'khaki',
+    borderWidth: 1,
+    margin: 2,
+    // minWidth: 250,
+    // width: 100,
+    // height: 40,
   },
   dataOutContainer: {
     flex: 1,
