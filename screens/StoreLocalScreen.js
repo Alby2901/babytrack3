@@ -18,11 +18,7 @@ function StoreLocalScreen({ navigation }) {
 
   const autxCtx = useContext(AuthContext);
 
-  const data = [
-    { key: 'Devel', value: 'Devel' },
-    { key: 'Prod', value: 'Prod' },
-    { key: 'Prod-Manual', value: 'Prod-Manual' },
-  ]
+  const data = GlobalConstants.modeData;
 
   useEffect(() => {
 
@@ -224,32 +220,49 @@ function StoreLocalScreen({ navigation }) {
             <Text style={{ fontSize: 30 }}>Setting screen!</Text>
             <Text style={{ fontSize: 10 }}>Test: {testState}</Text>
           </View>
-          <View style={styles.dataAllContainer}>
-            <View style={styles.dataContainer}>
+          <View>
+            {/* <View style={styles.dataContainer}>
               <TextInput
                 style={styles.inputText}
                 onChangeText={keyInputHandler}
                 value={keyState}
                 placeholder="Key"
               />
-            </View>
+            </View> */}
+
             <View style={styles.dataContainer}>
+              <SelectList
+                setSelected={(val) => setUrlState(val)}
+                data={GlobalConstants.keyData}
+                save="value"
+                placeholder="Key"
+                defaultOption={{ key: keyState, value: keyState }}
+                boxStyles={{backgroundColor: 'blue', height: 50, width:220}}
+                inputStyles={{color: 'white'}}
+                // onSelect={modeInputHandler}
+              />
+            </View>
+
+            {/* <View style={styles.dataContainer}>
               <TextInput
                 style={styles.inputText}
                 onChangeText={urlInputHandler}
                 value={urlState}
                 placeholder="http:// url : port "
               />
-            </View>
+            </View> */}
             <View style={styles.dataContainer}>
-              <TextInput
-                style={styles.inputText}
-                onChangeText={userInputHandler}
-                value={userState}
-                placeholder="Utente"
+              <SelectList
+                setSelected={(val) => setUrlState(val)}
+                data={GlobalConstants.urlData}
+                save="value"
+                placeholder="http:// url : port "
+                defaultOption={{ key: urlState, value: urlState }}
+                boxStyles={{backgroundColor: 'green', height: 50, width:220}}
+                inputStyles={{color: 'white'}}
+                // onSelect={modeInputHandler}
               />
             </View>
-
             {/* <View style={styles.dataContainer}>
               <TextInput
                 style={styles.inputText}
@@ -258,13 +271,25 @@ function StoreLocalScreen({ navigation }) {
                 placeholder="Prodction/Develop"
               />
             </View> */}
-            <View style={styles.dataDropDownContainer}>
+            {/* <View style={styles.dataDropDownContainer}> */}
+            <View style={styles.dataContainer}>
               <SelectList
                 setSelected={(val) => setModeState(val)}
-                data={data}
+                data={GlobalConstants.modeData}
                 save="value"
+                placeholder="Prodction/Develop"
                 defaultOption={{ key: modeState, value: modeState }}
+                boxStyles={{backgroundColor: 'red', height: 50, width:220}}
+                inputStyles={{color: 'white'}}
                 // onSelect={modeInputHandler}
+              />
+            </View>
+            <View style={styles.dataContainer}>
+              <TextInput
+                style={styles.inputText}
+                onChangeText={userInputHandler}
+                value={userState}
+                placeholder="Utente"
               />
             </View>
 
@@ -294,6 +319,12 @@ function StoreLocalScreen({ navigation }) {
                     <Text style={styles.buttonText}>Chek keys</Text>
                   </View>
                 </Pressable>
+                <Pressable style={styles.buttonContainer} onPress={getfromstore}>
+                  <View style={styles.button}>
+                    <Text style={styles.buttonText}>Get from store</Text>
+                  </View>
+                </Pressable>
+
               </View>
               <View style={styles.buttonRowContainer}>
                 <Pressable style={styles.buttonContainer} onPress={clearAllStore}>
@@ -301,14 +332,6 @@ function StoreLocalScreen({ navigation }) {
                     <Text style={styles.buttonText}>Clear Store</Text>
                   </View>
                 </Pressable>
-                <Pressable style={styles.buttonContainer} onPress={getfromstore}>
-                  <View style={styles.button}>
-                    <Text style={styles.buttonText}>Get from store</Text>
-                  </View>
-                </Pressable>
-              </View>
-
-              <View style={styles.buttonRowContainer}>
                 <Pressable style={styles.buttonContainer} onPress={showAllState}>
                   <View style={styles.button}>
                     <Text style={styles.buttonText}>Show All State</Text>
@@ -320,7 +343,6 @@ function StoreLocalScreen({ navigation }) {
                   </View>
                 </Pressable>
               </View>
-
               <View style={styles.buttonRowContainer}>
                 <Pressable style={styles.buttonContainer} onPress={goToLoginScr}>
                   <View style={styles.button}>
@@ -328,8 +350,6 @@ function StoreLocalScreen({ navigation }) {
                   </View>
                 </Pressable>
               </View>
-
-
             </View>
           </View>
         </View >
@@ -355,6 +375,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    marginTop:30,
   },
   titleContainer: {
     flex: 1,
@@ -378,18 +399,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     margin: 2,
   },
-  dataDropDownContainer: {
-    // flex: 1,
-    // justifyContent: 'flex-start',
-    // alignItems: 'center',
-    backgroundColor: GlobalStyles.colors.BG_Blue,
-    borderColor: 'khaki',
-    borderWidth: 1,
-    margin: 2,
-    // minWidth: 250,
-    // width: 100,
-    // height: 40,
-  },
   dataOutContainer: {
     flex: 1,
     justifyContent: 'flex-start',
@@ -405,7 +414,7 @@ const styles = StyleSheet.create({
     margin: 2,
     borderColor: 'green',
     borderWidth: 1,
-    marginBottom: 120,
+    marginBottom: 80,
   },
   buttonRowContainer: {
     // flex: 1,
@@ -415,14 +424,14 @@ const styles = StyleSheet.create({
     margin: 2,
     borderColor: 'blue',
     borderWidth: 1,
-    height: 60,
+    height: 50,
   },
   buttonContainer: {
     borderRadius: 20,
-    minWidth: 120,
+    minWidth: 100,
     minHeight: 50,
     backgroundColor: GlobalStyles.colors.BG_DarkBlue,
-    margin: 5,
+    margin: 2,
     padding: 0,
     // elevation: 2,
   },

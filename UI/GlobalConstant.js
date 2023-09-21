@@ -23,4 +23,17 @@ export const GlobalStyles = {
       PATH_CHKSESSION: 'checksession',
       KEY_URL: 'Url_server',
     },
+    modeData: [
+      { key: 'Devel', value: 'Devel' },
+      { key: 'Prod', value: 'Prod' },
+      { key: 'Prod-Manual', value: 'Prod-Manual' },
+    ],
+    urlData: [
+      { key: 'http://172.31.234.97:8084', value: 'http://172.31.234.97:8084' },
+      { key: 'http://37.159.251.165:8090', value: 'http://37.159.251.165:8090' },
+      { key: 'http://10.6.10.135:8080', value: 'http://10.6.10.135:8080' },
+    ],
+    keyData: [
+      { key: 'Settings', value: 'Settings' }
+    ],
   };
