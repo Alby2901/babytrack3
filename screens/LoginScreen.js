@@ -38,7 +38,7 @@ function LoginScreen({ navigation }) {
 
   function headerSettingsIconPressHandler() {
     console.log('From Login Screen => Open setting screen... ');
-    navigation.navigate('Settings');
+    navigation.navigate('SettingAccess');
   }
 
   useLayoutEffect(() => {

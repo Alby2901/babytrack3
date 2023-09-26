@@ -9,6 +9,7 @@ import LoginScreen from "./screens/LoginScreen";
 import InputScreen from "./screens/InputScreen";
 import ScanScreen from "./screens/ScanScreen";
 import ResultsScreen from "./screens/ResultsScreen";
+import SettingAccess from "./screens/SettingAccess";
 import StoreLocalScreen from "./screens/StoreLocalScreen";
 import { getObjectFromStore, getAllKeys } from './store/StoreDataLocal';
 
@@ -25,12 +26,14 @@ function AuthStack() {
         headerTitleStyle: { fontWeight: "bold", fontSize: 30, },
       }}
     >
-      <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="Login" component={LoginScreen}></Stack.Screen>
+      <Stack.Screen name="SettingAccess" component={SettingAccess}></Stack.Screen>
       {/* <Stack.Screen name="Signup" component={SignupScreen} /> */}
       <Stack.Screen name='Settings' component={StoreLocalScreen}></Stack.Screen>
     </Stack.Navigator>
   );
 }
+
 
 function AuthenticatedStack() {
   return (
