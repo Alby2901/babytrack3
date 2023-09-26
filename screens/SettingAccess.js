@@ -17,15 +17,15 @@ import { setObjectToStore } from '../store/StoreDataLocal';
 import LoadingOverlay from "../UI/LoadingOverlay";
 import IconButton from '../UI/IconButton';
 
-function LoginScreen({ navigation }) {
+function SettingAccessScreen({ navigation }) {
   // const [sessionID, setSessionID] = useState("");
-  // const [message, setmessage] = useState("");
   // const [serverSetted, setServerSetted] = useState(false);
   // const [isAuthenticated, setIsAuthenticated] = useState(false);
   // const [showConfigInput, setshowConfigInput] = useState(false);
   // const { isInputOk, setIsInputOk } = useState(true);
   // const [url, setUrl] = useState("http://37.159.251.165:8090");
 
+  const [message, setMessage] = useState();
   const [errorHTTP, setErrorHTTP] = useState("");
   const [isLogged, setIsLogged] = useState(false);
   const [pwd, setPwd] = useState("");
@@ -33,19 +33,31 @@ function LoginScreen({ navigation }) {
 
   const authCtx = useContext(AuthContext);
 
-  let message = '<Text style={styles.textAlert}>ATTENZIONE!</Text>';
+  const message1 = <></>;
+  // setMessage(message1);
 
   function getSessionHandler() {
     console.log("Setting Access Screen +++++++++++++++++++++++++++++");
     console.log("Setting Access Screen - pwd: ", pwd);
 
-    if (pwd == '123456') {
-      console.log('From Settin Access Screen => Open setting screen... ');
-      setIsAutorized(true)
-      navigation.navigate('Settings');
+    if (pwd) {
+
+      if (pwd == '123456') {
+        console.log('From Settin Access Screen => Open setting screen... ');
+        setIsAutorized(true)
+        navigation.navigate('Settings');
+      } else {
+        console.log('From Settin Access Screen - else...   ');
+        const message2 = [
+            <Text style={styles.textAlert}>ATTENZIONE! Password errata!</Text>
+        ];
+        setMessage(message2);
+        console.log('From Settin Access Screen - message', message);
+        setIsAutorized(false)
+      }
     } else {
-      message = "<Text>ATTENZIONE!</Text>"
-      setIsAutorized(false)
+      const message2 = <></>;
+      setMessage(message2);
     }
   }
 
@@ -54,6 +66,10 @@ function LoginScreen({ navigation }) {
   }
 
   function pwdInputHandler(enteredPwd) {
+    if (!enteredPwd) {
+      const message2 = <></>;
+      setMessage(message2);
+    }
     setPwd(enteredPwd);
   }
 
@@ -92,7 +108,7 @@ function LoginScreen({ navigation }) {
         )}
 
         <View style={styles.containerMessage}>
-
+          {message}
           {/* {pwd && !isAutorized &&  <Text style={styles.textAlert}>ATTENZIONE!</Text>} */}
           {/* {pwd && message} */}
         </View>
@@ -131,7 +147,7 @@ function LoginScreen({ navigation }) {
   );
 }
 
-export default LoginScreen;
+export default SettingAccessScreen;
 
 const styles = StyleSheet.create({
   containerOuter: {
