@@ -5,26 +5,14 @@ import {
   Button,
   TextInput,
   ScrollView,
-  SafeAreaView,
-  Pressable,
-  Alert,
 } from "react-native";
-import { getSession } from "../components/http";
+
 import { useContext, useState, useLayoutEffect, useEffect } from "react";
 import { AuthContext } from "../store/auth-context";
 import { GlobalStyles } from "../UI/GlobalConstant";
-import { setObjectToStore } from '../store/StoreDataLocal';
-import LoadingOverlay from "../UI/LoadingOverlay";
-import IconButton from '../UI/IconButton';
+
 
 function SettingAccessScreen({ navigation }) {
-  // const [sessionID, setSessionID] = useState("");
-  // const [serverSetted, setServerSetted] = useState(false);
-  // const [isAuthenticated, setIsAuthenticated] = useState(false);
-  // const [showConfigInput, setshowConfigInput] = useState(false);
-  // const { isInputOk, setIsInputOk } = useState(true);
-  // const [url, setUrl] = useState("http://37.159.251.165:8090");
-
   const [message, setMessage] = useState();
   const [errorHTTP, setErrorHTTP] = useState("");
   const [isLogged, setIsLogged] = useState(false);
@@ -34,7 +22,6 @@ function SettingAccessScreen({ navigation }) {
   const authCtx = useContext(AuthContext);
 
   const message1 = <></>;
-  // setMessage(message1);
 
   function getSessionHandler() {
     console.log("Setting Access Screen +++++++++++++++++++++++++++++");
@@ -114,38 +101,7 @@ function SettingAccessScreen({ navigation }) {
 
         <View style={styles.containerMessage}>
           {message}
-          {/* {pwd && !isAutorized &&  <Text style={styles.textAlert}>ATTENZIONE!</Text>} */}
-          {/* {pwd && message} */}
         </View>
-
-
-
-        {/* {isLogged && (
-          <View style={styles.containerMessage}>
-            <Text>The Session ID is: {sessionID}</Text>
-            {!isAutorized && pwd && <Text style={styles.textAlert}>ATTENZIONE!</Text>}
-            {isAutorized && pwd && <Text style={styles.textAlert}>{message}</Text>}
-
-          </View>
-        )} */}
-
-        {isLogged && (
-          <View style={styles.containerButton}>
-            {(isLogged || errorHTTP) && (
-              <Button
-                style={styles.button}
-                title="Riprova..."
-                onPress={resetIsLogged}
-                color={GlobalStyles.colors.BG_DarkBlue}
-              ></Button>
-            )}
-            {errorHTTP && (
-              <Text style={styles.textAlert} cd>
-                Server is not responding!
-              </Text>
-            )}
-          </View>
-        )}
 
       </View>
     </ScrollView>
