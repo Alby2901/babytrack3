@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import AuthContentProvider, { AuthContext } from "./store/auth-context";
 import { GlobalStyles } from "./UI/GlobalConstant";
 import LoginScreen from "./screens/LoginScreen";
@@ -29,7 +29,12 @@ function AuthStack() {
       <Stack.Screen name="Login" component={LoginScreen}></Stack.Screen>
       <Stack.Screen name="SettingAccess" component={SettingAccess}></Stack.Screen>
       {/* <Stack.Screen name="Signup" component={SignupScreen} /> */}
-      <Stack.Screen name='Settings' component={StoreLocalScreen}></Stack.Screen>
+      <Stack.Screen
+        name='Settings'
+        component={StoreLocalScreen}
+        options={{
+          headerLeft: () => {return (<></>);}
+        }}></Stack.Screen>
     </Stack.Navigator>
   );
 }
