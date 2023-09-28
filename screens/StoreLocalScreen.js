@@ -232,7 +232,7 @@ function StoreLocalScreen({ navigation }) {
 
             <View style={styles.dataContainer}>
               <SelectList
-                setSelected={(val) => setUrlState(val)}
+                setSelected={(val) => setKeyState(val)}
                 data={GlobalConstants.keyData}
                 save="value"
                 placeholder="Key"
