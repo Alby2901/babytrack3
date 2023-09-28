@@ -48,16 +48,21 @@ function SettingAccessScreen({ navigation }) {
         navigation.navigate('Settings');
       } else {
         console.log('From Settin Access Screen - else...   ');
-        const message2 = [
-            <Text style={styles.textAlert}>ATTENZIONE! Password errata!</Text>
-        ];
-        setMessage(message2);
+        
+        const messageWrongPwd = (
+          <>
+        <Text style={styles.textAlert}>ATTENZIONE!</Text>
+        <Text style={styles.textAlert}>Password errata!</Text>
+          </>)
+        
+;
+        setMessage(messageWrongPwd);
         console.log('From Settin Access Screen - message', message);
         setIsAutorized(false)
       }
     } else {
-      const message2 = <></>;
-      setMessage(message2);
+      const messageWrongPwd = <></>;
+      setMessage(messageWrongPwd);
     }
   }
 
@@ -67,8 +72,8 @@ function SettingAccessScreen({ navigation }) {
 
   function pwdInputHandler(enteredPwd) {
     if (!enteredPwd) {
-      const message2 = <></>;
-      setMessage(message2);
+      const messageWrongPwd = <></>;
+      setMessage(messageWrongPwd);
     }
     setPwd(enteredPwd);
   }
