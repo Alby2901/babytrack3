@@ -1,0 +1,49 @@
+Installazione dei pacchetti per la compilazione
+
+npm install -g expo-cli
+
+npm install react-native-qrcode-svg
+npm install react-native-svg
+
+npm install expo-barcode-scanner
+
+
+
+Creazione nuovo progetto di test
+npx create-expo-app my-app
+
+Per compilazione:
+eas login
+eas build:configure
+
+
+------------------------------------------------------------------------
+
+eas.json
+
+{
+  "build": {
+    "preview": {
+      "android": {
+        "buildType": "apk"
+      }
+    },
+    "preview2": {
+      "android": {
+        "gradleCommand": ":app:assembleRelease"
+      }
+    },
+    "preview3": {
+      "developmentClient": true
+    },
+    "production": {}
+  }
+}
+
+------------------------------------------------------------------------
+
+eas build -p android --profile preview
+
+
+npm install @react-navigation/native-stack
+npx expo install react-native-svg
