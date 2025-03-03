@@ -1,49 +1,22 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { AuthContext } from "../store/auth-context";
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import { Ionicons } from '@expo/vector-icons';
 
-function ScanScreen({ navigation, route }) {
+export default function QRScanner() {
   const [permission, requestPermission] = useCameraPermissions();
   const [scanned, setScanned] = useState(false);
   const [torchOn, setTorchOn] = useState(false);
-  const [scanRichiesto, setScanrichiesto] = useState('');
-  const { scanElement } = route.params;
-
+  
   useEffect(() => {
     if (!permission?.granted) {
       requestPermission();
     }
-    setScanrichiesto(JSON.stringify(scanElement));
-  }, [permission, scanElement]);
-
-  console.log('SCAN_SCREEN - scanRichiestoState: ', scanRichiesto);
-
-  const authCtx = useContext(AuthContext);
+  }, [permission]);
 
   const handleBarCodeScanned = ({ data }) => {
-    console.log('SCAN_SCREEN - HandleBarCodeScanned');
-    console.log('SCAN_SCREEN - HandleBarCodeScanned - scanRichiestoState: ', scanRichiesto);
     setScanned(true);
-    // alert(`Codice QR scansionato: ${data}`);
-
-    if (scanRichiesto == 1) {
-      console.log(`SCAN_SCREEN - Case Neonato! => ${data}`);
-      authCtx.readNeonato(data);
-    } else if (scanRichiesto == 2) {
-      console.log(`SCAN_SCREEN - Case Genitore! => ${data}`);
-      authCtx.readGenitore(data);
-    } else if (scanRichiesto == 3) {
-      console.log(`SCAN_SCREEN - Case Latte! => $${data}`);
-      authCtx.readLatte(data);
-    } else {
-      console.log(`SCAN_SCREEN - Non FUNZIONA:  => ${data}`);
-    }
-
-    // authCtx.readNeonato(data);
-    navigation.navigate('Input')
-
+    alert(`Codice QR scansionato: ${data}`);
   };
 
   if (!permission) {
@@ -59,7 +32,9 @@ function ScanScreen({ navigation, route }) {
       <CameraView
         style={styles.camera}
         facing="back"
-        // barcodeScannerSettings={{barcodeTypes: ['qr'],}}
+        barcodeScannerSettings={{
+          barcodeTypes: ['qr'],
+        }}
         onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
         enableTorch={torchOn ? true : false}
       />
@@ -76,8 +51,6 @@ function ScanScreen({ navigation, route }) {
     </View>
   );
 }
-
-export default ScanScreen;
 
 const styles = StyleSheet.create({
   container: {

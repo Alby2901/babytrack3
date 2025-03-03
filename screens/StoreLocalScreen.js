@@ -7,6 +7,9 @@ import { AuthContext } from "../store/auth-context";
 import { SelectList } from 'react-native-dropdown-select-list'
 
 function StoreLocalScreen({ navigation }) {
+  // console.log("StoreLocalScreen navigation:", navigation);
+  // console.log("StoreLocalScreen route.params:", route.params);
+
   const [dataRed, setDataRed] = useState();
   const [keysStored, setKeysStored] = useState();
   const [keyState, setKeyState] = useState();

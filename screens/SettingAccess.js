@@ -13,6 +13,10 @@ import { GlobalStyles } from "../UI/GlobalConstant";
 
 
 function SettingAccessScreen({ navigation }) {
+  // console.log("SettingAccessScreen navigation:", navigation);
+  // console.log("SettingAccessScreen route.params:", route.params);
+
+
   const [message, setMessage] = useState();
   const [errorHTTP, setErrorHTTP] = useState("");
   const [isLogged, setIsLogged] = useState(false);

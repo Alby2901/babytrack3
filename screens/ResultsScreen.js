@@ -2,6 +2,9 @@ import { View, Text, Pressable, StyleSheet } from "react-native";
 import { GlobalStyles } from "../UI/GlobalConstant";
 
 function ResultsScreen({ route, navigation }) {
+  // console.log("ResultsScreen navigation:", navigation);
+  // console.log("ResultsScreen route.params:", route.params);
+
   const { titolo, testo1, testo2, testobottone, testo3, testo4, colore } = route.params;
   return (
     <View style={styles.centeredView}>
@@ -11,7 +14,7 @@ function ResultsScreen({ route, navigation }) {
         <Text style={styles.modalText}>{JSON.stringify(testo2).slice(1,-1)}</Text>
         <Pressable
           style={[styles.button, {backgroundColor: colore}]}
-          onPress={() => navigation.goBack()}
+          // onPress={() => navigation.goBack()}
         >
           <Text style={styles.textStyle}>{JSON.stringify(testobottone).slice(1,-1)}</Text>
         </Pressable>

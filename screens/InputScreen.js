@@ -21,6 +21,9 @@ import CountdownTimerAuto from "../components/CountdownTimerAuto";
 import LoadingOverlay from "../UI/LoadingOverlay";
 
 function InputScreen({ navigation }) {
+  // console.log("InputScreen navigation:", navigation);
+  // console.log("InputScreen route.params:", route.params);
+
   const [isloading, setIsloading] = useState(false);
   const [sessionActive, setSessionActive] = useState();
 

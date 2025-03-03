@@ -152,7 +152,18 @@ export async function getChkBaby(url, sessionid, neonato) {
 // ------------------- v v v v v v ----------------------------------
 export async function getChkParent(url, sessionid, neoanto, genitore) {
 
+  console.log('--------------- HTTP Component - getChkParent - START --------------------------------------');
+  console.log('--------------- HTTP Component - getChkParent - axio.get START ---------------------');
+
+  console.log('url: ', url);
+  console.log('GlobalConstants.paths.PATH_APP: ', GlobalConstants.paths.PATH_APP);
+  console.log('GlobalConstants.paths.PATH_CHECHBAND: ', GlobalConstants.paths.PATH_CHECHBAND);
+  console.log('sessionid: ', sessionid);
+  console.log('neonato: ', neonato);
+
   const urlComplete = url + '/' + GlobalConstants.paths.PATH_APP + '/' + GlobalConstants.paths.PATH_CHECHBAND;
+  
+  
   const response = await axios.get(urlComplete, {
     params: {
       sessionid: sessionid,
@@ -192,6 +203,8 @@ export async function getChkParent(url, sessionid, neoanto, genitore) {
   console.log("http2: MOTHER_NAME: " + motherName);
 
   // {"ret":0,"message":"Braccialetto madre riconosciuto ","params":{"childName":"Neonato Bimbo","motherName":"Rossi Maria"}}
+
+  console.log('--------------- HTTP Component - getChkBaby - THE END --------------------------------------');
 
   return [ret, message, childName, motherName];
 }

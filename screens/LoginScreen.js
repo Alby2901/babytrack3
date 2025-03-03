@@ -18,6 +18,9 @@ import IconButton from '../UI/IconButton';
 import { setObjectToStore } from '../store/StoreDataLocal';
 
 function LoginScreen({ navigation }) {
+  // console.log("LoginScreen navigation:", navigation);
+  // console.log("LoginScreen route.params:", route.params);
+
   const [errorHTTP, setErrorHTTP] = useState("");
   const [sessionID, setSessionID] = useState("");
   const [message, setmessage] = useState("");

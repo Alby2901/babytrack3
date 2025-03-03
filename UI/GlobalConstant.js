@@ -31,6 +31,7 @@ export const GlobalStyles = {
     urlData: [
       { key: 'http://172.31.234.97:8084', value: 'http://172.31.234.97:8084' },
       { key: 'http://37.159.251.165:8090', value: 'http://37.159.251.165:8090' },
+      { key: 'http://93.145.42.53:8090', value: 'http://93.145.42.53:8090' },
       { key: 'http://10.6.10.135:8080', value: 'http://10.6.10.135:8080' },
     ],
     keyData: [
