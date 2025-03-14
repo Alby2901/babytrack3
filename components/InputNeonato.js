@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { View, TextInput, Button, Alert } from "react-native";
+import { View, TextInput} from "react-native";
 import styles from "./InputCSS";
 
 function NeonatoInput(proprieta) {
@@ -10,6 +10,14 @@ function NeonatoInput(proprieta) {
   // useEffect(() => {
   //   setEnteredNeonatoText(proprieta.val)
   // })
+
+  // 1. Aggiunta della gestione della proprietà 'reset'
+  useEffect(() => {
+    if (proprieta.reset) {
+      setEnteredNeonatoText(""); // Resetta il testo inserito
+      proprieta.onSetNeonato(""); // Resetta il valore nel componente genitore
+    }
+  }, [proprieta.reset, proprieta.onSetNeonato]); // Aggiunte le dipendenze
 
   function goalInputHandler(enteredText) {
     // console.log(enteredText);

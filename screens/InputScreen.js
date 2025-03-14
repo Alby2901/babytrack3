@@ -31,6 +31,10 @@ function InputScreen({ navigation }) {
   const [genitore, setGenitore] = useState("");
   const [latteculla, setLatteCulla] = useState("");
 
+  const [resetNeonato, setResetNeonato] = useState(false);
+  const [resetGenitore, setResetGenitore] = useState(false);
+  const [resetLatteCulla, setResetLatteCulla] = useState(false);
+
   const [ret, setRet] = useState("");
   const [message, setMessage] = useState("");
   const [childN, setChildN] = useState("");
@@ -60,6 +64,7 @@ function InputScreen({ navigation }) {
 
   }
 
+  // useEffect per il controllo della sessione 
   useEffect(() => {
 
     console.log('--------------- LOGIN SCR UseEffect START--------------------------------------');
@@ -80,6 +85,19 @@ function InputScreen({ navigation }) {
     console.log('--------------- LOGIN SCR UseEffect THE END --------------------------------------');
 
   }, [])
+
+  // useEffect per il reset di NeonatoInput (nuovo)
+  useEffect(() => {
+    if (resetNeonato) {
+      setResetNeonato(false); // Resetta lo stato dopo l'esecuzione
+    }
+    if (resetGenitore) {
+      setResetGenitore(false); // Resetta lo stato dopo l'esecuzione
+    }
+    if (resetLatteCulla) {
+      setResetLatteCulla(false); // Resetta lo stato dopo l'esecuzione
+    }
+  }, [resetNeonato, resetGenitore, resetLatteCulla]);
 
   if (isloading) {
     return <LoadingOverlay></LoadingOverlay>;
@@ -143,7 +161,7 @@ function InputScreen({ navigation }) {
         setMessage(messageData);
         setChildN(childName);
 
-        if (childName) {
+        if (ret === '0') {
 
           // setModalVisible(!modalVisible);
           navigation.navigate("ResultsScreen", {
@@ -177,6 +195,7 @@ function InputScreen({ navigation }) {
       }
     }
   }
+
   async function VerificaGenitore() {
 
     const n = JSON.stringify(authCtx.neonato);
@@ -210,7 +229,11 @@ function InputScreen({ navigation }) {
       setChildN(childName);
       setMotherN(motherName);
 
-      if (ret === '0' && authCtx.neonato === authCtx.genitore) {
+      console.log("INPUT NAVIGATION authCtx.neonato =>>", authCtx.neonato);
+      console.log("INPUT NAVIGATION authCtx.genitore =>>", authCtx.genitore);
+
+      // if (ret === '0' && authCtx.neonato === authCtx.genitore) {
+      if (ret === '0') {
 
         navigation.navigate("ResultsScreen", {
           titolo: "RICONOSCIMENTO CORRETTO",
@@ -254,6 +277,7 @@ function InputScreen({ navigation }) {
       Reset();
     }
   }
+
   async function VerificaLatteCulla() {
     const n = JSON.stringify(neonato);
     const l = JSON.stringify(latteculla);
@@ -309,6 +333,11 @@ function InputScreen({ navigation }) {
     setNeonato("");
     setGenitore("");
     setLatteCulla("");
+
+    setResetNeonato(true);
+    setResetGenitore(true);
+    setResetLatteCulla(true);
+    setTimeout(() => setResetNeonato(false), 100); // Resetta dopo un breve ritardo
   }
   function resetAndLogout() {
     Reset();
@@ -377,7 +406,11 @@ function InputScreen({ navigation }) {
                 </View>
               )}
               {(authCtx.mode == 'Prod-Manual' || authCtx.mode == 'Devel' ?
-                (<NeonatoInput style={styles.inputArea} onSetNeonato={setNeonatoHandler} />)
+                (<NeonatoInput
+                  style={styles.inputArea}
+                  onSetNeonato={setNeonatoHandler}
+                  reset={resetNeonato} // Passa la proprietà reset
+                />)
                 : null)}
               <Text style={styles.text}>Neonato: {authCtx.neonato}</Text>
             </View>
@@ -394,7 +427,11 @@ function InputScreen({ navigation }) {
                   />
                 </View>)}
               {(authCtx.mode == 'Prod-Manual' || authCtx.mode == 'Devel' ?
-                <GenitoreInput style={styles.inputArea} onSetGenitore={setGenitoreHandler} />
+                <GenitoreInput
+                  style={styles.inputArea}
+                  onSetGenitore={setGenitoreHandler}
+                  reset={resetGenitore}
+                />
                 : null)}
               <Text style={styles.text}>Genitore: {authCtx.genitore}</Text>
             </View>
@@ -411,7 +448,11 @@ function InputScreen({ navigation }) {
                     />
                   </View>)}
                 {(authCtx.mode == 'Prod-Manual' || authCtx.mode == 'Devel' ?
-                  <LatteCullaInput style={styles.inputArea} onSetLatteCulla={setLatteCullaHandler} />
+                  <LatteCullaInput 
+                    style={styles.inputArea} 
+                    onSetLatteCulla={setLatteCullaHandler} 
+                    reset={resetLatteCulla}
+                    />
                   : null)}
                 <Text style={styles.text}>Latte/Culla: {authCtx.latte}</Text>
               </View>

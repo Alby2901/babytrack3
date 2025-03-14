@@ -14,7 +14,7 @@ function ResultsScreen({ route, navigation }) {
         <Text style={styles.modalText}>{JSON.stringify(testo2).slice(1,-1)}</Text>
         <Pressable
           style={[styles.button, {backgroundColor: colore}]}
-          // onPress={() => navigation.goBack()}
+          onPress={() => navigation.goBack()}
         >
           <Text style={styles.textStyle}>{JSON.stringify(testobottone).slice(1,-1)}</Text>
         </Pressable>

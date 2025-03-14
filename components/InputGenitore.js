@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { View, TextInput, Button, StyleSheet } from "react-native";
+import { View, TextInput } from "react-native";
 import styles from "./InputCSS";
 
 function GenitoreInput(proprieta) {
@@ -10,6 +10,15 @@ function GenitoreInput(proprieta) {
   // useEffect(() => {
   //   setEnteredGenitoreText(proprieta.val)
   // })
+
+    // 1. Aggiunta della gestione della proprietà 'reset'
+    useEffect(() => {
+      if (proprieta.reset) {
+        setEnteredGenitoreText(""); // Resetta il testo inserito
+        proprieta.onSetGenitore(""); // Resetta il valore nel componente genitore
+      }
+    }, [proprieta.reset, proprieta.onSetGenitore]); // Aggiunte le dipendenze
+  
 
   function goalInputHandler(enteredText) {
     // console.log(enteredText);

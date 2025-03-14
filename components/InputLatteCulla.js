@@ -1,16 +1,24 @@
 import { useEffect, useState } from "react";
-import { Alert } from "react-native";
-import { View, TextInput, Button, StyleSheet } from "react-native";
+import { View, TextInput } from "react-native";
 import styles from "./InputCSS";
 
 function LatteCullaInput(proprieta) {
   const [enteredLatteCullaText, setEnteredLatteCullaText] = useState("");
   
-  console.log('Comp.LatteInput: ', proprieta.val);
+ // console.log('Comp.LatteInput: ', proprieta.val);
 
   // useEffect(() => {
   //   setEnteredLatteCullaText(proprieta.val)
   // })
+
+    // 1. Aggiunta della gestione della proprietà 'reset'
+  useEffect(() => {
+    if (proprieta.reset) {
+      setEnteredLatteCullaText(""); // Resetta il testo inserito
+      proprieta.onSetLatteCulla(""); // Resetta il valore nel componente genitore
+    }
+  }, [proprieta.reset, proprieta.onSetLatteCulla]); // Aggiunte le dipendenze
+
   
   function goalInputHandler(enteredText) {
     // console.log(enteredText);

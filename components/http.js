@@ -150,7 +150,7 @@ export async function getChkBaby(url, sessionid, neonato) {
 // http://37.159.251.165:8090/babysafe/checkband?sessionid=50cc8a1f-3239-45c9-ac98-31daeb2990b1&child=025504&parent=322857
 //
 // ------------------- v v v v v v ----------------------------------
-export async function getChkParent(url, sessionid, neoanto, genitore) {
+export async function getChkParent(url, sessionid, neonato, genitore) {
 
   console.log('--------------- HTTP Component - getChkParent - START --------------------------------------');
   console.log('--------------- HTTP Component - getChkParent - axio.get START ---------------------');
@@ -162,12 +162,14 @@ export async function getChkParent(url, sessionid, neoanto, genitore) {
   console.log('neonato: ', neonato);
 
   const urlComplete = url + '/' + GlobalConstants.paths.PATH_APP + '/' + GlobalConstants.paths.PATH_CHECHBAND;
+
+  console.log('urlComplete: ', urlComplete);
   
   
   const response = await axios.get(urlComplete, {
     params: {
       sessionid: sessionid,
-      child: neoanto,
+      child: neonato,
       parent: genitore,
     },
   });
