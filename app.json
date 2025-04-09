@@ -20,6 +20,7 @@
       "supportsTablet": true
     },
     "android": {
+      "usesCleartextTraffic": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -29,13 +30,16 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
+    "plugins": [
+      "./app.plugin.js"
+    ],
     "extra": {
       "eas": {
         "projectId": "d2d9a623-46b7-408e-8779-929314d0ec99"
       }
     },
     "cli": {
-    "appVersionSource": "packageJson"
+      "appVersionSource": "packageJson"
     }
   }
 }

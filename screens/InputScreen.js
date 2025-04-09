@@ -347,7 +347,7 @@ function InputScreen({ navigation }) {
   return (
     <SafeAreaView>
       <ScrollView>
-        <View style={[styles.containerOuter, { paddingBottom: (authCtx.mode.slice(0, 4) == 'Prod' ? 75 : 60) }]}>
+        <View style={[styles.containerOuter, { paddingBottom: (authCtx.mode.slice(0, 4) == 'Prod' ? 107 : 0) }]}>
 
           <Modal
             animationType="slide"

@@ -33,6 +33,7 @@ export const GlobalStyles = {
       { key: 'http://37.159.251.165:8090', value: 'http://37.159.251.165:8090' },
       { key: 'http://93.145.42.53:8090', value: 'http://93.145.42.53:8090' },
       { key: 'http://10.6.10.135:8080', value: 'http://10.6.10.135:8080' },
+      { key: 'https://172.31.234.97:8443', value: 'https://172.31.234.97:8443' },
     ],
     keyData: [
       { key: 'Settings', value: 'Settings' }

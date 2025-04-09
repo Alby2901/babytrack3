@@ -10,7 +10,9 @@ import { GlobalConstants } from "../UI/GlobalConstant";
 // http://10.6.10.135:8080/babysafe/login?user=pino&pwd=pino
 // ------------------- v v v v v ----------------------------------
 export async function getSession(utente, password, url) {
+  console.log('GetSession => Start');
   const urlComplete = url + '/' + GlobalConstants.paths.PATH_APP + '/' + GlobalConstants.paths.PATH_LOGIN;
+  console.log('GetSession => Pre Axio.get ');
   const response = await axios.get(urlComplete, {
     params: {
       user: utente,

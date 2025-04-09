@@ -1,3 +1,35 @@
+Per fare il debug della applicazione apk sul telefono
+
+Collegare il telefono via USB
+Sul telefono Accettare il "collegamento"
+Lanciare l'applcazione
+
+Sul PC
+Un una finestra DOS lanciare il comando 
+
+    adb shell ps | findstr babytrack
+
+    u0_a650       30481    996 37067204 180008 0                  0 S com.alby290167.babytrack4
+
+per identificare il PID (seconda colonna) della applicazione con nome babytrack
+
+Con il comando
+
+    adb devices
+
+verificare che il telefono sia collegato...
+
+    List of devices attached
+    ZY227CXZ76      device
+
+Con il comando seguente con il PD sopra rivato... 
+
+    adb logcat --pid=<PID>
+
+Si lancia il log
+
+------------------------------------------------------------------------
+
 Installazione dei pacchetti per la compilazione
 
 npm install -g expo-cli
@@ -41,9 +73,13 @@ eas.json
 }
 
 ------------------------------------------------------------------------
+npx expo prebuild
 
-eas build -p android --profile preview
+eas build --platform android --profile localhttp
+// eas build -p android --profile preview
 
+
+npx expo install --check // controllo dipendenze
 
 npm install @react-navigation/native-stack
 npx expo install react-native-svg

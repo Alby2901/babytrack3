@@ -51,13 +51,60 @@ function LoginScreen({ navigation }) {
           <IconButton
             icon="settings-outline"
             size={24}
-            color={(authCtx.mode == 'Prod' || authCtx.mode == 'Prod-Manual' ? GlobalStyles.colors.BG_Blue : 'white')}
+            // color={(authCtx.mode == 'Prod' || authCtx.mode == 'Prod-Manual' ? GlobalStyles.colors.BG_Blue : 'white')}
+            color={'red'}
             // onPress={() => {}}
             onPress={headerSettingsIconPressHandler}
+            style={{
+              padding: 15,  // Aggiungi un po' di padding
+              borderWidth: 1, // Aggiungi un bordo
+              borderColor: 'green', // Scegli un colore visibile
+            }} 
           />)
       }
     });
   }, [navigation, headerSettingsIconPressHandler]);
+
+  // useLayoutEffect(() => {
+  //   navigation.setOptions({
+  //     headerRight: () => {
+  //       return (
+  //         <View style={{ padding: 5, borderWidth: 1, borderColor: 'green' }}>
+  //           <IconButton
+  //             icon="settings-outline"
+  //             size={24}
+  //             color={'red'}
+  //             onPress={headerSettingsIconPressHandler}
+  //           />
+  //         </View>
+  //       );
+  //     }
+  //   });
+  // }, [navigation, headerSettingsIconPressHandler]);
+
+  // useLayoutEffect(() => {
+  //   navigation.setOptions({
+  //     headerRight: () => {
+  //       return (
+  //         <Pressable onPress={headerSettingsIconPressHandler}
+  //           style={{ padding: 5, 
+  //                     width: 40,
+  //                     height:40,
+  //                     borderWidth: 1,
+  //                     backgroundColor: 'rgba(0, 255, 0, 0.2)',
+  //                     borderColor: 'green' }}>
+  //           {/* <IconButton
+  //             icon="settings-outline"
+  //             size={24}
+  //             color={'red'}
+  //             style={{ backgroundColor: 'rgba(0, 255, 0, 0.2)' }}
+  //             hitSlop={0}
+  //           /> */}
+  //         </Pressable>
+  //       );
+  //     }
+  //   });
+  // }, [navigation, headerSettingsIconPressHandler]);
 
 
   useEffect(() => {
@@ -98,8 +145,9 @@ function LoginScreen({ navigation }) {
     console.log('Login Screen => Store di local Obj: ', valObj);
     await setObjectToStore(authCtx.key1, valObj);
 
-
+    console.log('Login Screen => End Store di local Obj!');
     setIsAuthenticated(true);
+    console.log('Login Screen => Pre chiamata "getSession"');
     // wait(2000);
     const [sessionIDData, messageData, cognome, nome] = await getSession(
       usr,
@@ -149,8 +197,9 @@ function LoginScreen({ navigation }) {
   return (
     // <SafeAreaView>
     <ScrollView>
-      <View style={[styles.containerOuter, { paddingBottom: (authCtx.mode == 'Prod' ? 203 : 378) }]}>
+      <View style={[styles.containerOuter, { paddingBottom: (authCtx.mode == 'Prod' ? 234 : 234) }]}>
         <Pressable onPress={showConfigInputHandler}>
+          {/* <Text style={styles.cardText}>Set Server</Text> */}
           <View style={styles.hideButton}></View>
         </Pressable>
 
@@ -163,6 +212,7 @@ function LoginScreen({ navigation }) {
 
         <View >
           {serverSetted ? <Text >Server: {authCtx.urlsetted} </Text> : <Text >ATTENZIONE! Server non impostato</Text>}
+          {authCtx.mode ? <Text >Modo: {authCtx.mode} </Text> : <Text >Nessuno!</Text>}
         </View>
 
         <View style={styles.containerInput}>
@@ -255,6 +305,7 @@ const styles = StyleSheet.create({
     width: 10,
     paddingVertical: 0,
     backgroundColor: GlobalStyles.colors.BG_App_Blue,
+    // backgroundColor: GlobalStyles.colors.BG_InputField,
   },
   cardTitle: {
     alignItems: "center",
