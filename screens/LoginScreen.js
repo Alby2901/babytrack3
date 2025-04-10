@@ -65,48 +65,6 @@ function LoginScreen({ navigation }) {
     });
   }, [navigation, headerSettingsIconPressHandler]);
 
-  // useLayoutEffect(() => {
-  //   navigation.setOptions({
-  //     headerRight: () => {
-  //       return (
-  //         <View style={{ padding: 5, borderWidth: 1, borderColor: 'green' }}>
-  //           <IconButton
-  //             icon="settings-outline"
-  //             size={24}
-  //             color={'red'}
-  //             onPress={headerSettingsIconPressHandler}
-  //           />
-  //         </View>
-  //       );
-  //     }
-  //   });
-  // }, [navigation, headerSettingsIconPressHandler]);
-
-  // useLayoutEffect(() => {
-  //   navigation.setOptions({
-  //     headerRight: () => {
-  //       return (
-  //         <Pressable onPress={headerSettingsIconPressHandler}
-  //           style={{ padding: 5, 
-  //                     width: 40,
-  //                     height:40,
-  //                     borderWidth: 1,
-  //                     backgroundColor: 'rgba(0, 255, 0, 0.2)',
-  //                     borderColor: 'green' }}>
-  //           {/* <IconButton
-  //             icon="settings-outline"
-  //             size={24}
-  //             color={'red'}
-  //             style={{ backgroundColor: 'rgba(0, 255, 0, 0.2)' }}
-  //             hitSlop={0}
-  //           /> */}
-  //         </Pressable>
-  //       );
-  //     }
-  //   });
-  // }, [navigation, headerSettingsIconPressHandler]);
-
-
   useEffect(() => {
     if (authCtx.urlsetted) {
       setUrl(authCtx.urlsetted);
@@ -157,7 +115,7 @@ function LoginScreen({ navigation }) {
     setIsAuthenticated(false);
 
     console.log("Login Screen SessId: ", sessionIDData);
-    authCtx.authenticate(sessionIDData, 2, cognome, nome);
+    authCtx.authenticate(sessionIDData, authCtx.sessionTimer, cognome, nome);
     const p1 = authCtx.sessionID;
     const p2 = authCtx.isAuthenticated;
     console.log("Login Screen Ctx.sessionID (p1): ", p1);

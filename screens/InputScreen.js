@@ -328,7 +328,7 @@ function InputScreen({ navigation }) {
     authCtx.readNeonato(null);
     authCtx.readGenitore(null);
     authCtx.readLatte(null);
-    authCtx.readSessionTimer(2);
+    authCtx.readSessionTimer(120);
 
     setNeonato("");
     setGenitore("");

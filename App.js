@@ -14,12 +14,13 @@ import StoreLocalScreen from "./screens/StoreLocalScreen";
 import { getObjectFromStore, getAllKeys } from './store/StoreDataLocal';
 
 const Stack = createNativeStackNavigator();
+const titleApp = "Baby Track 2025";
 
 function AuthStack() {
   return (
     <Stack.Navigator
       screenOptions={{
-        title: "Baby Track",
+        title: titleApp,
         headerStyle: { backgroundColor: GlobalStyles.colors.BG_Blue, },
         headerTintColor: GlobalStyles.colors.Text_Main,
         headerTitleAlign: "center",
@@ -44,7 +45,7 @@ function AuthenticatedStack() {
   return (
     <Stack.Navigator
       screenOptions={{
-        title: "Baby Track 2023",
+        title: titleApp,
         headerStyle: {
           backgroundColor: GlobalStyles.colors.BG_Blue,
         },
@@ -61,7 +62,7 @@ function AuthenticatedStack() {
           name="Input"
           component={InputScreen}
           options={{
-            title: "Baby Track 2023",
+            title: titleApp,
           }}
         />
         <Stack.Screen name="Scan" component={ScanScreen} />
@@ -69,7 +70,7 @@ function AuthenticatedStack() {
 
       <Stack.Group
         screenOptions={{
-          title: "Baby Track 2023",
+          title: titleApp,
           presentation: "modal",
           backgroundColor: 'red',
           // headerShown: false,
