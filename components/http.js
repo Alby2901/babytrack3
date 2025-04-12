@@ -34,6 +34,7 @@ export async function getSession(utente, password, url) {
 
   const message = response.data.message;
   let sessionID = "";
+  let sessionTimeout ="";
   let cognome = "";
   let nome = "";
 
@@ -43,15 +44,17 @@ export async function getSession(utente, password, url) {
   } else {
     console.log("http: Ret If 0: ", response.data.ret);
     sessionID = response.data.params.sessionId;
+    sessionTimeout = response.data.params.sessionTimeout;
     cognome = response.data.params.user.cognome;
     nome = response.data.params.user.nome;
   }
 
   console.log("http: SessionID: " + sessionID);
+  console.log("http: SessionTimeout: " + sessionTimeout);
   console.log("http: COGNOME: " + cognome);
   console.log("http: NOME: " + nome);
 
-  return [sessionID, message, cognome, nome];
+  return [sessionID, sessionTimeout, message, cognome, nome];
 }
 
 // ------------------- CHECK SESSION ------------------------------

@@ -50,7 +50,7 @@ const CountdownTimerAuto = () => {
 
   return (
     <View >
-      <Text style={timeRemaining <= 60 ? styles.timerText1 : styles.timerText2}>{formatTime(timeRemaining)}</Text>
+      <Text style={timeRemaining <= 300 ? styles.timerText1 : styles.timerText2}>{formatTime(timeRemaining)}</Text>
       {/* <Text style={styles.timerText}>pippo</Text> */}
       {/* {!isRunning ? (
         <Button title="Start Timer" onPress={handleStartTimer} />
@@ -68,14 +68,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   timerText1: {
-    fontSize: 10,
+    fontSize: 15,
     fontWeight: "bold",
     color: "red",
   },
   timerText2: {
-    fontSize: 10,
+    fontSize: 15,
     fontWeight: "bold",
-    color: "grey",
+    color: "lightgray",
   },
 });
 

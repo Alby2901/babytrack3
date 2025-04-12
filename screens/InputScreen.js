@@ -328,7 +328,7 @@ function InputScreen({ navigation }) {
     authCtx.readNeonato(null);
     authCtx.readGenitore(null);
     authCtx.readLatte(null);
-    authCtx.readSessionTimer(120);
+    authCtx.readSessionTimer(null);
 
     setNeonato("");
     setGenitore("");
@@ -381,7 +381,15 @@ function InputScreen({ navigation }) {
             <Text style={styles.textUtenteSmall}>Buongiorno</Text>
             <Text style={styles.textUtente}>{cognomeNome}</Text>
 
-            {(authCtx.mode.slice(0, 4) == 'Prod' ? null :
+            {(authCtx.mode.slice(0, 4) == 'Prod' ?
+              <>
+                <View style={styles.containerSessione}>
+                  <Text style={styles.textSessione}>
+                    La sessione scade tra </Text>
+                  <CountdownTimerAuto style={styles.textSessione} />
+                  <Text style={styles.textSessione}> minuti</Text>
+                </View>
+              </> :
               <>
                 <View style={styles.containerSessione}>
                   <Text style={styles.textSessione}>
@@ -448,11 +456,11 @@ function InputScreen({ navigation }) {
                     />
                   </View>)}
                 {(authCtx.mode == 'Prod-Manual' || authCtx.mode == 'Devel' ?
-                  <LatteCullaInput 
-                    style={styles.inputArea} 
-                    onSetLatteCulla={setLatteCullaHandler} 
+                  <LatteCullaInput
+                    style={styles.inputArea}
+                    onSetLatteCulla={setLatteCullaHandler}
                     reset={resetLatteCulla}
-                    />
+                  />
                   : null)}
                 <Text style={styles.text}>Latte/Culla: {authCtx.latte}</Text>
               </View>
@@ -633,9 +641,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   textSessione: {
-    fontSize: 10,
+    fontSize: 15,
     fontWeight: "bold",
-    color: "gray",
+    color: "lightgray",
   },
   textTitle: {
     fontSize: 40,

@@ -107,7 +107,7 @@ function LoginScreen({ navigation }) {
     setIsAuthenticated(true);
     console.log('Login Screen => Pre chiamata "getSession"');
     // wait(2000);
-    const [sessionIDData, messageData, cognome, nome] = await getSession(
+    const [sessionIDData, sessionTimeout, messageData, cognome, nome] = await getSession(
       usr,
       pwd,
       url
@@ -115,7 +115,7 @@ function LoginScreen({ navigation }) {
     setIsAuthenticated(false);
 
     console.log("Login Screen SessId: ", sessionIDData);
-    authCtx.authenticate(sessionIDData, authCtx.sessionTimer, cognome, nome);
+    authCtx.authenticate(sessionIDData, sessionTimeout, cognome, nome);
     const p1 = authCtx.sessionID;
     const p2 = authCtx.isAuthenticated;
     console.log("Login Screen Ctx.sessionID (p1): ", p1);
