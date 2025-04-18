@@ -641,7 +641,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   textSessione: {
-    fontSize: 15,
+    fontSize: 10,
     fontWeight: "bold",
     color: "lightgray",
   },

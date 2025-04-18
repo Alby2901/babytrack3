@@ -29,7 +29,8 @@ function LoginScreen({ navigation }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showConfigInput, setshowConfigInput] = useState(false);
   const { isInputOk, setIsInputOk } = useState(true);
-  const [url, setUrl] = useState("http://37.159.251.165:8090");
+  const [url, setUrl] = useState("http://93.145.42.53:8090");
+  const [deviceID, setdeviceID] = useState("");
 
   // ----------------------------
   // ELIMINARE IL DEFAULT!
@@ -74,7 +75,7 @@ function LoginScreen({ navigation }) {
     } else {
       setServerSetted(false);
     };
-  }, [authCtx.urlsetted, authCtx.user, authCtx.mode])
+  }, [authCtx.urlsetted, authCtx.user, authCtx.mode, authCtx.deviceid])
 
   // function checkInput(usrp, pwdp, urlp) {
   //   if (usrp && pwdp && urlp) {
@@ -94,12 +95,18 @@ function LoginScreen({ navigation }) {
     console.log("Login Screen GetSession1: ");
 
     console.log("Login Screen url: ", url);
-
+    
     authCtx.readUrlSetted(url);
-    console.log("Login Screen authCtx.urlsetted: ", authCtx.urlsetted);
-
+    console.log("Login Screen authCtx.urlsetted: ", authCtx.urlsetted);    
+    
+    // authCtx.readUrlSetted(url);
+    // console.log("Login Screen authCtx.urlsetted: ", authCtx.urlsetted);
+    
+    console.log("Login Screen authCtx.mode: ", authCtx.mode);
+    console.log("Login Screen authCtx.deviceid: ", authCtx.deviceid);
+    
     authCtx.setUser(usr);
-    const valObj = { url_address: url, mode_status: authCtx.mode, user_status: usr };
+    const valObj = { url_address: url, mode_status: authCtx.mode, user_status: usr, deviceid_status: authCtx.deviceid};
     console.log('Login Screen => Store di local Obj: ', valObj);
     await setObjectToStore(authCtx.key1, valObj);
 
@@ -110,7 +117,8 @@ function LoginScreen({ navigation }) {
     const [sessionIDData, sessionTimeout, messageData, cognome, nome] = await getSession(
       usr,
       pwd,
-      url
+      url,
+      authCtx.deviceid
     );
     setIsAuthenticated(false);
 
@@ -155,7 +163,7 @@ function LoginScreen({ navigation }) {
   return (
     // <SafeAreaView>
     <ScrollView>
-      <View style={[styles.containerOuter, { paddingBottom: (authCtx.mode == 'Prod' ? 234 : 234) }]}>
+      <View style={[styles.containerOuter, { paddingBottom: (authCtx.mode == 'Prod' ? 230 : 214) }]}>
         <Pressable onPress={showConfigInputHandler}>
           {/* <Text style={styles.cardText}>Set Server</Text> */}
           <View style={styles.hideButton}></View>
@@ -170,7 +178,8 @@ function LoginScreen({ navigation }) {
 
         <View >
           {serverSetted ? <Text >Server: {authCtx.urlsetted} </Text> : <Text >ATTENZIONE! Server non impostato</Text>}
-          {authCtx.mode ? <Text >Modo: {authCtx.mode} </Text> : <Text >Nessuno!</Text>}
+          {authCtx.mode ? <Text >Modo: {authCtx.mode} </Text> : <Text >Modo: Nessuno!</Text>}
+          {authCtx.deviceid ? <Text >Device: {authCtx.deviceid} </Text> : <Text >Device: non in memoria</Text>}
         </View>
 
         <View style={styles.containerInput}>
@@ -253,12 +262,11 @@ const styles = StyleSheet.create({
     // justifyContent: 'flex-start',
     backgroundColor: GlobalStyles.colors.BG_App_Blue,
     paddingHorizontal: 20,
-    paddingTop: 20,
+    paddingTop: 0,
     // paddingBottom: 203, //ZenPhone 203 - MotorolaEdge 420
   },
   hideButton: {
     alignItems: "center",
-
     height: 10,
     width: 10,
     paddingVertical: 0,

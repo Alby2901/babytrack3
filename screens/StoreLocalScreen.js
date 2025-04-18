@@ -15,6 +15,7 @@ function StoreLocalScreen({ navigation }) {
   const [keyState, setKeyState] = useState();
   const [urlState, setUrlState] = useState();
   const [modeState, setModeState] = useState();
+  const [deviceIDState, setDeviceIDState] = useState();
   const [testState, setTestState] = useState();
   const [userState, setUserState] = useState();
   const [selected, setSelected] = useState("");
@@ -43,17 +44,20 @@ function StoreLocalScreen({ navigation }) {
         setDataRed(existingValues => ({
           ...existingValues,
           mode_status: objGetted.mode_status,
+          deviceid_status: objGetted.deviceid_status,
           url_address: objGetted.url_address
         }))
 
         // console.log('objGetted.url_address: ', objGetted.url_address);
         // console.log('objGetted.mode_status: ', objGetted.mode_status);
+         console.log('LOGGO IO! objGetted.deviceid__status: ', objGetted.deviceid__status);
 
         // console.log('==> Value getted! Set State value... ');
 
         setUrlState(objGetted.url_address.toString());
         setModeState(objGetted.mode_status);
         setUserState(objGetted.user_status);
+        setDeviceIDState(objGetted.deviceid_status);
 
         // console.log('UrlState_after: ', urlState);
         // console.log('ModeState_after: ', modeState);
@@ -97,6 +101,9 @@ function StoreLocalScreen({ navigation }) {
   function keyInputHandler(enteredKey) {
     setKeyState(enteredKey);
   }
+  function deviceIDInputHandler(enteredDeviceID) {
+    setDeviceIDState(enteredDeviceID);
+  }
   function modeInputHandler(enteredStatus) {
     setModeState(enteredStatus);
   }
@@ -108,28 +115,32 @@ function StoreLocalScreen({ navigation }) {
     console.log('---------------------------- SAVE TO STORE KEY  - START ---------------- ');
     // const keyObj = { key: keyState };
     // console.log('KeyObj sent: ', keyObj);
-    const valObj = { url_address: urlState, mode_status: modeState, user_status: userState };
+    const valObj = { url_address: urlState, mode_status: modeState, user_status: userState, deviceid_status: deviceIDState};
     console.log('STORE LOCAL SCREEN ValObj sent: ', valObj);
     await setObjectToStore(keyState, valObj);
     console.log('STORE LOCAL SCREEN ValObj.url_address: ', valObj.url_address);
     console.log('STORE LOCAL SCREEN ValObj.mode_status: ', valObj.mode_status);
     console.log('STORE LOCAL SCREEN ValObj.user_status: ', valObj.user_status);
+    console.log('STORE LOCAL SCREEN ValObj.deviceid_status: ', valObj.deviceid_status);
 
 
     console.log('STORE LOCAL SCREEN autxCtxCtx.Key1_before: ', autxCtx.key1);
     console.log('STORE LOCAL SCREEN autxCtxCtx.url_address_before: ', autxCtx.urlsetted);
     console.log('STORE LOCAL SCREEN autxCtxCtx.mode_before: ', autxCtx.mode);
     console.log('STORE LOCAL SCREEN autxCtxCtx.user_before: ', autxCtx.user);
+    console.log('STORE LOCAL SCREEN autxCtxCtx.deviceid_before: ', autxCtx.deviceid);
 
     autxCtx.setKey1(keyState);
     autxCtx.readUrlSetted(valObj.url_address);
     autxCtx.setMode(valObj.mode_status);
     autxCtx.setUser(valObj.user_status);
+    autxCtx.setdeviceID(valObj.deviceid_status);
 
     console.log('STORE LOCAL SCREEN autxCtxCtx.Key1_after: ', autxCtx.key1);
     console.log('STORE LOCAL SCREEN autxCtxCtx.url_address_after: ', autxCtx.urlsetted);
     console.log('STORE LOCAL SCREEN autxCtxCtx.mode_after: ', autxCtx.mode);
     console.log('STORE LOCAL SCREEN autxCtxCtx.user_after: ', autxCtx.user);
+    console.log('STORE LOCAL SCREEN autxCtxCtx.deviceid_after: ', autxCtx.deviceid);
 
     console.log('---------------------------- SAVE TO STORE KEY - THE END ---------------- ');
 
@@ -156,6 +167,7 @@ function StoreLocalScreen({ navigation }) {
     autxCtx.setKey1(null);
     autxCtx.setMode(null);
     autxCtx.readUrlSetted(null);
+    autxCtx.setdeviceID(null);
     console.log('---------------------------- CLEAR ALL STORE, CONTEXY§T END STATES - START ---------------- ');
   };
 
@@ -171,7 +183,8 @@ function StoreLocalScreen({ navigation }) {
         ...existingValues,
         url_address: objGetted.url_address,
         mode_status: objGetted.mode_status,
-        user_status: objGetted.user_status
+        user_status: objGetted.user_status,
+        deviceid_status: objGetted.deviceid_status
       }))
 
       console.log('objGetted.url_address: ', objGetted.url_address);
@@ -180,6 +193,7 @@ function StoreLocalScreen({ navigation }) {
       setUrlState(objGetted.url_address.toString());
       setModeState(objGetted.mode_status);
       setUserState(objGetted.user_status);
+      setDeviceIDState(objGetted.deviceid_status);
 
     } else {
 
@@ -196,6 +210,7 @@ function StoreLocalScreen({ navigation }) {
     console.log('KeyState_State: ', keyState);
     console.log('UrlState_State: ', urlState);
     console.log('ModeState_State: ', modeState);
+    console.log('DeviceIDState_State: ', deviceIDState);
     console.log('---------------------------- SHOW ALL STATE - THE END ---------------- ');
   }
 
@@ -208,6 +223,7 @@ function StoreLocalScreen({ navigation }) {
     console.log('key1_Ctx: ', autxCtx.key1);
     console.log('mode_Ctx: ', autxCtx.mode);
     console.log('user_Ctx: ', autxCtx.user);
+    console.log('deviceID_Ctx: ', autxCtx.deviceid);
     console.log('---------------------------- CHECK ALL CONTEXT - THE END ---------------- ');
   }
 
@@ -235,14 +251,27 @@ function StoreLocalScreen({ navigation }) {
 
             <View style={styles.dataContainer}>
               <SelectList
+                setSelected={(val) => setDeviceIDState(val)}
+                data={GlobalConstants.deviceID}
+                save="value"
+                placeholder="Device ID"
+                defaultOption={{ key: deviceIDState, value: deviceIDState }}
+                boxStyles={{ backgroundColor: 'yellow', height: 50, width: 220 }}
+                inputStyles={{ color: 'mediumblue' }}
+              // onSelect={modeInputHandler}
+              />
+            </View>
+
+            <View style={styles.dataContainer}>
+              <SelectList
                 setSelected={(val) => setKeyState(val)}
                 data={GlobalConstants.keyData}
                 save="value"
                 placeholder="Key"
                 defaultOption={{ key: keyState, value: keyState }}
-                boxStyles={{backgroundColor: 'blue', height: 50, width:220}}
-                inputStyles={{color: 'white'}}
-                // onSelect={modeInputHandler}
+                boxStyles={{ backgroundColor: 'blue', height: 50, width: 220 }}
+                inputStyles={{ color: 'white' }}
+              // onSelect={modeInputHandler}
               />
             </View>
 
@@ -261,9 +290,9 @@ function StoreLocalScreen({ navigation }) {
                 save="value"
                 placeholder="http:// url : port "
                 defaultOption={{ key: urlState, value: urlState }}
-                boxStyles={{backgroundColor: 'green', height: 50, width:220}}
-                inputStyles={{color: 'white'}}
-                // onSelect={modeInputHandler}
+                boxStyles={{ backgroundColor: 'green', height: 50, width: 220 }}
+                inputStyles={{ color: 'white' }}
+              // onSelect={modeInputHandler}
               />
             </View>
             {/* <View style={styles.dataContainer}>
@@ -282,9 +311,9 @@ function StoreLocalScreen({ navigation }) {
                 save="value"
                 placeholder="Prodction/Develop"
                 defaultOption={{ key: modeState, value: modeState }}
-                boxStyles={{backgroundColor: 'red', height: 50, width:220}}
-                inputStyles={{color: 'white'}}
-                // onSelect={modeInputHandler}
+                boxStyles={{ backgroundColor: 'red', height: 50, width: 220 }}
+                inputStyles={{ color: 'white' }}
+              // onSelect={modeInputHandler}
               />
             </View>
             <View style={styles.dataContainer}>
@@ -308,6 +337,7 @@ function StoreLocalScreen({ navigation }) {
               {dataRed && <Text style={styles.textOutData}>{dataRed.url_address}</Text>}
               {dataRed && <Text style={styles.textOutData}>{dataRed.mode_status}</Text>}
               {dataRed && <Text style={styles.textOutData}>{dataRed.user_status}</Text>}
+              {dataRed && <Text style={styles.textOutData}>{dataRed.deviceid_status}</Text>}
             </View>
 
             <View style={styles.buttonAllContainer}>
@@ -378,7 +408,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    marginTop:30,
+    marginTop: 30,
   },
   titleContainer: {
     flex: 1,

@@ -20,9 +20,11 @@ export const AuthContext = createContext({
   key1: "",
   mode: "",
   user:"",
+  deviceid:"",
   setKey1: () => { },
   setMode: () => { },
   setUser: () => { },
+  setdeviceID: () => { }
 });
 
 function AuthContentProvider({ children }) {
@@ -39,6 +41,7 @@ function AuthContentProvider({ children }) {
   const [key1State, setKey1State] = useState();
   const [mode1State, setMode1State] = useState();
   const [userState, setUserState] = useState();
+  const [deviceIDState, setDeviceIDState] = useState();
 
   function authenticatef(sessionID, timer, cognome, nome) {
     setAuthSessionIDs(sessionID);
@@ -86,6 +89,10 @@ function AuthContentProvider({ children }) {
     setUserState(mode1p);
   }
 
+  function setDeviceID1(deviceIDp) {
+    setDeviceIDState(deviceIDp);
+  }
+
   const value = {
     sessionID: authSessionIDs,
     urlsetted: urlSetup,
@@ -106,9 +113,11 @@ function AuthContentProvider({ children }) {
     key1: key1State,
     mode: mode1State,
     user: userState,
+    deviceid: deviceIDState,
     setKey1: setK1,
     setMode: setM1,
     setUser: setUser1,
+    setdeviceID: setDeviceID1,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

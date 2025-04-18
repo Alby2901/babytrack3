@@ -14,7 +14,7 @@ import StoreLocalScreen from "./screens/StoreLocalScreen";
 import { getObjectFromStore, getAllKeys } from './store/StoreDataLocal';
 
 const Stack = createNativeStackNavigator();
-const titleApp = "Baby Track 2025";
+const titleApp = "Baby Track";
 
 function AuthStack() {
   return (
@@ -106,6 +106,7 @@ function Navigation() {
   console.log("APP NAVIGATION authCtx.url =>>", authCtx.urlsetted);
   console.log("APP NAVIGATION authCtx.mode =>>", authCtx.mode);
   console.log("APP NAVIGATION authCtx.user =>>", authCtx.user);
+  console.log("APP NAVIGATION authCtx.deviceid =>>", authCtx.deviceid);
 
   return (
     <NavigationContainer>
@@ -121,11 +122,11 @@ function Root() {
 
   useEffect(() => {
 
-    console.log('--------------- APP UseEffect --------------------------------------');
+    console.log('--------------- APP UseEffect START--------------------------------------');
 
     async function getKeysAtLoading() {
 
-      console.log('--------------- APP UseEffect Async Function START--------------------------------------');
+      console.log('--------------- APP UseEffect Async Function getKeyAtLoadind START--------------------------------------');
 
       const allKeys = await getAllKeys();
 
@@ -143,9 +144,11 @@ function Root() {
 
         // console.log('objGetted.url_address.toString(): ', objGetted.url_address.toString());
         // console.log('objGetted.mode_status: ', objGetted.mode_status);
+        // console.log('TEST 2025: objGetted.deviceid_status: ', objGetted.deviceid_status);
 
         authCtx.readUrlSetted(objGetted.url_address.toString());
         authCtx.setMode(objGetted.mode_status ? objGetted.mode_status : 'Devel');
+        authCtx.setdeviceID(objGetted.deviceid_status) //? objGetted.deviceid_status : '998');
         authCtx.setUser(objGetted.user_status);
 
         // setUrlState(objGetted.url_address.toString());
@@ -163,7 +166,7 @@ function Root() {
 
   }, [])
 
-  console.log('--------------- APP UseEffect --------------------------------------');
+   console.log('--------------- APP Function Root() just before "return <Navigation />" --------------------------------------');
 
   return <Navigation />
 

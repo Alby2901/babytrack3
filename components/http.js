@@ -9,14 +9,21 @@ import { GlobalConstants } from "../UI/GlobalConstant";
 // http://10.6.10.8:7070/babysafe/login?user=pino&pwd=pino
 // http://10.6.10.135:8080/babysafe/login?user=pino&pwd=pino
 // ------------------- v v v v v ----------------------------------
-export async function getSession(utente, password, url) {
-  console.log('GetSession => Start');
+export async function getSession(utente, password, url, deviceIdentification) {
+  console.log('HTTP: GetSession => Start');
   const urlComplete = url + '/' + GlobalConstants.paths.PATH_APP + '/' + GlobalConstants.paths.PATH_LOGIN;
-  console.log('GetSession => Pre Axio.get ');
+  
+  console.log('HTTP: GetSession => utente: ', utente);
+  console.log('HTTP: GetSession => password: ', password);
+  console.log('HTTP: GetSession => urlComplete: ', urlComplete);
+  console.log('HTTP: GetSession => deviceIdentification: ', deviceIdentification);
+  
+  console.log('HTTP: GetSession => Pre Axio.get ');
   const response = await axios.get(urlComplete, {
     params: {
       user: utente,
       pwd: password,
+      deviceid: deviceIdentification
     },
   });
 

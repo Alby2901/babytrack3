@@ -38,4 +38,27 @@ export const GlobalStyles = {
     keyData: [
       { key: 'Settings', value: 'Settings' }
     ],
+    deviceID: [
+      { key: 'DeviceID', value: '000' },
+      { key: 'DeviceID', value: '001' },
+      { key: 'DeviceID', value: '002' },
+      { key: 'DeviceID', value: '003' },
+      { key: 'DeviceID', value: '004' },
+      { key: 'DeviceID', value: '005' },
+      { key: 'DeviceID', value: '006' },
+      { key: 'DeviceID', value: '007' },
+      { key: 'DeviceID', value: '008' },  
+      { key: 'DeviceID', value: '009' },
+      { key: 'DeviceID', value: '010' },
+      { key: 'DeviceID', value: '011' },
+      { key: 'DeviceID', value: '012' },
+      { key: 'DeviceID', value: '013' },
+      { key: 'DeviceID', value: '014' },
+      { key: 'DeviceID', value: '015' },
+      { key: 'DeviceID', value: '016' },
+      { key: 'DeviceID', value: '017' },
+      { key: 'DeviceID', value: '018' },
+      { key: 'DeviceID', value: '019' },
+      { key: 'DeviceID', value: '020' },
+    ],
   };

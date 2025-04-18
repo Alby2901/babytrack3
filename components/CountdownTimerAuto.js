@@ -6,7 +6,7 @@ const CountdownTimerAuto = () => {
 
   const authCtx = useContext(AuthContext);
   
-  const initialMinutes = Number(authCtx.sessionTimer);
+  const initialMinutes = authCtx.sessionTimer ? Number(authCtx.sessionTimer): 7;
   
   // console.log("Type of authCtx.sessionTimer =>> ", typeof authCtx.sessionTimer);
   // console.log("Countdown =>> ", initialMinutes);
