@@ -9,6 +9,7 @@ import {
   Pressable,
   Alert,
 } from "react-native";
+
 import { getSession } from "../components/http";
 import { useContext, useState, useLayoutEffect, useEffect } from "react";
 import { AuthContext } from "../store/auth-context";
@@ -41,6 +42,7 @@ function LoginScreen({ navigation }) {
   const authCtx = useContext(AuthContext);
 
   function headerSettingsIconPressHandler() {
+    console.log('✅ ICONA PREMUTA — Navigazione a SettingAccess');
     console.log('From Login Screen => Open setting screen... ');
     navigation.navigate('SettingAccess');
   }
@@ -49,20 +51,21 @@ function LoginScreen({ navigation }) {
     navigation.setOptions({
       headerRight: () => {
         return (
-          <IconButton
-            icon="settings-outline"
-            size={24}
-            // color={(authCtx.mode == 'Prod' || authCtx.mode == 'Prod-Manual' ? GlobalStyles.colors.BG_Blue : 'white')}
-            color={'red'}
-            // onPress={() => {}}
-            onPress={headerSettingsIconPressHandler}
-            style={{
-              padding: 15,  // Aggiungi un po' di padding
-              borderWidth: 1, // Aggiungi un bordo
-              borderColor: 'green', // Scegli un colore visibile
-            }} 
-          />)
-      }
+          <View pointerEvents="box-none" style={{ marginRight: 10, zIndex: 10 }}>
+            <IconButton
+              icon="settings-outline"
+              size={24}
+              color={'red'}
+              onPress={headerSettingsIconPressHandler}
+            />
+          </View>
+        )
+      },
+      // headerLeft: () => {
+      //   return (
+      //     <Text style={styles.version}>(1.3.1)</Text>
+      //   )
+      // }
     });
   }, [navigation, headerSettingsIconPressHandler]);
 
@@ -95,18 +98,18 @@ function LoginScreen({ navigation }) {
     console.log("Login Screen GetSession1: ");
 
     console.log("Login Screen url: ", url);
-    
+
     authCtx.readUrlSetted(url);
-    console.log("Login Screen authCtx.urlsetted: ", authCtx.urlsetted);    
-    
+    console.log("Login Screen authCtx.urlsetted: ", authCtx.urlsetted);
+
     // authCtx.readUrlSetted(url);
     // console.log("Login Screen authCtx.urlsetted: ", authCtx.urlsetted);
-    
+
     console.log("Login Screen authCtx.mode: ", authCtx.mode);
     console.log("Login Screen authCtx.deviceid: ", authCtx.deviceid);
-    
+
     authCtx.setUser(usr);
-    const valObj = { url_address: url, mode_status: authCtx.mode, user_status: usr, deviceid_status: authCtx.deviceid};
+    const valObj = { url_address: url, mode_status: authCtx.mode, user_status: usr, deviceid_status: authCtx.deviceid };
     console.log('Login Screen => Store di local Obj: ', valObj);
     await setObjectToStore(authCtx.key1, valObj);
 
@@ -163,7 +166,7 @@ function LoginScreen({ navigation }) {
   return (
     // <SafeAreaView>
     <ScrollView>
-      <View style={[styles.containerOuter, { paddingBottom: (authCtx.mode == 'Prod' ? 230 : 214) }]}>
+      <View style={[styles.containerOuter, { paddingBottom: (authCtx.mode == 'Prod' ? 235 : 235) }]}>
         <Pressable onPress={showConfigInputHandler}>
           {/* <Text style={styles.cardText}>Set Server</Text> */}
           <View style={styles.hideButton}></View>
@@ -285,6 +288,10 @@ const styles = StyleSheet.create({
   },
   cardSmalltext: {
     fontSize: 18,
+    color: GlobalStyles.colors.Text_Main,
+  },
+  version: {
+    fontSize: 10,
     color: GlobalStyles.colors.Text_Main,
   },
   containerInput: {

@@ -2,7 +2,9 @@ import { useContext, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
+import Constants from 'expo-constants';
+
 import AuthContentProvider, { AuthContext } from "./store/auth-context";
 import { GlobalStyles } from "./UI/GlobalConstant";
 import LoginScreen from "./screens/LoginScreen";
@@ -15,16 +17,27 @@ import { getObjectFromStore, getAllKeys } from './store/StoreDataLocal';
 
 const Stack = createNativeStackNavigator();
 const titleApp = "Baby Track";
+const appVersion = Constants.expoConfig.version;
+// console.log("Versione app:", appVersion);
+
 
 function AuthStack() {
   return (
     <Stack.Navigator
       screenOptions={{
-        title: titleApp,
         headerStyle: { backgroundColor: GlobalStyles.colors.BG_Blue, },
         headerTintColor: GlobalStyles.colors.Text_Main,
-        headerTitleAlign: "center",
-        headerTitleStyle: { fontWeight: "bold", fontSize: 30, },
+        headerTitleAlign: "left",
+        headerTitle: () => (
+          <View style={{ flexDirection: "row", alignItems: "baseline" }}>
+            <Text style={{ fontWeight: "bold", fontSize: 28, color: GlobalStyles.colors.Text_Main }}>
+              {titleApp}
+            </Text>
+            <Text style={{ fontSize: 14, color: GlobalStyles.colors.Text_Main, marginLeft: 6 }}>
+              v. {appVersion}
+            </Text>
+          </View>
+        ),
       }}
     >
       <Stack.Screen name="Login" component={LoginScreen}></Stack.Screen>
@@ -34,7 +47,7 @@ function AuthStack() {
         name='Settings'
         component={StoreLocalScreen}
         options={{
-          headerLeft: () => {return (<></>);}
+          headerLeft: () => { return (<></>); }
         }}></Stack.Screen>
     </Stack.Navigator>
   );
@@ -166,7 +179,7 @@ function Root() {
 
   }, [])
 
-   console.log('--------------- APP Function Root() just before "return <Navigation />" --------------------------------------');
+  console.log('--------------- APP Function Root() just before "return <Navigation />" --------------------------------------');
 
   return <Navigation />
 

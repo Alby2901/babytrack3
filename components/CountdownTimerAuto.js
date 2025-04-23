@@ -68,12 +68,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   timerText1: {
-    fontSize: 15,
+    fontSize: 10,
     fontWeight: "bold",
     color: "red",
   },
   timerText2: {
-    fontSize: 15,
+    fontSize: 10,
     fontWeight: "bold",
     color: "lightgray",
   },
