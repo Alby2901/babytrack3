@@ -67,7 +67,7 @@ function InputScreen({ navigation }) {
   // useEffect per il controllo della sessione 
   useEffect(() => {
 
-    console.log('--------------- LOGIN SCR UseEffect START--------------------------------------');
+    console.log('--------------- LOGIN SCR UseEffect CheckSession START--------------------------------------');
 
     async function checkSession() {
 
@@ -82,12 +82,15 @@ function InputScreen({ navigation }) {
 
     checkSession()
 
-    console.log('--------------- LOGIN SCR UseEffect THE END --------------------------------------');
+    console.log('--------------- LOGIN SCR UseEffect CheckSession THE END --------------------------------------');
 
   }, [])
 
   // useEffect per il reset di NeonatoInput (nuovo)
   useEffect(() => {
+    
+    console.log('--------------- LOGIN SCR UseEffect ResetNeonatoInput START--------------------------------------');
+    
     if (resetNeonato) {
       setResetNeonato(false); // Resetta lo stato dopo l'esecuzione
     }
@@ -97,6 +100,9 @@ function InputScreen({ navigation }) {
     if (resetLatteCulla) {
       setResetLatteCulla(false); // Resetta lo stato dopo l'esecuzione
     }
+
+    console.log('--------------- LOGIN SCR UseEffect ResetNeonatoInput END --------------------------------------');
+
   }, [resetNeonato, resetGenitore, resetLatteCulla]);
 
   if (isloading) {
@@ -325,10 +331,14 @@ function InputScreen({ navigation }) {
   }
 
   function Reset() {
+
+    console.log("INPUT_SCR - Reset - START");
+
     authCtx.readNeonato(null);
     authCtx.readGenitore(null);
     authCtx.readLatte(null);
-    authCtx.readSessionTimer(null);
+    // authCtx.readSessionTimer(null);
+    authCtx.readSessionTimer(authCtx.sessionTimer);
 
     setNeonato("");
     setGenitore("");
@@ -338,7 +348,12 @@ function InputScreen({ navigation }) {
     setResetGenitore(true);
     setResetLatteCulla(true);
     setTimeout(() => setResetNeonato(false), 100); // Resetta dopo un breve ritardo
+
+    console.log("INPUT_SCR - Reset - THE END");
+
   }
+
+
   function resetAndLogout() {
     Reset();
     authCtx.logout();
@@ -347,7 +362,7 @@ function InputScreen({ navigation }) {
   return (
     <SafeAreaView>
       <ScrollView>
-        <View style={[styles.containerOuter, { paddingBottom: (authCtx.mode.slice(0, 4) == 'Prod' ? 107 : 0) }]}>
+        <View style={[styles.containerOuter, { paddingBottom: (authCtx.mode.slice(0, 4) == 'Prod' ? 93 : 0) }]}>
 
           <Modal
             animationType="slide"

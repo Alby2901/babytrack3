@@ -72,9 +72,9 @@ function AuthContentProvider({ children }) {
   }
 
   function readSessTimer(timer) {
-    console.log('timer', timer)
+    console.log('AUTH-CONTEXT-ReadSessionTimer - Pre "setSessionTimer" => param timer', timer)
     setSessTimer(timer);
-    console.log('CUCU!')
+    console.log('AUTH-CONTEXT-ReadSessionTimer - Post "setSessionTimer" CUCU!', timer)
   }
 
   function setK1(key1p) {

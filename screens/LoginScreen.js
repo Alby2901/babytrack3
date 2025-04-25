@@ -47,27 +47,33 @@ function LoginScreen({ navigation }) {
     navigation.navigate('SettingAccess');
   }
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => {
-        return (
-          <View pointerEvents="box-none" style={{ marginRight: 10, zIndex: 10 }}>
-            <IconButton
-              icon="settings-outline"
-              size={24}
-              color={'red'}
-              onPress={headerSettingsIconPressHandler}
-            />
-          </View>
-        )
-      },
-      // headerLeft: () => {
-      //   return (
-      //     <Text style={styles.version}>(1.3.1)</Text>
-      //   )
-      // }
-    });
-  }, [navigation, headerSettingsIconPressHandler]);
+  // useLayoutEffect(() => {
+  //   navigation.setOptions({
+  //     headerRight: () => {
+  //       return (
+
+  //         <Pressable onPress={headerSettingsIconPressHandler}>
+  //           <Text style={styles.cardText}>X</Text>
+  //           <View style={styles.hideButton}></View>
+  //         </Pressable>
+
+  //         // <View pointerEvents="box-none" style={{ marginRight: 10, zIndex: 10 }}>
+  //         //   <IconButton
+  //         //     icon="settings-outline"
+  //         //     size={24}
+  //         //     color={'red'}
+  //         //     onPress={headerSettingsIconPressHandler}
+  //         //   />
+  //         // </View>
+  //       )
+  //     },
+  //     // headerLeft: () => {
+  //     //   return (
+  //     //     <Text style={styles.version}>(1.3.1)</Text>
+  //     //   )
+  //     // }
+  //   });
+  // }, [navigation, headerSettingsIconPressHandler]);
 
   useEffect(() => {
     if (authCtx.urlsetted) {
@@ -166,7 +172,7 @@ function LoginScreen({ navigation }) {
   return (
     // <SafeAreaView>
     <ScrollView>
-      <View style={[styles.containerOuter, { paddingBottom: (authCtx.mode == 'Prod' ? 235 : 235) }]}>
+      <View style={[styles.containerOuter, { paddingBottom: (authCtx.mode == 'Prod' ? 158 : 235) }]}>
         <Pressable onPress={showConfigInputHandler}>
           {/* <Text style={styles.cardText}>Set Server</Text> */}
           <View style={styles.hideButton}></View>
@@ -217,6 +223,17 @@ function LoginScreen({ navigation }) {
               color={GlobalStyles.colors.BG_DarkBlue}
               onPress={getSessionHandler}
             ></Button>
+          </View>
+        )}
+        {!isLogged && (
+          // <View pointerEvents="box-none" style={{ marginRight: 10, zIndex: 10 }}>
+          <View pointerEvents="box-none" style={styles.containerButton}>
+            <IconButton
+              icon="settings-outline"
+              size={24}
+              color={'red'}
+              onPress={headerSettingsIconPressHandler}
+            />
           </View>
         )}
         {isLogged && (

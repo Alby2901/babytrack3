@@ -51,7 +51,7 @@ export async function getSession(utente, password, url, deviceIdentification) {
   } else {
     console.log("http: Ret If 0: ", response.data.ret);
     sessionID = response.data.params.sessionId;
-    sessionTimeout = response.data.params.sessionTimeout;
+    sessionTimeout = response.data.params.sessionTimeout ? response.data.params.sessionTimeout : 1;
     cognome = response.data.params.user.cognome;
     nome = response.data.params.user.nome;
   }
