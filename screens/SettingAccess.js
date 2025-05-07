@@ -145,6 +145,7 @@ const styles = StyleSheet.create({
   },
   cardSmalltext: {
     fontSize: 18,
+    paddingLeft: 10,
     color: GlobalStyles.colors.Text_Main,
   },
   containerInput: {

@@ -3,6 +3,7 @@ import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StyleSheet, Text, View } from "react-native";
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Constants from 'expo-constants';
 
 import AuthContentProvider, { AuthContext } from "./store/auth-context";
@@ -25,11 +26,21 @@ function AuthStack() {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerStyle: { backgroundColor: GlobalStyles.colors.BG_Blue, },
+        headerStyle: {
+          backgroundColor: GlobalStyles.colors.BG_Blue,
+          height: 10, // <- aggiungi altezza fissa più bassa
+        },
+        headerTitleContainerStyle: {
+          paddingBottom: 0,
+          paddingTop: 0,
+          marginBottom: 0,
+          marginTop: 0,
+        },
         headerTintColor: GlobalStyles.colors.Text_Main,
         headerTitleAlign: "left",
         headerTitle: () => (
-          <View style={{ flexDirection: "row", alignItems: "baseline" }}>
+          // <View style={{ flexDirection: "row", alignItems: "baseline" }}>
+            <View style={{ flexDirection: "row", alignItems: "baseline", minHeight: 40 }}>
             <Text style={{ fontWeight: "bold", fontSize: 28, color: GlobalStyles.colors.Text_Main }}>
               {titleApp}
             </Text>
@@ -58,16 +69,19 @@ function AuthenticatedStack() {
   return (
     <Stack.Navigator
       screenOptions={{
-        title: titleApp,
-        headerStyle: {
-          backgroundColor: GlobalStyles.colors.BG_Blue,
-        },
+        headerStyle: { backgroundColor: GlobalStyles.colors.BG_Blue, },
         headerTintColor: GlobalStyles.colors.Text_Main,
-        headerTitleAlign: "center",
-        headerTitleStyle: {
-          fontWeight: "bold",
-          fontSize: 30,
-        },
+        headerTitleAlign: "left",
+        headerTitle: () => (
+          <View style={{ flexDirection: "row", alignItems: "baseline" }}>
+            <Text style={{ fontWeight: "bold", fontSize: 28, color: GlobalStyles.colors.Text_Main }}>
+              {titleApp}
+            </Text>
+            <Text style={{ fontSize: 14, color: GlobalStyles.colors.Text_Main, marginLeft: 6 }}>
+              v. {appVersion}
+            </Text>
+          </View>
+        ),
       }}
     >
       <Stack.Group>
@@ -189,10 +203,14 @@ export default function App() {
 
   return (
     <>
-      <StatusBar style="auto" />
-      <AuthContentProvider>
-        <Root />
-      </AuthContentProvider>
+      <SafeAreaProvider>
+        <StatusBar style="light" backgroundColor="#000000" translucent={false} />
+        <AuthContentProvider>
+          <SafeAreaView style={{ flex: 1 }}>
+            <Root />
+          </SafeAreaView>
+        </AuthContentProvider>
+      </SafeAreaProvider>
     </>
   );
 }

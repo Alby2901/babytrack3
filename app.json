@@ -3,7 +3,7 @@
     "jsEngine": "hermes",
     "name": "babytrack3",
     "slug": "babytrack3",
-    "version": "1.3.4",
+    "version": "1.3.5",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -13,26 +13,27 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
+    },
+    "androidStatusBar": {
+      "barStyle": "light-content",
+      "backgroundColor": "#000000",
+      "translucent": false
     },
     "android": {
       "usesCleartextTraffic": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#FF0000"
       },
       "package": "com.alby290167.babytrack3"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [
-      "./app.plugin.js"
-    ],
+    "plugins": ["./app.plugin.js"],
     "extra": {
       "eas": {
         "projectId": "d2d9a623-46b7-408e-8779-929314d0ec99"

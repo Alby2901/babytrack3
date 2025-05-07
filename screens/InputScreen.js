@@ -1,16 +1,11 @@
 import React, { useEffect } from "react";
 import { useContext, useState } from "react";
 import {
-  Text,
-  View,
-  StyleSheet,
-  Button,
-  Alert,
-  ScrollView,
-  SafeAreaView,
-  Modal,
-  Pressable
+  Text, View, StyleSheet, Button, Alert,
+  ScrollView, SafeAreaView, Modal, Pressable
 } from "react-native";
+
+import ScreenContainer from "../UI/ScreenContainer";
 import NeonatoInput from "../components/InputNeonato";
 import GenitoreInput from "../components/InputGenitore";
 import LatteCullaInput from "../components/InputLatteCulla";
@@ -88,9 +83,9 @@ function InputScreen({ navigation }) {
 
   // useEffect per il reset di NeonatoInput (nuovo)
   useEffect(() => {
-    
+
     console.log('--------------- LOGIN SCR UseEffect ResetNeonatoInput START--------------------------------------');
-    
+
     if (resetNeonato) {
       setResetNeonato(false); // Resetta lo stato dopo l'esecuzione
     }
@@ -360,195 +355,198 @@ function InputScreen({ navigation }) {
   }
 
   return (
-    <SafeAreaView>
-      <ScrollView>
-        <View style={[styles.containerOuter, { paddingBottom: (authCtx.mode.slice(0, 4) == 'Prod' ? 93 : 0) }]}>
+    // <SafeAreaView>
+    //   <ScrollView>
+    <ScreenContainer>
+      {/* <View style={[styles.containerOuter, { paddingBottom: (authCtx.mode.slice(0, 4) == 'Prod' ? 69 : 0) }]}> */}
+      <View style={styles.containerOuter}>
 
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={modalVisible}
-            onRequestClose={() => {
-              Alert.alert('Modal has been closed.');
-              setModalVisible(!modalVisible);
-            }}>
-            <View style={styles.centeredView}>
-              <View style={styles.modalView}>
-                <View style={styles.centeredView1}>
-                  <Text style={styles.modalTitle}>{JSON.stringify("RICONOSCIMENTO CORRETTO").slice(1, -1)}</Text>
-                  <Text style={styles.modalText}>{JSON.stringify("Neonato: " + childN).slice(1, -1)}</Text>
-                  <Text style={styles.modalText}>{JSON.stringify("").slice(1, -1)}</Text>
-                  <Pressable
-                    style={[styles.button, styles.buttonOpen]}
-                    // onPress={() => navigation.goBack()}
-                    onPress={() => setModalVisible(!modalVisible)}
-                  >
-                    <Text style={styles.textStyle}>{JSON.stringify("Chiudi").slice(1, -1)}</Text>
-                  </Pressable>
-                  <Text style={styles.msgText}>{JSON.stringify("Ret: " + ret).slice(1, -1)}</Text>
-                  <Text style={styles.msgText}>{JSON.stringify("Message: " + message).slice(1, -1)}</Text>
-                </View>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+            setModalVisible(!modalVisible);
+          }}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <View style={styles.centeredView1}>
+                <Text style={styles.modalTitle}>{JSON.stringify("RICONOSCIMENTO CORRETTO").slice(1, -1)}</Text>
+                <Text style={styles.modalText}>{JSON.stringify("Neonato: " + childN).slice(1, -1)}</Text>
+                <Text style={styles.modalText}>{JSON.stringify("").slice(1, -1)}</Text>
+                <Pressable
+                  style={[styles.button, styles.buttonOpen]}
+                  // onPress={() => navigation.goBack()}
+                  onPress={() => setModalVisible(!modalVisible)}
+                >
+                  <Text style={styles.textStyle}>{JSON.stringify("Chiudi").slice(1, -1)}</Text>
+                </Pressable>
+                <Text style={styles.msgText}>{JSON.stringify("Ret: " + ret).slice(1, -1)}</Text>
+                <Text style={styles.msgText}>{JSON.stringify("Message: " + message).slice(1, -1)}</Text>
               </View>
             </View>
-          </Modal>
-
-          <View style={styles.userContainer}>
-            <Text style={styles.textUtenteSmall}>Buongiorno</Text>
-            <Text style={styles.textUtente}>{cognomeNome}</Text>
-
-            {(authCtx.mode.slice(0, 4) == 'Prod' ?
-              <>
-                <View style={styles.containerSessione}>
-                  <Text style={styles.textSessione}>
-                    La sessione scade tra </Text>
-                  <CountdownTimerAuto style={styles.textSessione} />
-                  <Text style={styles.textSessione}> minuti</Text>
-                </View>
-              </> :
-              <>
-                <View style={styles.containerSessione}>
-                  <Text style={styles.textSessione}>
-                    (Sessione: {authCtx.sessionID}) - </Text>
-                  <CountdownTimerAuto style={styles.textSessione} />
-                </View>
-                <Text > --- {authCtx.urlsetted} --- </Text>
-              </>
-            )}
           </View>
-          <View style={[styles.inputsContainer, { height: (authCtx.mode.slice(0, 4) == 'Prod' ? 250 : 350) }]}>
+        </Modal>
 
+        <View style={styles.userContainer}>
+          <Text style={styles.textUtenteSmall}>Buongiorno</Text>
+          <Text style={styles.textUtente}>{cognomeNome}</Text>
+
+          {(authCtx.mode.slice(0, 4) == 'Prod' ?
+            <>
+              <View style={styles.containerSessione}>
+                <Text style={styles.textSessione}>
+                  La sessione scade tra </Text>
+                <CountdownTimerAuto style={styles.textSessione} />
+                <Text style={styles.textSessione}> minuti</Text>
+              </View>
+            </> :
+            <>
+              <View style={styles.containerSessione}>
+                <Text style={styles.textSessione}>
+                  (Sessione: {authCtx.sessionID}) - </Text>
+                <CountdownTimerAuto style={styles.textSessione} />
+              </View>
+              <Text > --- {authCtx.urlsetted} --- </Text>
+            </>
+          )}
+        </View>
+        <View style={[styles.inputsContainer, { height: (authCtx.mode.slice(0, 4) == 'Prod' ? 250 : 350) }]}>
+
+          <View style={styles.buttonsScanContainer}>
+            {(authCtx.mode == 'Prod-Manual' ? null :
+              <View style={styles.buttonScanContainer}>
+                <Button
+                  title="Scan Neonato"
+                  // onPress={scanNeonato.bind(this, 'baby')}
+                  onPress={scan.bind(this, 'baby')}
+                  color={GlobalStyles.colors.Button_Scan}
+                />
+              </View>
+            )}
+            {(authCtx.mode == 'Prod-Manual' || authCtx.mode == 'Devel' ?
+              (<NeonatoInput
+                style={styles.inputArea}
+                onSetNeonato={setNeonatoHandler}
+                reset={resetNeonato} // Passa la proprietà reset
+              />)
+              : null)}
+            <Text style={styles.text}>Neonato: {authCtx.neonato}</Text>
+          </View>
+
+
+          <View style={styles.buttonsScanContainer}>
+            {(authCtx.mode == 'Prod-Manual' ? null :
+              <View style={styles.buttonScanContainer}>
+                <Button
+                  title="Scan genitore - Culla"
+                  // onPress={scanGenitore}
+                  onPress={scan.bind(this, 'parent')}
+                  color={GlobalStyles.colors.Button_Scan}
+                />
+              </View>)}
+            {(authCtx.mode == 'Prod-Manual' || authCtx.mode == 'Devel' ?
+              <GenitoreInput
+                style={styles.inputArea}
+                onSetGenitore={setGenitoreHandler}
+                reset={resetGenitore}
+              />
+              : null)}
+            <Text style={styles.text}>Genitore: {authCtx.genitore}</Text>
+          </View>
+
+          {(authCtx.mode.slice(0, 4) == 'Prod' ? null :
             <View style={styles.buttonsScanContainer}>
               {(authCtx.mode == 'Prod-Manual' ? null :
                 <View style={styles.buttonScanContainer}>
                   <Button
-                    title="Scan Neonato"
-                    // onPress={scanNeonato.bind(this, 'baby')}
-                    onPress={scan.bind(this, 'baby')}
-                    color={GlobalStyles.colors.Button_Scan}
-                  />
-                </View>
-              )}
-              {(authCtx.mode == 'Prod-Manual' || authCtx.mode == 'Devel' ?
-                (<NeonatoInput
-                  style={styles.inputArea}
-                  onSetNeonato={setNeonatoHandler}
-                  reset={resetNeonato} // Passa la proprietà reset
-                />)
-                : null)}
-              <Text style={styles.text}>Neonato: {authCtx.neonato}</Text>
-            </View>
-
-
-            <View style={styles.buttonsScanContainer}>
-              {(authCtx.mode == 'Prod-Manual' ? null :
-                <View style={styles.buttonScanContainer}>
-                  <Button
-                    title="Scan genitore - Culla"
-                    // onPress={scanGenitore}
-                    onPress={scan.bind(this, 'parent')}
+                    title="Scan Latte"
+                    // onPress={scanLatte}
+                    onPress={scan.bind(this, 'milk')}
                     color={GlobalStyles.colors.Button_Scan}
                   />
                 </View>)}
               {(authCtx.mode == 'Prod-Manual' || authCtx.mode == 'Devel' ?
-                <GenitoreInput
+                <LatteCullaInput
                   style={styles.inputArea}
-                  onSetGenitore={setGenitoreHandler}
-                  reset={resetGenitore}
+                  onSetLatteCulla={setLatteCullaHandler}
+                  reset={resetLatteCulla}
                 />
                 : null)}
-              <Text style={styles.text}>Genitore: {authCtx.genitore}</Text>
-            </View>
-
-            {(authCtx.mode.slice(0, 4) == 'Prod' ? null :
-              <View style={styles.buttonsScanContainer}>
-                {(authCtx.mode == 'Prod-Manual' ? null :
-                  <View style={styles.buttonScanContainer}>
-                    <Button
-                      title="Scan Latte"
-                      // onPress={scanLatte}
-                      onPress={scan.bind(this, 'milk')}
-                      color={GlobalStyles.colors.Button_Scan}
-                    />
-                  </View>)}
-                {(authCtx.mode == 'Prod-Manual' || authCtx.mode == 'Devel' ?
-                  <LatteCullaInput
-                    style={styles.inputArea}
-                    onSetLatteCulla={setLatteCullaHandler}
-                    reset={resetLatteCulla}
-                  />
-                  : null)}
-                <Text style={styles.text}>Latte/Culla: {authCtx.latte}</Text>
-              </View>
-            )}
-
-            {/* {ret && <Text style={styles.text}>Ret: {ret}</Text>}
-            {message && <Text style={styles.text}>Msg: {message}</Text>}
-            {childN && <Text style={styles.text}>ChildN: {childN}</Text>}
-            {motherN && <Text style={styles.text}>MotherN: {motherN}</Text>} */}
-          </View>
-
-          <View style={styles.buttonsContainer1}>
-            <View style={styles.buttonContainer}>
-              <Button
-                title={"Chk \nNeonato"}
-                onPress={VerificaNeonato}
-                color={GlobalStyles.colors.BG_DarkBlue}
-              ></Button>
-            </View>
-            <View style={styles.buttonContainer}>
-              <Button
-                title={"Chk \nGen-Culla"}
-                onPress={VerificaGenitore}
-                color={GlobalStyles.colors.BG_DarkBlue}
-              ></Button>
-            </View>
-
-            {(authCtx.mode == 'Prod' ? null :
-              <View style={styles.buttonContainer}>
-                <Button
-                  title={"Chk \nLatte"}
-                  onPress={VerificaLatteCulla}
-                  color={GlobalStyles.colors.BG_DarkBlue}
-                ></Button>
-              </View>
-            )}
-          </View>
-
-          <View style={styles.buttonsContainer2}>
-            <View style={styles.buttonResetContainer}>
-              <Button
-                title="Reset"
-                onPress={Reset}
-                color={GlobalStyles.colors.Button_Reset}
-              ></Button>
-            </View>
-            <View style={styles.buttonLogoutContainer}>
-              <Button
-                title="Logout"
-                onPress={resetAndLogout}
-                color={GlobalStyles.colors.Button_Logout}
-              />
-            </View>
-          </View>
-
-          {(authCtx.mode.slice(0, 4) == 'Prod' ? null :
-            <View style={styles.buttonsContainer2}>
-              <View style={styles.buttonResetContainer}>
-                <Button
-                  title="Test Session"
-                  onPress={checkSession}
-                  color={GlobalStyles.colors.Button_Reset}
-                ></Button>
-              </View>
-              <View >
-                <Text>Sessione: {sessionActive}</Text>
-              </View>
+              <Text style={styles.text}>Latte/Culla: {authCtx.latte}</Text>
             </View>
           )}
 
+          {/* {ret && <Text style={styles.text}>Ret: {ret}</Text>}
+            {message && <Text style={styles.text}>Msg: {message}</Text>}
+            {childN && <Text style={styles.text}>ChildN: {childN}</Text>}
+            {motherN && <Text style={styles.text}>MotherN: {motherN}</Text>} */}
         </View>
-      </ScrollView>
-    </SafeAreaView>
+
+        <View style={styles.buttonsContainer1}>
+          <View style={styles.buttonContainer}>
+            <Button
+              title={"Chk \nNeonato"}
+              onPress={VerificaNeonato}
+              color={GlobalStyles.colors.BG_DarkBlue}
+            ></Button>
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button
+              title={"Chk \nGen-Culla"}
+              onPress={VerificaGenitore}
+              color={GlobalStyles.colors.BG_DarkBlue}
+            ></Button>
+          </View>
+
+          {(authCtx.mode == 'Prod' ? null :
+            <View style={styles.buttonContainer}>
+              <Button
+                title={"Chk \nLatte"}
+                onPress={VerificaLatteCulla}
+                color={GlobalStyles.colors.BG_DarkBlue}
+              ></Button>
+            </View>
+          )}
+        </View>
+
+        <View style={styles.buttonsContainer2}>
+          <View style={styles.buttonResetContainer}>
+            <Button
+              title="Reset"
+              onPress={Reset}
+              color={GlobalStyles.colors.Button_Reset}
+            ></Button>
+          </View>
+          <View style={styles.buttonLogoutContainer}>
+            <Button
+              title="Logout"
+              onPress={resetAndLogout}
+              color={GlobalStyles.colors.Button_Logout}
+            />
+          </View>
+        </View>
+
+        {(authCtx.mode.slice(0, 4) == 'Prod' ? null :
+          <View style={styles.buttonsContainer2}>
+            <View style={styles.buttonResetContainer}>
+              <Button
+                title="Test Session"
+                onPress={checkSession}
+                color={GlobalStyles.colors.Button_Reset}
+              ></Button>
+            </View>
+            <View >
+              <Text>Sessione: {sessionActive}</Text>
+            </View>
+          </View>
+        )}
+
+      </View>
+    </ScreenContainer>
+    //  </ScrollView>
+    // </SafeAreaView>
   );
 }
 

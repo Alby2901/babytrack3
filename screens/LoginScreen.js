@@ -1,15 +1,9 @@
 import {
-  Text,
-  View,
-  StyleSheet,
-  Button,
-  TextInput,
-  ScrollView,
-  SafeAreaView,
-  Pressable,
-  Alert,
+  Text, View, StyleSheet, Button, TextInput,
+  ScrollView, SafeAreaView, Pressable
 } from "react-native";
 
+import ScreenContainer from "../UI/ScreenContainer";
 import { getSession } from "../components/http";
 import { useContext, useState, useLayoutEffect, useEffect } from "react";
 import { AuthContext } from "../store/auth-context";
@@ -171,104 +165,107 @@ function LoginScreen({ navigation }) {
 
   return (
     // <SafeAreaView>
-    <ScrollView>
-      <View style={[styles.containerOuter, { paddingBottom: (authCtx.mode == 'Prod' ? 158 : 235) }]}>
-        <Pressable onPress={showConfigInputHandler}>
-          {/* <Text style={styles.cardText}>Set Server</Text> */}
-          <View style={styles.hideButton}></View>
-        </Pressable>
+    <ScreenContainer>
+      {/* <ScrollView contentContainerStyle={styles.scrollContent}> */}
+        {/* <View style={[styles.containerOuter, { paddingBottom: (authCtx.mode == 'Prod' ? 120 : 120) }]}> */}
+        <View style={styles.containerOuter}>
+          <Pressable onPress={showConfigInputHandler}>
+            {/* <Text style={styles.cardText}>Set Server</Text> */}
+            <View style={styles.hideButton}></View>
+          </Pressable>
 
-        <View style={styles.cardTitle}>
-          <Text style={styles.cardText}>LOGIN</Text>
-          <Text style={[styles.cardText, styles.cardSmalltext]}>
-            Inserire le credenziali di Neocare
-          </Text>
-        </View>
+          <View style={styles.cardTitle}>
+            <Text style={styles.cardText}>LOGIN</Text>
+            <Text style={[styles.cardText, styles.cardSmalltext]}>
+              Inserire le credenziali di Neocare
+            </Text>
+          </View>
 
-        <View >
-          {serverSetted ? <Text >Server: {authCtx.urlsetted} </Text> : <Text >ATTENZIONE! Server non impostato</Text>}
-          {authCtx.mode ? <Text >Modo: {authCtx.mode} </Text> : <Text >Modo: Nessuno!</Text>}
-          {authCtx.deviceid ? <Text >Device: {authCtx.deviceid} </Text> : <Text >Device: non in memoria</Text>}
-        </View>
+          <View >
+            {serverSetted ? <Text >Server: {authCtx.urlsetted} </Text> : <Text >ATTENZIONE! Server non impostato</Text>}
+            {authCtx.mode ? <Text >Modo: {authCtx.mode} </Text> : <Text >Modo: Nessuno!</Text>}
+            {authCtx.deviceid ? <Text >Device: {authCtx.deviceid} </Text> : <Text >Device: non in memoria</Text>}
+          </View>
 
-        <View style={styles.containerInput}>
-          {showConfigInput && (
+          <View style={styles.containerInput}>
+            {showConfigInput && (
+              <TextInput
+                style={styles.inputText}
+                onChangeText={urlInputHandler}
+                value={url}
+                placeholder="URL"
+              />
+            )}
             <TextInput
               style={styles.inputText}
-              onChangeText={urlInputHandler}
-              value={url}
-              placeholder="URL"
+              onChangeText={usrInputHandler}
+              value={usr}
+              placeholder="Utente"
             />
-          )}
-          <TextInput
-            style={styles.inputText}
-            onChangeText={usrInputHandler}
-            value={usr}
-            placeholder="Utente"
-          />
-          <TextInput
-            style={styles.inputText}
-            onChangeText={pwdInputHandler}
-            value={pwd}
-            secureTextEntry={true}
-            placeholder="Password"
-          />
-        </View>
-        {!isLogged && (
-          <View style={styles.containerButton}>
-            {/* <Text style={styles.text}>Test chiamate HTTP...</Text> */}
-            <Button
-              style={styles.button}
-              title="Login"
-              color={GlobalStyles.colors.BG_DarkBlue}
-              onPress={getSessionHandler}
-            ></Button>
-          </View>
-        )}
-        {!isLogged && (
-          // <View pointerEvents="box-none" style={{ marginRight: 10, zIndex: 10 }}>
-          <View pointerEvents="box-none" style={styles.containerButton}>
-            <IconButton
-              icon="settings-outline"
-              size={24}
-              color={'red'}
-              onPress={headerSettingsIconPressHandler}
+            <TextInput
+              style={styles.inputText}
+              onChangeText={pwdInputHandler}
+              value={pwd}
+              secureTextEntry={true}
+              placeholder="Password"
             />
           </View>
-        )}
-        {isLogged && (
-          <View style={styles.containerMessage}>
-            <Text>The Session ID is: {sessionID}</Text>
-
-            {/* {!isInputOk && <Text style={styles.textAlert}>I CAMPI SONO VUOTI!</Text>} */}
-
-            {isLogged && <Text style={styles.textAlert}>ATTENZIONE!</Text>}
-            {isLogged && <Text style={styles.textAlert}>{message}</Text>}
-
-            {/* {isLogged && sessionID && <Text style={styles.textAlert}>The Session ID is: {sessionID}</Text>} */}
-            {/* {isLogged && !sessionID && (<Text style={styles.textAlert}>The Session ID is not avaiable!</Text>)} */}
-          </View>
-        )}
-
-        {isLogged && (
-          <View style={styles.containerButton}>
-            {(isLogged || errorHTTP) && (
+          {!isLogged && (
+            <View style={styles.containerButton}>
+              {/* <Text style={styles.text}>Test chiamate HTTP...</Text> */}
               <Button
                 style={styles.button}
-                title="Riprova..."
-                onPress={resetIsLogged}
+                title="Login"
                 color={GlobalStyles.colors.BG_DarkBlue}
+                onPress={getSessionHandler}
               ></Button>
-            )}
-            {errorHTTP && (
-              <Text style={styles.textAlert} cd>
-                Server is not responding!
-              </Text>
-            )}
-          </View>
-        )}
-      </View>
-    </ScrollView>
+            </View>
+          )}
+          {!isLogged && (
+            // <View pointerEvents="box-none" style={{ marginRight: 10, zIndex: 10 }}>
+            <View pointerEvents="box-none" style={styles.containerButton}>
+              <IconButton
+                icon="settings-outline"
+                size={24}
+                color={'red'}
+                onPress={headerSettingsIconPressHandler}
+              />
+            </View>
+          )}
+          {isLogged && (
+            <View style={styles.containerMessage}>
+              <Text>The Session ID is: {sessionID}</Text>
+
+              {/* {!isInputOk && <Text style={styles.textAlert}>I CAMPI SONO VUOTI!</Text>} */}
+
+              {isLogged && <Text style={styles.textAlert}>ATTENZIONE!</Text>}
+              {isLogged && <Text style={styles.textAlert}>{message}</Text>}
+
+              {/* {isLogged && sessionID && <Text style={styles.textAlert}>The Session ID is: {sessionID}</Text>} */}
+              {/* {isLogged && !sessionID && (<Text style={styles.textAlert}>The Session ID is not avaiable!</Text>)} */}
+            </View>
+          )}
+
+          {isLogged && (
+            <View style={styles.containerButton}>
+              {(isLogged || errorHTTP) && (
+                <Button
+                  style={styles.button}
+                  title="Riprova..."
+                  onPress={resetIsLogged}
+                  color={GlobalStyles.colors.BG_DarkBlue}
+                ></Button>
+              )}
+              {errorHTTP && (
+                <Text style={styles.textAlert} cd>
+                  Server is not responding!
+                </Text>
+              )}
+            </View>
+          )}
+        </View>
+      {/* </ScrollView> */}
+    </ScreenContainer>
     // </SafeAreaView>
   );
 }
@@ -276,6 +273,12 @@ function LoginScreen({ navigation }) {
 export default LoginScreen;
 
 const styles = StyleSheet.create({
+  // scrollContent: {
+  //   flexGrow: 1,
+  //   justifyContent: "space-between",
+  //   paddingHorizontal: 0,
+  //   paddingVertical: 0,
+  // },
   containerOuter: {
     flex: 1,
     // alignItems: '',
