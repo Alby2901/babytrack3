@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     backgroundColor: GlobalStyles.colors.BG_App_Blue,
     paddingHorizontal: 20,
     paddingTop: 20,
-    paddingBottom: 395,
+    paddingBottom: 244,
     // paddingBottom: 203, //ZenPhone 203 - MotorolaEdge 420
   },
   hideButton: {

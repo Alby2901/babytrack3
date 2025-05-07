@@ -443,7 +443,7 @@ function InputScreen({ navigation }) {
               {(authCtx.mode == 'Prod-Manual' ? null :
                 <View style={styles.buttonScanContainer}>
                   <Button
-                    title="Scan genitore"
+                    title="Scan genitore - Culla"
                     // onPress={scanGenitore}
                     onPress={scan.bind(this, 'parent')}
                     color={GlobalStyles.colors.Button_Scan}
@@ -497,7 +497,7 @@ function InputScreen({ navigation }) {
             </View>
             <View style={styles.buttonContainer}>
               <Button
-                title={"Chk \nGenitore"}
+                title={"Chk \nGen-Culla"}
                 onPress={VerificaGenitore}
                 color={GlobalStyles.colors.BG_DarkBlue}
               ></Button>
