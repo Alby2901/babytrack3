@@ -12,56 +12,76 @@ import { GlobalConstants } from "../UI/GlobalConstant";
 export async function getSession(utente, password, url, deviceIdentification) {
   console.log('HTTP: GetSession => Start');
   const urlComplete = url + '/' + GlobalConstants.paths.PATH_APP + '/' + GlobalConstants.paths.PATH_LOGIN;
-  
+
   console.log('HTTP: GetSession => utente: ', utente);
   console.log('HTTP: GetSession => password: ', password);
   console.log('HTTP: GetSession => urlComplete: ', urlComplete);
   console.log('HTTP: GetSession => deviceIdentification: ', deviceIdentification);
-  
+
   console.log('HTTP: GetSession => Pre Axio.get ');
-  const response = await axios.get(urlComplete, {
-    params: {
-      user: utente,
-      pwd: password,
-      deviceid: deviceIdentification
-    },
-  });
+  try {
+    const response = await axios.get(urlComplete, {
+      params: {
+        user: utente,
+        pwd: password,
+        deviceid: deviceIdentification
+      },
+    });
 
-  console.log("http: -------------------------------------------------");
-  console.log("http: Risposta: " + JSON.stringify(response.data));
-  console.log("http: -------------------------------------------------");
+    console.log("http: -------------------------------------------------");
+    console.log("http: Risposta: " + JSON.stringify(response.data));
+    console.log("http: -------------------------------------------------");
 
-  for (const param in response.data) {
-    console.log("http: param: " + param);
+    for (const param in response.data) {
+      console.log("http: param: " + param);
+    }
+
+    console.log("http: param_ret: " + response.data.ret);
+    console.log("http: param_msg: " + response.data.message);
+    console.log("http: param_prm: " + response.data.params);
+
+    const message = response.data.message;
+    let sessionID = "";
+    let sessionTimeout = "";
+    let cognome = "";
+    let nome = "";
+
+    if (response.data.ret !== 0) {
+      console.log("http: Ret If !0: ", response.data.ret);
+      sessionID = "";
+    } else {
+      console.log("http: Ret If 0: ", response.data.ret);
+      sessionID = response.data.params.sessionId;
+      sessionTimeout = response.data.params.sessionTimeout ? response.data.params.sessionTimeout : 1;
+      cognome = response.data.params.user.cognome;
+      nome = response.data.params.user.nome;
+    }
+
+    console.log("http: SessionID: " + sessionID);
+    console.log("http: SessionTimeout: " + sessionTimeout);
+    console.log("http: COGNOME: " + cognome);
+    console.log("http: NOME: " + nome);
+
+    return [sessionID, sessionTimeout, message, cognome, nome];
+
+  } catch (error) {
+    console.error("Error during axios request:", error);
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        console.error("Response data:", error.response.data);
+        console.error("Response status:", error.response.status);
+        console.error("Response headers:", error.response.headers);
+      } else if (error.request) {
+        console.error("No response received:", error.request);
+      } else {
+        console.error("Error setting up request:", error.message);
+      }
+    } else {
+      console.error("An unknown error occurred:", error);
+    }
+    throw error; // Move this inside the catch block
   }
 
-  console.log("http: param_ret: " + response.data.ret);
-  console.log("http: param_msg: " + response.data.message);
-  console.log("http: param_prm: " + response.data.params);
-
-  const message = response.data.message;
-  let sessionID = "";
-  let sessionTimeout ="";
-  let cognome = "";
-  let nome = "";
-
-  if (response.data.ret !== 0) {
-    console.log("http: Ret If !0: ", response.data.ret);
-    sessionID = "";
-  } else {
-    console.log("http: Ret If 0: ", response.data.ret);
-    sessionID = response.data.params.sessionId;
-    sessionTimeout = response.data.params.sessionTimeout ? response.data.params.sessionTimeout : 1;
-    cognome = response.data.params.user.cognome;
-    nome = response.data.params.user.nome;
-  }
-
-  console.log("http: SessionID: " + sessionID);
-  console.log("http: SessionTimeout: " + sessionTimeout);
-  console.log("http: COGNOME: " + cognome);
-  console.log("http: NOME: " + nome);
-
-  return [sessionID, sessionTimeout, message, cognome, nome];
 }
 
 // ------------------- CHECK SESSION ------------------------------
@@ -116,7 +136,7 @@ export async function getChkBaby(url, sessionid, neonato) {
   });
 
   console.log('--------------- HTTP Component - getChkBaby - axio.get - THE END ---------------------');
-  
+
 
   console.log("http3: -------------------------------------------------");
   console.log("http3: Risposta chk gen: " + JSON.stringify(response.data));
@@ -149,7 +169,7 @@ export async function getChkBaby(url, sessionid, neonato) {
   console.log("http3: MOTHER_NAME: " + motherName);
 
   // {"ret":0,"message":"Braccialetto madre riconosciuto ","params":{"childName":"Neonato Bimbo","motherName":"Rossi Maria"}}
-  
+
   console.log('--------------- HTTP Component - getChkBaby - THE END --------------------------------------');
 
   return [ret, message, childName, motherName];
@@ -176,8 +196,8 @@ export async function getChkParent(url, sessionid, neonato, genitore) {
   const urlComplete = url + '/' + GlobalConstants.paths.PATH_APP + '/' + GlobalConstants.paths.PATH_CHECHBAND;
 
   console.log('urlComplete: ', urlComplete);
-  
-  
+
+
   const response = await axios.get(urlComplete, {
     params: {
       sessionid: sessionid,

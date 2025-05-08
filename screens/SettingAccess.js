@@ -1,13 +1,9 @@
 import {
-  Text,
-  View,
-  StyleSheet,
-  Button,
-  TextInput,
-  ScrollView,
+  Text, View, StyleSheet, Button, TextInput, ScrollView,
 } from "react-native";
 
 import { useContext, useState, useLayoutEffect, useEffect } from "react";
+import ScreenContainer from "../UI/ScreenContainer";
 import { AuthContext } from "../store/auth-context";
 import { GlobalStyles } from "../UI/GlobalConstant";
 
@@ -39,14 +35,14 @@ function SettingAccessScreen({ navigation }) {
         navigation.navigate('Settings');
       } else {
         console.log('From Settin Access Screen - else...   ');
-        
+
         const messageWrongPwd = (
           <>
-        <Text style={styles.textAlert}>ATTENZIONE!</Text>
-        <Text style={styles.textAlert}>Password errata!</Text>
+            <Text style={styles.textAlert}>ATTENZIONE!</Text>
+            <Text style={styles.textAlert}>Password errata!</Text>
           </>)
-        
-;
+
+          ;
         setMessage(messageWrongPwd);
         console.log('From Settin Access Screen - message', message);
         setIsAutorized(false)
@@ -70,45 +66,48 @@ function SettingAccessScreen({ navigation }) {
   }
 
   return (
-    <ScrollView>
-      <View style={[styles.containerOuter]}>
+    <ScreenContainer>
+      {/* <ScrollView> */}
+        <View style={[styles.containerOuter]}>
 
-        <View style={styles.cardTitle}>
-          <Text style={styles.cardText}>Accesso</Text>
-          <Text style={styles.cardText}>Configurazione </Text>
-          <Text style={[styles.cardText, styles.cardSmalltext]}>
-            Inserire la passord per accedere alla configurazione
-          </Text>
-        </View>
-
-        <View style={styles.containerInput}>
-          <TextInput
-            style={styles.inputText}
-            onChangeText={pwdInputHandler}
-            value={pwd}
-            secureTextEntry={true}
-            placeholder="Password"
-          />
-        </View>
-
-        {!isLogged && (
-          <View style={styles.containerButton}>
-            {/* <Text style={styles.text}>Test chiamate HTTP...</Text> */}
-            <Button
-              style={styles.button}
-              title="Entra"
-              color={GlobalStyles.colors.BG_DarkBlue}
-              onPress={getSessionHandler}
-            ></Button>
+          <View style={styles.cardTitle}>
+            <Text style={styles.cardText}>Accesso</Text>
+            <Text style={styles.cardText}>Configurazione </Text>
+            <Text style={[styles.cardText, styles.cardSmalltext]}>
+              Inserire la passord per accedere alla configurazione
+            </Text>
           </View>
-        )}
 
-        <View style={styles.containerMessage}>
-          {message}
+          <View style={styles.containerInput}>
+            <TextInput
+              style={styles.inputText}
+              onChangeText={pwdInputHandler}
+              value={pwd}
+              secureTextEntry={true}
+              placeholder="Password"
+            />
+          </View>
+
+          {!isLogged && (
+            <View style={styles.containerButton}>
+              {/* <Text style={styles.text}>Test chiamate HTTP...</Text> */}
+              <Button
+                style={styles.button}
+                title="Entra"
+                color={GlobalStyles.colors.BG_DarkBlue}
+                onPress={getSessionHandler}
+              ></Button>
+            </View>
+          )}
+
+          <View style={styles.containerMessage}>
+            {message}
+          </View>
+
         </View>
+      {/* </ScrollView> */}
+    </ScreenContainer>
 
-      </View>
-    </ScrollView>
   );
 }
 
