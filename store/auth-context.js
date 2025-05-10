@@ -4,6 +4,10 @@ export const AuthContext = createContext({
   sessionID: "",
   urlsetted: "",
   sessionTimer: 10,
+  lastActiveTime: null,
+  setSessionTimer: () => {},
+  setLastActiveTime: () => {},
+  // lastActiveTime: new Date().getTime(),
   isAuthenticated: false,
   cognome: "",
   nome: "",
@@ -30,7 +34,8 @@ export const AuthContext = createContext({
 function AuthContentProvider({ children }) {
   const [authSessionIDs, setAuthSessionIDs] = useState();
   const [urlSetup, setUrlSetup] = useState();
-  const [sessTimer, setSessTimer] = useState();
+  const [sessTimer, setSessTimer] = useState(8);
+  const [lastActiveTime, setLastActiveTime] = useState(null);
 
   const [cognome, setCognome] = useState();
   const [nome, setNome] = useState();
@@ -49,6 +54,10 @@ function AuthContentProvider({ children }) {
     setNome(nome);
     setSessTimer(timer);
     // console.log('Auth-Context sessTimer status: ', sessTimer)
+  }
+
+  function setSessionTimer(timer) {
+    setSessTimer(timer); // Implementa correttamente la funzione per aggiornare sessTimer
   }
 
   function readUrlSettf(urlp) {
@@ -97,6 +106,9 @@ function AuthContentProvider({ children }) {
     sessionID: authSessionIDs,
     urlsetted: urlSetup,
     sessionTimer: sessTimer,
+    lastActiveTime,
+    setSessionTimer,
+    setLastActiveTime,
     isAuthenticated: !!authSessionIDs,
     cognome: cognome,
     nome: nome,
