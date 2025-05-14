@@ -2,6 +2,7 @@ import {
   Text, View, StyleSheet, Button, TextInput,
   ScrollView, SafeAreaView, Pressable
 } from "react-native";
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import ScreenContainer from "../UI/ScreenContainer";
 import { getSession } from "../components/http";
@@ -11,6 +12,7 @@ import LoadingOverlay from "../UI/LoadingOverlay";
 import { GlobalStyles } from "../UI/GlobalConstant";
 import IconButton from '../UI/IconButton';
 import { setObjectToStore } from '../store/StoreDataLocal';
+
 
 function LoginScreen({ navigation }) {
   // console.log("LoginScreen navigation:", navigation);
@@ -27,6 +29,8 @@ function LoginScreen({ navigation }) {
   const [url, setUrl] = useState("http://93.145.42.53:8090");
   const [deviceID, setdeviceID] = useState("");
 
+  const [showPassword, setShowPassword] = useState(false);
+
   // ----------------------------
   // ELIMINARE IL DEFAULT!
   const [usr, setUsr] = useState("");
@@ -34,6 +38,10 @@ function LoginScreen({ navigation }) {
   // ----------------------------
 
   const authCtx = useContext(AuthContext);
+
+  function toggleShowPassword() {
+    setShowPassword(prev => !prev);
+  }
 
   function headerSettingsIconPressHandler() {
     console.log('✅ ICONA PREMUTA — Navigazione a SettingAccess');
@@ -167,103 +175,122 @@ function LoginScreen({ navigation }) {
     // <SafeAreaView>
     <ScreenContainer>
       {/* <ScrollView contentContainerStyle={styles.scrollContent}> */}
-        {/* <View style={[styles.containerOuter, { paddingBottom: (authCtx.mode == 'Prod' ? 120 : 120) }]}> */}
-        <View style={styles.containerOuter}>
-          <Pressable onPress={showConfigInputHandler}>
-            {/* <Text style={styles.cardText}>Set Server</Text> */}
-            <View style={styles.hideButton}></View>
-          </Pressable>
+      {/* <View style={[styles.containerOuter, { paddingBottom: (authCtx.mode == 'Prod' ? 120 : 120) }]}> */}
+      <View style={styles.containerOuter}>
+        <Pressable onPress={showConfigInputHandler}>
+          {/* <Text style={styles.cardText}>Set Server</Text> */}
+          <View style={styles.hideButton}></View>
+        </Pressable>
 
-          <View style={styles.cardTitle}>
-            <Text style={styles.cardText}>LOGIN</Text>
-            <Text style={[styles.cardText, styles.cardSmalltext]}>
-              Inserire le credenziali di Neocare
-            </Text>
-          </View>
+        <View style={styles.cardTitle}>
+          <Text style={styles.cardText}>LOGIN</Text>
+          <Text style={[styles.cardText, styles.cardSmalltext]}>
+            Inserire le credenziali di Neocare
+          </Text>
+        </View>
 
-          <View >
-            {serverSetted ? <Text >Server: {authCtx.urlsetted} </Text> : <Text >ATTENZIONE! Server non impostato</Text>}
-            {authCtx.mode ? <Text >Modo: {authCtx.mode} </Text> : <Text >Modo: Nessuno!</Text>}
-            {authCtx.deviceid ? <Text >Device: {authCtx.deviceid} </Text> : <Text >Device: non in memoria</Text>}
-          </View>
+        <View >
+          {serverSetted ? <Text >Server: {authCtx.urlsetted} </Text> : <Text >ATTENZIONE! Server non impostato</Text>}
+          {authCtx.mode ? <Text >Modo: {authCtx.mode} </Text> : <Text >Modo: Nessuno!</Text>}
+          {authCtx.deviceid ? <Text >Device: {authCtx.deviceid} </Text> : <Text >Device: non in memoria</Text>}
+        </View>
 
-          <View style={styles.containerInput}>
-            {showConfigInput && (
-              <TextInput
-                style={styles.inputText}
-                onChangeText={urlInputHandler}
-                value={url}
-                placeholder="URL"
-              />
-            )}
+        <View style={styles.containerInput}>
+          {showConfigInput && (
             <TextInput
               style={styles.inputText}
-              onChangeText={usrInputHandler}
-              value={usr}
-              placeholder="Utente"
+              onChangeText={urlInputHandler}
+              value={url}
+              placeholder="URL"
             />
+          )}
+          <TextInput
+            style={styles.inputText}
+            onChangeText={usrInputHandler}
+            value={usr}
+            placeholder="Utente"
+          />
+          {/* <TextInput
+            style={styles.inputText}
+            onChangeText={pwdInputHandler}
+            value={pwd}
+            secureTextEntry={true}
+            placeholder="Password"
+          /> */}
+
+          <View style={styles.passwordContainer}>
             <TextInput
-              style={styles.inputText}
+              style={styles.passwordInput}
               onChangeText={pwdInputHandler}
               value={pwd}
-              secureTextEntry={true}
+              secureTextEntry={!showPassword}
               placeholder="Password"
             />
+            <Pressable onPress={toggleShowPassword} style={styles.toggleButton}>
+              <Ionicons
+                name={showPassword ? 'eye-off' : 'eye'}
+                size={18}
+                color={'#c1c1c1'}
+                // color={GlobalStyles.colors.Text_Main}
+              />
+            </Pressable>
           </View>
-          {!isLogged && (
-            <View style={styles.containerButton}>
-              {/* <Text style={styles.text}>Test chiamate HTTP...</Text> */}
+
+        </View>
+        {!isLogged && (
+          <View style={styles.containerButton}>
+            {/* <Text style={styles.text}>Test chiamate HTTP...</Text> */}
+            <Button
+              style={styles.button}
+              title="Login"
+              color={GlobalStyles.colors.BG_DarkBlue}
+              onPress={getSessionHandler}
+            ></Button>
+          </View>
+        )}
+        {!isLogged && (
+          // <View pointerEvents="box-none" style={{ marginRight: 10, zIndex: 10 }}>
+          <View pointerEvents="box-none" style={styles.containerButton}>
+            <IconButton
+              icon="settings-outline"
+              size={24}
+              color={'red'}
+              onPress={headerSettingsIconPressHandler}
+            />
+          </View>
+        )}
+        {isLogged && (
+          <View style={styles.containerMessage}>
+            <Text>The Session ID is: {sessionID}</Text>
+
+            {/* {!isInputOk && <Text style={styles.textAlert}>I CAMPI SONO VUOTI!</Text>} */}
+
+            {isLogged && <Text style={styles.textAlert}>ATTENZIONE!</Text>}
+            {isLogged && <Text style={styles.textAlert}>{message}</Text>}
+
+            {/* {isLogged && sessionID && <Text style={styles.textAlert}>The Session ID is: {sessionID}</Text>} */}
+            {/* {isLogged && !sessionID && (<Text style={styles.textAlert}>The Session ID is not avaiable!</Text>)} */}
+          </View>
+        )}
+
+        {isLogged && (
+          <View style={styles.containerButton}>
+            {(isLogged || errorHTTP) && (
               <Button
                 style={styles.button}
-                title="Login"
+                title="Riprova..."
+                onPress={resetIsLogged}
                 color={GlobalStyles.colors.BG_DarkBlue}
-                onPress={getSessionHandler}
               ></Button>
-            </View>
-          )}
-          {!isLogged && (
-            // <View pointerEvents="box-none" style={{ marginRight: 10, zIndex: 10 }}>
-            <View pointerEvents="box-none" style={styles.containerButton}>
-              <IconButton
-                icon="settings-outline"
-                size={24}
-                color={'red'}
-                onPress={headerSettingsIconPressHandler}
-              />
-            </View>
-          )}
-          {isLogged && (
-            <View style={styles.containerMessage}>
-              <Text>The Session ID is: {sessionID}</Text>
-
-              {/* {!isInputOk && <Text style={styles.textAlert}>I CAMPI SONO VUOTI!</Text>} */}
-
-              {isLogged && <Text style={styles.textAlert}>ATTENZIONE!</Text>}
-              {isLogged && <Text style={styles.textAlert}>{message}</Text>}
-
-              {/* {isLogged && sessionID && <Text style={styles.textAlert}>The Session ID is: {sessionID}</Text>} */}
-              {/* {isLogged && !sessionID && (<Text style={styles.textAlert}>The Session ID is not avaiable!</Text>)} */}
-            </View>
-          )}
-
-          {isLogged && (
-            <View style={styles.containerButton}>
-              {(isLogged || errorHTTP) && (
-                <Button
-                  style={styles.button}
-                  title="Riprova..."
-                  onPress={resetIsLogged}
-                  color={GlobalStyles.colors.BG_DarkBlue}
-                ></Button>
-              )}
-              {errorHTTP && (
-                <Text style={styles.textAlert} cd>
-                  Server is not responding!
-                </Text>
-              )}
-            </View>
-          )}
-        </View>
+            )}
+            {errorHTTP && (
+              <Text style={styles.textAlert} cd>
+                Server is not responding!
+              </Text>
+            )}
+          </View>
+        )}
+      </View>
       {/* </ScrollView> */}
     </ScreenContainer>
     // </SafeAreaView>
@@ -343,7 +370,6 @@ const styles = StyleSheet.create({
   button: {
     margin: 5,
   },
-
   inputText: {
     borderWidth: 2,
     borderColor: GlobalStyles.colors.BG_DarkBlue,
@@ -351,7 +377,40 @@ const styles = StyleSheet.create({
     color: GlobalStyles.colors.Text_Input,
     textDecorationColor: GlobalStyles.colors.Text_Main,
     margin: 5,
-    padding: 4,
-    minWidth: 200,
+    paddingHorizontal: 10,
+    paddingVertical: 4, // controlla l’altezza
+    width: 200,
+    height: 40,         // altezza fissa
+  },
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: GlobalStyles.colors.BG_DarkBlue,
+    backgroundColor: GlobalStyles.colors.BG_InputField,
+    margin: 5,
+    paddingHorizontal: 10,
+    paddingVertical: 0, // controlla l’altezza
+    width: 200,
+    height: 40,        // stessa altezza del campo utente
+  },
+  toggleButton: {
+    marginLeft: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 40, // uguale al contenitore
+    width: 30, // larghezza minima per cliccare
+  },
+  toggleButtonText: {
+    color: GlobalStyles.colors.Text_Main,
+    fontSize: 14,
+  },
+  passwordInput: {
+    flex: 1,
+    color: GlobalStyles.colors.Text_Input,
+    backgroundColor: GlobalStyles.colors.BG_InputField,
+    paddingVertical: 0,
+    paddingHorizontal: 0,
+    height: '100%',
   },
 });
