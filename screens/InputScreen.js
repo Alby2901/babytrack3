@@ -355,8 +355,6 @@ function InputScreen({ navigation }) {
   }
 
   return (
-    // <SafeAreaView>
-    //   <ScrollView>
     <ScreenContainer>
       {/* <View style={[styles.containerOuter, { paddingBottom: (authCtx.mode.slice(0, 4) == 'Prod' ? 69 : 0) }]}> */}
       <View style={styles.containerOuter}>
@@ -389,6 +387,7 @@ function InputScreen({ navigation }) {
           </View>
         </Modal>
 
+        {/* Testata della schermata - Utente + timer */}
         <View style={styles.userContainer}>
           <Text style={styles.textUtenteSmall}>Buongiorno</Text>
           <Text style={styles.textUtente}>{cognomeNome}</Text>
@@ -412,8 +411,11 @@ function InputScreen({ navigation }) {
             </>
           )}
         </View>
+
+        {/* Aera pulsati-input testuale per scansione o inserimento QRCode*/}
         <View style={[styles.inputsContainer, { height: (authCtx.mode.slice(0, 4) == 'Prod' ? 250 : 350) }]}>
 
+          {/* Pulsante Scan Neonato - non mostrato se modo = Prod-Manual */}
           <View style={styles.buttonsScanContainer}>
             {(authCtx.mode == 'Prod-Manual' ? null :
               <View style={styles.buttonScanContainer}>
@@ -425,6 +427,9 @@ function InputScreen({ navigation }) {
                 />
               </View>
             )}
+
+            {/* Area di testo per inserimento manuale o scan con simulatore di tastiera */}
+            {/* Mostrata solo in modo Prod-Manual e Devel */}
             {(authCtx.mode == 'Prod-Manual' || authCtx.mode == 'Devel' ?
               (<NeonatoInput
                 style={styles.inputArea}
@@ -435,7 +440,7 @@ function InputScreen({ navigation }) {
             <Text style={styles.text}>Neonato: {authCtx.neonato}</Text>
           </View>
 
-
+          {/* Pulsante Scan Genitore-Culla - non mostrato se modo = Prod-Manual */}
           <View style={styles.buttonsScanContainer}>
             {(authCtx.mode == 'Prod-Manual' ? null :
               <View style={styles.buttonScanContainer}>
@@ -446,6 +451,9 @@ function InputScreen({ navigation }) {
                   color={GlobalStyles.colors.Button_Scan}
                 />
               </View>)}
+
+            {/* Area di testo per inserimento manuale o scan con simulatore di tastiera */}
+            {/* Mostrata solo in modo Prod-Manual e Devel */}
             {(authCtx.mode == 'Prod-Manual' || authCtx.mode == 'Devel' ?
               <GenitoreInput
                 style={styles.inputArea}
@@ -456,6 +464,7 @@ function InputScreen({ navigation }) {
             <Text style={styles.text}>Genitore: {authCtx.genitore}</Text>
           </View>
 
+          {/* Pulsante Scan Latte - al momento mostrato solo se modo = Devel */}
           {(authCtx.mode.slice(0, 4) == 'Prod' ? null :
             <View style={styles.buttonsScanContainer}>
               {(authCtx.mode == 'Prod-Manual' ? null :
@@ -467,6 +476,9 @@ function InputScreen({ navigation }) {
                     color={GlobalStyles.colors.Button_Scan}
                   />
                 </View>)}
+
+              {/* Area di testo per inserimento manuale o scan con simulatore di tastiera */}
+              {/* Mostrata solo in modo Prod-Manual e Devel */}
               {(authCtx.mode == 'Prod-Manual' || authCtx.mode == 'Devel' ?
                 <LatteCullaInput
                   style={styles.inputArea}
@@ -477,14 +489,12 @@ function InputScreen({ navigation }) {
               <Text style={styles.text}>Latte/Culla: {authCtx.latte}</Text>
             </View>
           )}
-
-          {/* {ret && <Text style={styles.text}>Ret: {ret}</Text>}
-            {message && <Text style={styles.text}>Msg: {message}</Text>}
-            {childN && <Text style={styles.text}>ChildN: {childN}</Text>}
-            {motherN && <Text style={styles.text}>MotherN: {motherN}</Text>} */}
         </View>
 
+        {/* Aera pulsati CHK */}
         <View style={styles.buttonsContainer1}>
+          
+          {/* CHK Neonato */}
           <View style={styles.buttonContainer}>
             <Button
               title={"Chk \nNeonato"}
@@ -492,6 +502,8 @@ function InputScreen({ navigation }) {
               color={GlobalStyles.colors.BG_DarkBlue}
             ></Button>
           </View>
+          
+          {/* CHK Gen-Culla */}
           <View style={styles.buttonContainer}>
             <Button
               title={"Chk \nGen-Culla"}
@@ -500,7 +512,8 @@ function InputScreen({ navigation }) {
             ></Button>
           </View>
 
-          {(authCtx.mode == 'Prod' ? null :
+          {/* CHK Latte  - al momento visibile solo in modo DEVEL*/}
+          {(authCtx.mode.slice(0, 4) == 'Prod' ? null :
             <View style={styles.buttonContainer}>
               <Button
                 title={"Chk \nLatte"}
@@ -511,7 +524,10 @@ function InputScreen({ navigation }) {
           )}
         </View>
 
+        {/* Area pulsanti Reset e logout */}
         <View style={styles.buttonsContainer2}>
+          
+          {/* Pulsante Reset */}
           <View style={styles.buttonResetContainer}>
             <Button
               title="Reset"
@@ -519,6 +535,8 @@ function InputScreen({ navigation }) {
               color={GlobalStyles.colors.Button_Reset}
             ></Button>
           </View>
+
+          {/* Pulsante Logout */}
           <View style={styles.buttonLogoutContainer}>
             <Button
               title="Logout"
@@ -527,7 +545,8 @@ function InputScreen({ navigation }) {
             />
           </View>
         </View>
-
+        
+        {/* Area e pulsante Test sessione visibile solo in modo Devel */}
         {(authCtx.mode.slice(0, 4) == 'Prod' ? null :
           <View style={styles.buttonsContainer2}>
             <View style={styles.buttonResetContainer}>
@@ -545,8 +564,6 @@ function InputScreen({ navigation }) {
 
       </View>
     </ScreenContainer>
-    //  </ScrollView>
-    // </SafeAreaView>
   );
 }
 

@@ -172,16 +172,18 @@ function LoginScreen({ navigation }) {
   }
 
   return (
-    // <SafeAreaView>
     <ScreenContainer>
-      {/* <ScrollView contentContainerStyle={styles.scrollContent}> */}
-      {/* <View style={[styles.containerOuter, { paddingBottom: (authCtx.mode == 'Prod' ? 120 : 120) }]}> */}
       <View style={styles.containerOuter}>
+
+        {/* SEGRETO - Mostra campo per per impostare server  */}
+        {/* nello spigolo in alto a sinistra della testata della schermata
+            c'è una piccola area cliccabile "nascosta" - stesso colore dello sfondo   */}
         <Pressable onPress={showConfigInputHandler}>
           {/* <Text style={styles.cardText}>Set Server</Text> */}
           <View style={styles.hideButton}></View>
         </Pressable>
-
+        
+        {/* Testata */}
         <View style={styles.cardTitle}>
           <Text style={styles.cardText}>LOGIN</Text>
           <Text style={[styles.cardText, styles.cardSmalltext]}>
@@ -189,6 +191,8 @@ function LoginScreen({ navigation }) {
           </Text>
         </View>
 
+        
+        {/* Dati correnti di SErver Modalità Device */}
         <View >
           {serverSetted ? <Text >Server: {authCtx.urlsetted} </Text> : <Text >ATTENZIONE! Server non impostato</Text>}
           {authCtx.mode ? <Text >Modo: {authCtx.mode} </Text> : <Text >Modo: Nessuno!</Text>}
@@ -196,6 +200,8 @@ function LoginScreen({ navigation }) {
         </View>
 
         <View style={styles.containerInput}>
+
+          {/* Input text per inserimento URL server - Nascosto */}
           {showConfigInput && (
             <TextInput
               style={styles.inputText}
@@ -204,20 +210,16 @@ function LoginScreen({ navigation }) {
               placeholder="URL"
             />
           )}
+
+          {/* Input Text Utente */}
           <TextInput
             style={styles.inputText}
             onChangeText={usrInputHandler}
             value={usr}
             placeholder="Utente"
           />
-          {/* <TextInput
-            style={styles.inputText}
-            onChangeText={pwdInputHandler}
-            value={pwd}
-            secureTextEntry={true}
-            placeholder="Password"
-          /> */}
 
+          {/* Input Text Password + Oscchiolino visualizza password */}
           <View style={styles.passwordContainer}>
             <TextInput
               style={styles.passwordInput}
@@ -279,7 +281,9 @@ function LoginScreen({ navigation }) {
               <Button
                 style={styles.button}
                 title="Riprova..."
-                onPress={resetIsLogged}
+                // onPress={resetIsLogged}  Valutra se meglio rilanciare subito il login oppure resettare
+                //                          resettare prima l'errore e poi rifare il login 
+                onPress={getSessionHandler}
                 color={GlobalStyles.colors.BG_DarkBlue}
               ></Button>
             )}
@@ -291,9 +295,7 @@ function LoginScreen({ navigation }) {
           </View>
         )}
       </View>
-      {/* </ScrollView> */}
     </ScreenContainer>
-    // </SafeAreaView>
   );
 }
 
