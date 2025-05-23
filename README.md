@@ -1,6 +1,7 @@
-# BabyTrack3
+# BabyTrack
 
-BabyTrack3 è un'applicazione mobile sviluppata con React Native che consente agli utenti di monitorare i dati relativi al loro bambino, come lo sviluppo fisico, la salute e altre informazioni vitali. L'app è progettata per essere semplice e intuitiva, offrendo funzionalità come l'autenticazione, l'inserimento di dati, la scansione e la visualizzazione di risultati.
+BabyTrack è un'applicazione mobile sviluppata con React Native ed Expo che consente agli utenti di effettuare alcuni controlli su dei codici QR. Viene utilizzata in Neonatologia collegata ad una API esposta dal backend. BabyTrack prevede una autenticazione dell'utente attraverso la API. Sucessivamente il sistema permette di scansionare il QR Code presente sul bracciale del neonato e quello presenete sul bracciale del genitore o sul cartellino culla. Il sistema passa i dati all'API che effettua il controllo dei codici e restituisce un risultato: corretto se i due codici sono coerenti, errato se non lo sono. Sono coerenti se il neonato corrisponde al genitore o al cartellino sulla culla. Con il risultato corretto la API restituisce anche il nome dem bambino e il nome del genitore.
+L'applicazione ha una area "impostazioni" dove si accede tramite password (cablata nel codice) dove possono essere impostati diversi parametri tra cui l'URL della API, l'ID del dispositivo, ecc.
 
 ## Funzionalità principali
 
