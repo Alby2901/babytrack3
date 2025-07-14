@@ -12,6 +12,8 @@ import LoadingOverlay from "../UI/LoadingOverlay";
 import { GlobalStyles } from "../UI/GlobalConstant";
 import IconButton from '../UI/IconButton';
 import { setObjectToStore } from '../store/StoreDataLocal';
+import { checkForAppUpdate } from '../utils/updateChecker';
+import { downloadAndInstallApk } from '../utils/apkUpdater';
 
 
 function LoginScreen({ navigation }) {
@@ -77,6 +79,7 @@ function LoginScreen({ navigation }) {
   //   });
   // }, [navigation, headerSettingsIconPressHandler]);
 
+  // use effect per il caricamento dei dati dal contesto 
   useEffect(() => {
     if (authCtx.urlsetted) {
       setUrl(authCtx.urlsetted);
@@ -87,6 +90,18 @@ function LoginScreen({ navigation }) {
       setServerSetted(false);
     };
   }, [authCtx.urlsetted, authCtx.user, authCtx.mode, authCtx.deviceid])
+
+  // useEffect per il controllo di nuoveversioni dell'app
+  useEffect(() => {
+    console.log('LOGIN_SCREEN => useEffect => CheckUpdate...');
+    // console.log('LOGIN_SCREEN => useEffect => remoteData:', remoteData);
+
+    checkForAppUpdate((remoteData) => {
+      console.log('Procedi al download da:', remoteData.apkUrl);
+      // Qui puoi chiamare la funzione che gestirà il download/installazione dell’APK
+      downloadAndInstallApk(remoteData.apkUrl, remoteData.apkFileName);
+    });
+  }, []);
 
   // function checkInput(usrp, pwdp, urlp) {
   //   if (usrp && pwdp && urlp) {
@@ -192,7 +207,7 @@ function LoginScreen({ navigation }) {
         </View>
 
         
-        {/* Dati correnti di SErver Modalità Device */}
+        {/* Dati correnti di Server, Modalità, Device */}
         <View >
           {serverSetted ? <Text >Server: {authCtx.urlsetted} </Text> : <Text >ATTENZIONE! Server non impostato</Text>}
           {authCtx.mode ? <Text >Modo: {authCtx.mode} </Text> : <Text >Modo: Nessuno!</Text>}

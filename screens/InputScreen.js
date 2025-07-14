@@ -399,6 +399,9 @@ function InputScreen({ navigation }) {
                   La sessione scade tra </Text>
                 <CountdownTimerAuto style={styles.textSessione} />
                 <Text style={styles.textSessione}> minuti</Text>
+                <View style={styles.containerSessione}>
+                  {authCtx.deviceid ? <Text style={styles.textSessione} >Device: {authCtx.deviceid} </Text> : <Text style={styles.textSessione} >Device: non in memoria</Text>}
+                </View>
               </View>
             </> :
             <>
@@ -493,7 +496,7 @@ function InputScreen({ navigation }) {
 
         {/* Aera pulsati CHK */}
         <View style={styles.buttonsContainer1}>
-          
+
           {/* CHK Neonato */}
           <View style={styles.buttonContainer}>
             <Button
@@ -502,7 +505,7 @@ function InputScreen({ navigation }) {
               color={GlobalStyles.colors.BG_DarkBlue}
             ></Button>
           </View>
-          
+
           {/* CHK Gen-Culla */}
           <View style={styles.buttonContainer}>
             <Button
@@ -526,7 +529,7 @@ function InputScreen({ navigation }) {
 
         {/* Area pulsanti Reset e logout */}
         <View style={styles.buttonsContainer2}>
-          
+
           {/* Pulsante Reset */}
           <View style={styles.buttonResetContainer}>
             <Button
@@ -545,7 +548,7 @@ function InputScreen({ navigation }) {
             />
           </View>
         </View>
-        
+
         {/* Area e pulsante Test sessione visibile solo in modo Devel */}
         {(authCtx.mode.slice(0, 4) == 'Prod' ? null :
           <View style={styles.buttonsContainer2}>
