@@ -11,11 +11,17 @@ export async function downloadAndInstallApk(apkUrl, apkFileName) {
   try {
     // const apkFilename = 'babytrack.apk';
     const apkPath = FileSystem.documentDirectory + apkFileName;
-    console.log('APK-UPDATER FN - Percorso APK:', apkPath);
+    console.log('APK-UPDATER FN - apkPath:', apkPath);
+    console.log('APK-UPDATER FN - apkUrl:', apkUrl);
 
     const downloadResumable = FileSystem.createDownloadResumable(apkUrl, apkPath);
-
+    
+    console.log('APK-UPDATER FN - downloadresumable:  done');
+    
     const { uri } = await downloadResumable.downloadAsync();
+
+    console.log('APK-UPDATER FN - downloadAsync:  done');
+    console.log('APK-UPDATER FN - uri: ', uri);
 
     if (uri) {
       // Avvia installazione

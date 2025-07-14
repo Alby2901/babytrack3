@@ -92,16 +92,16 @@ function LoginScreen({ navigation }) {
   }, [authCtx.urlsetted, authCtx.user, authCtx.mode, authCtx.deviceid])
 
   // useEffect per il controllo di nuoveversioni dell'app
-  useEffect(() => {
-    console.log('LOGIN_SCREEN => useEffect => CheckUpdate...');
-    // console.log('LOGIN_SCREEN => useEffect => remoteData:', remoteData);
+  // useEffect(() => {
+  //   console.log('LOGIN_SCREEN => useEffect => CheckUpdate...');
+  //   // console.log('LOGIN_SCREEN => useEffect => remoteData:', remoteData);
 
-    checkForAppUpdate((remoteData) => {
-      console.log('Procedi al download da:', remoteData.apkUrl);
-      // Qui puoi chiamare la funzione che gestirà il download/installazione dell’APK
-      downloadAndInstallApk(remoteData.apkUrl, remoteData.apkFileName);
-    });
-  }, []);
+  //   checkForAppUpdate((remoteData) => {
+  //     console.log('Procedi al download da:', remoteData.apkUrl);
+  //     // Qui puoi chiamare la funzione che gestirà il download/installazione dell’APK
+  //     downloadAndInstallApk(remoteData.apkUrl, remoteData.apkFileName);
+  //   });
+  // }, []);
 
   // function checkInput(usrp, pwdp, urlp) {
   //   if (usrp && pwdp && urlp) {
@@ -197,7 +197,7 @@ function LoginScreen({ navigation }) {
           {/* <Text style={styles.cardText}>Set Server</Text> */}
           <View style={styles.hideButton}></View>
         </Pressable>
-        
+
         {/* Testata */}
         <View style={styles.cardTitle}>
           <Text style={styles.cardText}>LOGIN</Text>
@@ -206,7 +206,7 @@ function LoginScreen({ navigation }) {
           </Text>
         </View>
 
-        
+
         {/* Dati correnti di Server, Modalità, Device */}
         <View >
           {serverSetted ? <Text >Server: {authCtx.urlsetted} </Text> : <Text >ATTENZIONE! Server non impostato</Text>}
@@ -248,7 +248,7 @@ function LoginScreen({ navigation }) {
                 name={showPassword ? 'eye-off' : 'eye'}
                 size={18}
                 color={'#c1c1c1'}
-                // color={GlobalStyles.colors.Text_Main}
+              // color={GlobalStyles.colors.Text_Main}
               />
             </Pressable>
           </View>
@@ -276,6 +276,24 @@ function LoginScreen({ navigation }) {
             />
           </View>
         )}
+
+        {!isLogged && (
+          <View style={styles.containerButton}>
+            <Button
+              style={styles.button}
+              color={GlobalStyles.colors.Button_Reset}
+              title="Verifica aggiornamenti"
+              onPress={() => {
+                checkForAppUpdate((remoteData) => {
+                  const fullUrl = remoteData.apkUrl + remoteData.apkFileName;
+                  const fileName = remoteData.apkFileName;
+                  downloadAndInstallApk(fullUrl, fileName);
+                });
+              }}
+            />
+          </View>
+        )}
+
         {isLogged && (
           <View style={styles.containerMessage}>
             <Text>The Session ID is: {sessionID}</Text>
