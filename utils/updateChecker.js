@@ -22,7 +22,11 @@ export async function checkForAppUpdate(onUpdateConfirm) {
   try {
     console.log('UPDATE CHECKER - CheckForUpFN - Controllo aggiornamento...');
     // const response = await fetch('http://192.168.230.4:8080/version.json');
-    const response = await fetch('http://172.31.234.97:8084/babytrack_version.json');
+    // const response = await fetch('http://172.31.234.97:8084/babytrack_version.json');
+
+    const response = await fetch(`http://172.31.234.97:8084/babytrack_version.json?nocache=${Date.now()}`);
+
+
     if (!response.ok) throw new Error('Errore nel download del file con la versione disponibile.');
 
 
@@ -33,7 +37,7 @@ export async function checkForAppUpdate(onUpdateConfirm) {
 
     console.log('UPDATE CHECKER - CheckForUpFN - Dati remoti:', remoteData);
 
-    
+
     const remoteVersion = remoteData.version;
     const localVersion = Constants.expoConfig.version;
 

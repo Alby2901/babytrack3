@@ -285,8 +285,11 @@ function LoginScreen({ navigation }) {
               title="Verifica aggiornamenti"
               onPress={() => {
                 checkForAppUpdate((remoteData) => {
-                  const fullUrl = remoteData.apkUrl + remoteData.apkFileName;
+                  const fullUrl = `${remoteData.apkUrl.replace(/\/?$/, '/')}${remoteData.apkFileName}`;
+                  // const fullUrl = remoteData.apkUrl + remoteData.apkFileName;
                   const fileName = remoteData.apkFileName;
+                  console.log("LOGIN SCREEN - fullUrl: ", fullUrl)
+                  console.log("LOGIN SCREEN - filename: ", fileName)
                   downloadAndInstallApk(fullUrl, fileName);
                 });
               }}
