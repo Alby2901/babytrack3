@@ -207,11 +207,12 @@ function LoginScreen({ navigation }) {
         </View>
 
 
-        {/* Dati correnti di Server, Modalità, Device */}
+        {/* Dati correnti di Server, Modalità, Device, UpdateUrl */}
         <View >
           {serverSetted ? <Text >Server: {authCtx.urlsetted} </Text> : <Text >ATTENZIONE! Server non impostato</Text>}
           {authCtx.mode ? <Text >Modo: {authCtx.mode} </Text> : <Text >Modo: Nessuno!</Text>}
           {authCtx.deviceid ? <Text >Device: {authCtx.deviceid} </Text> : <Text >Device: non in memoria</Text>}
+          {(authCtx.mode == 'Devel' && authCtx.updateurl) ? <Text >UpdateUrl: {authCtx.updateurl} </Text> : ""}
         </View>
 
         <View style={styles.containerInput}>
@@ -277,23 +278,34 @@ function LoginScreen({ navigation }) {
           </View>
         )}
 
+        {/* Verifica Aggiornamenti */}
         {!isLogged && (
           <View style={styles.containerButton}>
-            <Button
-              style={styles.button}
-              color={GlobalStyles.colors.Button_Reset}
-              title="Verifica aggiornamenti"
-              onPress={() => {
-                checkForAppUpdate((remoteData) => {
-                  const fullUrl = `${remoteData.apkUrl.replace(/\/?$/, '/')}${remoteData.apkFileName}`;
-                  // const fullUrl = remoteData.apkUrl + remoteData.apkFileName;
-                  const fileName = remoteData.apkFileName;
-                  console.log("LOGIN SCREEN - fullUrl: ", fullUrl)
-                  console.log("LOGIN SCREEN - filename: ", fileName)
-                  downloadAndInstallApk(fullUrl, fileName);
-                });
-              }}
-            />
+            <View style={styles.buttonResetContainer}>
+              <Button
+                title={"Verifica\naggiornamenti"}
+                onPress={() => {
+                  checkForAppUpdate(authCtx.updateurl, (remoteData) => {
+                    const fullUrl = `${remoteData.apkUrl.replace(/\/?$/, '/')}${remoteData.apkFileName}`;
+                    // const fullUrl = remoteData.apkUrl + remoteData.apkFileName;
+                    const fileName = remoteData.apkFileName;
+                    console.log("LOGIN SCREEN - fullUrl: ", fullUrl)
+                    console.log("LOGIN SCREEN - filename: ", fileName)
+                    downloadAndInstallApk(remoteData.apkUrl + remoteData.apkFileName);
+                  });
+
+                  // checkForAppUpdate((remoteData) => {
+                  //   const fullUrl = `${remoteData.apkUrl.replace(/\/?$/, '/')}${remoteData.apkFileName}`;
+                  //   // const fullUrl = remoteData.apkUrl + remoteData.apkFileName;
+                  //   const fileName = remoteData.apkFileName;
+                  //   console.log("LOGIN SCREEN - fullUrl: ", fullUrl)
+                  //   console.log("LOGIN SCREEN - filename: ", fileName)
+                  //   downloadAndInstallApk(fullUrl, fileName);
+                  // });
+                }}
+                color={GlobalStyles.colors.Button_Reset}
+              ></Button>
+            </View>
           </View>
         )}
 
@@ -389,6 +401,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 4,
     marginBottom: 20,
+  },
+  buttonResetContainer: {
+    backgroundColor: GlobalStyles.colors.Button_Reset,
+    minWidth: 120,
   },
   containerMessage: {
     alignItems: "center",

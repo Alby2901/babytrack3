@@ -40,7 +40,7 @@ function AuthStack() {
         headerTitleAlign: "left",
         headerTitle: () => (
           // <View style={{ flexDirection: "row", alignItems: "baseline" }}>
-            <View style={{ flexDirection: "row", alignItems: "baseline", minHeight: 40 }}>
+          <View style={{ flexDirection: "row", alignItems: "baseline", minHeight: 40 }}>
             <Text style={{ fontWeight: "bold", fontSize: 28, color: GlobalStyles.colors.Text_Main }}>
               {titleApp}
             </Text>
@@ -177,6 +177,11 @@ function Root() {
         authCtx.setMode(objGetted.mode_status ? objGetted.mode_status : 'Devel');
         authCtx.setdeviceID(objGetted.deviceid_status) //? objGetted.deviceid_status : '998');
         authCtx.setUser(objGetted.user_status);
+
+        if (objGetted.update_url) {
+          authCtx.readUpdateUrl(objGetted.update_url.toString());
+          console.log('APP - Update URL loaded into context:', objGetted.update_url.toString());
+        }
 
         // setUrlState(objGetted.url_address.toString());
         // setModeState(objGetted.mode_status);

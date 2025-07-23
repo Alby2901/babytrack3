@@ -19,6 +19,8 @@ function StoreLocalScreen({ navigation }) {
   const [testState, setTestState] = useState();
   const [userState, setUserState] = useState();
   const [selected, setSelected] = useState("");
+  const [selectedUpdateUrl, setSelectedUpdateUrl] = useState(GlobalConstants.urlUpdate[0].value);
+  const [customUpdateUrl, setCustomUpdateUrl] = useState('');
 
   const autxCtx = useContext(AuthContext);
 
@@ -45,12 +47,13 @@ function StoreLocalScreen({ navigation }) {
           ...existingValues,
           mode_status: objGetted.mode_status,
           deviceid_status: objGetted.deviceid_status,
-          url_address: objGetted.url_address
+          url_address: objGetted.url_address,
+          update_url: objGetted.update_url
         }))
 
         // console.log('objGetted.url_address: ', objGetted.url_address);
         // console.log('objGetted.mode_status: ', objGetted.mode_status);
-         console.log('LOGGO IO! objGetted.deviceid__status: ', objGetted.deviceid__status);
+        console.log('LOGGO IO! objGetted.deviceid__status: ', objGetted.deviceid__status);
 
         // console.log('==> Value getted! Set State value... ');
 
@@ -115,7 +118,14 @@ function StoreLocalScreen({ navigation }) {
     console.log('---------------------------- SAVE TO STORE KEY  - START ---------------- ');
     // const keyObj = { key: keyState };
     // console.log('KeyObj sent: ', keyObj);
-    const valObj = { url_address: urlState, mode_status: modeState, user_status: userState, deviceid_status: deviceIDState};
+    const finalUpdateUrl = selectedUpdateUrl === 'Custom' ? customUpdateUrl : selectedUpdateUrl;
+    const valObj = {
+      url_address: urlState,
+      mode_status: modeState,
+      user_status: userState,
+      deviceid_status: deviceIDState,
+      update_url: finalUpdateUrl
+    };
     console.log('STORE LOCAL SCREEN ValObj sent: ', valObj);
     await setObjectToStore(keyState, valObj);
     console.log('STORE LOCAL SCREEN ValObj.url_address: ', valObj.url_address);
@@ -135,6 +145,8 @@ function StoreLocalScreen({ navigation }) {
     autxCtx.setMode(valObj.mode_status);
     autxCtx.setUser(valObj.user_status);
     autxCtx.setdeviceID(valObj.deviceid_status);
+    autxCtx.readUpdateUrl(valObj.update_url);
+
 
     console.log('STORE LOCAL SCREEN autxCtxCtx.Key1_after: ', autxCtx.key1);
     console.log('STORE LOCAL SCREEN autxCtxCtx.url_address_after: ', autxCtx.urlsetted);
@@ -184,8 +196,21 @@ function StoreLocalScreen({ navigation }) {
         url_address: objGetted.url_address,
         mode_status: objGetted.mode_status,
         user_status: objGetted.user_status,
-        deviceid_status: objGetted.deviceid_status
+        deviceid_status: objGetted.deviceid_status,
+        update_url: objGetted.update_url,
       }))
+
+      // ↪️ imposta selectedUpdateUrl se è uno di quelli predefiniti, oppure "Custom"
+      if (
+        objGetted.update_url &&
+        GlobalConstants.urlUpdate.some(item => item.value === objGetted.update_url)
+      ) {
+        setSelectedUpdateUrl(objGetted.update_url);
+        setCustomUpdateUrl(''); // reset campo custom
+      } else if (objGetted.update_url) {
+        setSelectedUpdateUrl('Custom');
+        setCustomUpdateUrl(objGetted.update_url);
+      }
 
       console.log('objGetted.url_address: ', objGetted.url_address);
       console.log('objGetted.mode_status: ', objGetted.mode_status);
@@ -211,6 +236,7 @@ function StoreLocalScreen({ navigation }) {
     console.log('UrlState_State: ', urlState);
     console.log('ModeState_State: ', modeState);
     console.log('DeviceIDState_State: ', deviceIDState);
+    console.log('UpdateUrlState_State: ', finalUpdateUrl);
     console.log('---------------------------- SHOW ALL STATE - THE END ---------------- ');
   }
 
@@ -316,6 +342,30 @@ function StoreLocalScreen({ navigation }) {
               // onSelect={modeInputHandler}
               />
             </View>
+
+            <View style={styles.dataContainer}>
+              <SelectList
+                setSelected={(val) => setSelectedUpdateUrl(val)}
+                data={GlobalConstants.urlUpdate}
+                save="value"
+                placeholder="Seleziona URL aggiornamento"
+                defaultOption={{ key: selectedUpdateUrl, value: selectedUpdateUrl }}
+                boxStyles={{ backgroundColor: 'orange', height: 50, width: 220 }}
+                inputStyles={{ color: 'black' }}
+              />
+
+              {selectedUpdateUrl === 'Custom' && (
+                // <View style={styles.dataContainer}>
+                  <TextInput
+                    style={styles.inputText}
+                    onChangeText={setCustomUpdateUrl}
+                    value={customUpdateUrl}
+                    placeholder="Inserisci URL personalizzato"
+                  />
+                // </View>
+              )}
+            </View>
+
             <View style={styles.dataContainer}>
               <TextInput
                 style={styles.inputText}
@@ -335,6 +385,7 @@ function StoreLocalScreen({ navigation }) {
             <View style={styles.dataOutContainer}>
               {dataRed && <Text style={styles.textOutLable}>Data From store:</Text>}
               {dataRed && <Text style={styles.textOutData}>{dataRed.url_address}</Text>}
+              {dataRed && <Text style={styles.textOutData}>{dataRed.update_url}</Text>}
               {dataRed && <Text style={styles.textOutData}>{dataRed.mode_status}</Text>}
               {dataRed && <Text style={styles.textOutData}>{dataRed.user_status}</Text>}
               {dataRed && <Text style={styles.textOutData}>{dataRed.deviceid_status}</Text>}

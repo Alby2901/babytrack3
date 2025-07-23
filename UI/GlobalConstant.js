@@ -61,4 +61,9 @@ export const GlobalStyles = {
       { key: 'DeviceID', value: '019' },
       { key: 'DeviceID', value: '020' },
     ],
+        urlUpdate: [
+      { key: 'Tomcat Jasper Root', value: 'http://172.31.234.97:8084/babytrack_version.json' },
+      { key: 'Tomcat Jasper Pippo', value: 'http://172.31.234.97:8084/pippo/babytrack_version.json' },
+      { key: 'Altro...', value: 'Custom' },
+    ],
   };

@@ -5,8 +5,8 @@ export const AuthContext = createContext({
   urlsetted: "",
   sessionTimer: 10,
   lastActiveTime: null,
-  setSessionTimer: () => {},
-  setLastActiveTime: () => {},
+  setSessionTimer: () => { },
+  setLastActiveTime: () => { },
   // lastActiveTime: new Date().getTime(),
   isAuthenticated: false,
   cognome: "",
@@ -23,8 +23,8 @@ export const AuthContext = createContext({
   logout: () => { },
   key1: "",
   mode: "",
-  user:"",
-  deviceid:"",
+  user: "",
+  deviceid: "",
   setKey1: () => { },
   setMode: () => { },
   setUser: () => { },
@@ -47,6 +47,8 @@ function AuthContentProvider({ children }) {
   const [mode1State, setMode1State] = useState();
   const [userState, setUserState] = useState();
   const [deviceIDState, setDeviceIDState] = useState();
+  const [updateUrlState, setUpdateUrlState] = useState();
+
 
   function authenticatef(sessionID, timer, cognome, nome) {
     setAuthSessionIDs(sessionID);
@@ -86,6 +88,11 @@ function AuthContentProvider({ children }) {
     console.log('AUTH-CONTEXT-ReadSessionTimer - Post "setSessionTimer" CUCU!', timer)
   }
 
+  function readUpdateUrl(url) {
+    console.log('AUTH-CONTEXT => ReadUpdateUrl =>', url);
+    setUpdateUrlState(url);
+  }
+
   function setK1(key1p) {
     setKey1State(key1p);
   }
@@ -121,6 +128,8 @@ function AuthContentProvider({ children }) {
     readSessionTimer: readSessTimer,
     authenticate: authenticatef,
     readUrlSetted: readUrlSettf,
+    updateurl: updateUrlState,
+    readUpdateUrl: readUpdateUrl,
     logout: logout,
     key1: key1State,
     mode: mode1State,

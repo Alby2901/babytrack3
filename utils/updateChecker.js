@@ -16,7 +16,7 @@ function isRemoteVersionNewer(localVersion, remoteVersion) {
   return false;
 }
 
-export async function checkForAppUpdate(onUpdateConfirm) {
+export async function checkForAppUpdate(updateUrl, onUpdateConfirm) {
   console.log('UPDATE CHECKER - CheckForUpFN - onUpdateConfirm: ', onUpdateConfirm);
 
   try {
@@ -24,7 +24,10 @@ export async function checkForAppUpdate(onUpdateConfirm) {
     // const response = await fetch('http://192.168.230.4:8080/version.json');
     // const response = await fetch('http://172.31.234.97:8084/babytrack_version.json');
 
-    const response = await fetch(`http://172.31.234.97:8084/babytrack_version.json?nocache=${Date.now()}`);
+
+    const response = await fetch(`${updateUrl}?nocache=${Date.now()}`);
+
+    // const response = await fetch(`http://172.31.234.97:8084/babytrack_version.json?nocache=${Date.now()}`);
 
 
     if (!response.ok) throw new Error('Errore nel download del file con la versione disponibile.');
@@ -58,9 +61,15 @@ export async function checkForAppUpdate(onUpdateConfirm) {
         ]
       );
     } else {
+
       console.log('L\'app è aggiornata alla versione più recente.');
+      Alert.alert('L\'app è aggiornata alla versione più recente.',);
     }
   } catch (error) {
+    Alert.alert(
+      'Errore durante il controllo versione',
+      'Controlla le impostazioni\ndell’Update Url e riprova.'
+    );
     console.warn('Errore durante il controllo versione:', error);
   }
 }
