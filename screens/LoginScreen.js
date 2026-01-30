@@ -279,7 +279,7 @@ function LoginScreen({ navigation }) {
         )}
 
         {/* Verifica Aggiornamenti */}
-        {!isLogged && (
+        {!isLogged && authCtx.mode == 'Devel' && (
           <View style={styles.containerButton}>
             <View style={styles.buttonResetContainer}>
               <Button

@@ -503,6 +503,7 @@ function InputScreen({ navigation }) {
               title={"Chk \nNeonato"}
               onPress={VerificaNeonato}
               color={GlobalStyles.colors.BG_DarkBlue}
+              disabled={!authCtx.neonato || !!authCtx.genitore}
             ></Button>
           </View>
 
@@ -512,6 +513,7 @@ function InputScreen({ navigation }) {
               title={"Chk \nGen-Culla"}
               onPress={VerificaGenitore}
               color={GlobalStyles.colors.BG_DarkBlue}
+              disabled={!authCtx.neonato || !authCtx.genitore}
             ></Button>
           </View>
 
@@ -522,6 +524,7 @@ function InputScreen({ navigation }) {
                 title={"Chk \nLatte"}
                 onPress={VerificaLatteCulla}
                 color={GlobalStyles.colors.BG_DarkBlue}
+                disabled={!authCtx.neonato || !authCtx.latte}
               ></Button>
             </View>
           )}
