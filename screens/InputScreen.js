@@ -426,7 +426,10 @@ function InputScreen({ navigation }) {
                   title="Scan Neonato"
                   // onPress={scanNeonato.bind(this, 'baby')}
                   onPress={scan.bind(this, 'baby')}
-                  color={GlobalStyles.colors.Button_Scan}
+                  color={(!authCtx.neonato || !!authCtx.genitore)
+                    ? "#A1A1A1" // Grigio esplicito (disabilitato)
+                    : GlobalStyles.colors.BG_DarkBlue // Blu (attivo)
+                  }
                 />
               </View>
             )}

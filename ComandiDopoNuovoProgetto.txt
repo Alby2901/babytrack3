@@ -73,13 +73,19 @@ eas.json
 }
 
 ------------------------------------------------------------------------
+
+COMPILAZIONE!
+
 npx expo prebuild
 
 eas build --platform android --profile localhttp
 // eas build -p android --profile preview
 
+------------------------------------------------------------------------
 
 npx expo install --check // controllo dipendenze
 
 npm install @react-navigation/native-stack
 npx expo install react-native-svg
+
+
